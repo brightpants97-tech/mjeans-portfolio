@@ -243,8 +243,8 @@ export default function Home() {
           <ChapterTag tc="00:08" label="About" />
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
           <p style={{ fontSize: '1rem', lineHeight: 1.85, color: 'var(--text-dim)', maxWidth: '620px', margin: '0 0 40px' }}>
-            유튜브 콘텐츠를 중심으로 영상을 편집합니다. 장지수, 장지수2 채널과 함께 작업하며,
-            정확한 컷과 리듬으로 끝까지 보게 만드는 편집을 지향합니다.
+            유튜브 콘텐츠를 중심으로 영상을 편집합니다.
+            정확한 컷과 자연스러운 스토리 전개의 편집을 지향합니다.
           </p>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
             {TOOLS.map((t) => (

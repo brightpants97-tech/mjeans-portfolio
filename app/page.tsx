@@ -244,7 +244,7 @@ export default function Home() {
           <ChapterTag tc="00:08" label="About" />
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
           <p style={{ fontSize: '1rem', lineHeight: 1.85, color: 'var(--text-dim)', maxWidth: '620px', margin: '0 0 40px' }}>
-            유튜브 콘텐츠를 중심으로 영상을 편집합니다.
+            개인방송, 합방, 예능, 게임, 여행 등 다양한 콘텐츠를 중심으로 영상을 편집합니다.
             정확한 컷과 자연스러운 스토리 전개의 편집을 지향합니다.
           </p>
           <div

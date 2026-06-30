@@ -86,7 +86,7 @@ function ChapterTag({ label }: { label: string }) {
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
       <span
         className="mono"
-        style={{ fontSize: '0.7rem', fontWeight: 600, color: ACCENT, letterSpacing: '0.18em', textTransform: 'uppercase' }}
+        style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-dimmer)', letterSpacing: '0.18em', textTransform: 'uppercase' }}
       >
         {label}
       </span>
@@ -155,8 +155,8 @@ export default function Home() {
                 href={`#${c.id}`}
                 className="mono"
                 style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
                   whiteSpace: 'nowrap',
                   textDecoration: 'none',
                   display: 'flex',
@@ -199,7 +199,7 @@ export default function Home() {
           }}
         />
         <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', position: 'relative' }}>
-          <p className="mono" style={{ fontSize: '0.78rem', fontWeight: 600, color: ACCENT, letterSpacing: '0.22em', marginBottom: '22px' }}>
+          <p className="mono" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-dimmer)', letterSpacing: '0.22em', marginBottom: '22px' }}>
             VIDEO EDITOR
           </p>
           <h1
@@ -227,7 +227,7 @@ export default function Home() {
       <section id="about" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
         <div ref={aboutRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="About" />
-          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
+          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
           <p style={{ fontSize: 'clamp(1.1rem,2.8vw,1.6rem)', fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--text)', maxWidth: '620px', margin: '0 0 40px' }}>
             영상 편집 <span style={{ color: 'var(--text-dimmer)' }}>·</span> 썸네일 제작
           </p>
@@ -243,7 +243,7 @@ export default function Home() {
             <p
               className="mono"
               style={{
-                fontSize: '0.66rem',
+                fontSize: '0.72rem',
                 fontWeight: 700,
                 color: 'var(--text-dimmer)',
                 letterSpacing: '0.18em',
@@ -273,8 +273,8 @@ export default function Home() {
                       width: '34px',
                       height: '34px',
                       borderRadius: '8px',
-                      background: `${t.color}1a`,
-                      color: t.color,
+                      background: 'rgba(255,255,255,0.06)',
+                      color: 'var(--text)',
                       fontWeight: 700,
                       fontSize: '0.8rem',
                       display: 'flex',
@@ -284,7 +284,7 @@ export default function Home() {
                   >
                     {t.abbr}
                   </span>
-                  <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
+                  <span style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
                     {t.name}
                   </span>
                 </div>
@@ -298,8 +298,8 @@ export default function Home() {
       <section id="works" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
         <div ref={worksRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="Works" />
-          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 12px' }}>작업물</h2>
-          <p style={{ fontSize: '0.96rem', color: 'var(--text-dim)', margin: '0 0 36px' }}>함께 작업한 채널입니다.</p>
+          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 12px' }}>작업물</h2>
+          <p style={{ fontSize: '0.96rem', fontWeight: 500, color: 'var(--text-dim)', margin: '0 0 36px' }}>함께 작업한 채널입니다.</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
             {CHANNELS.map((c) => (
@@ -336,9 +336,9 @@ export default function Home() {
                     style={{ width: '72px', height: '72px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
                   />
                 </div>
-                <div style={{ fontSize: '1.08rem', fontWeight: 800, color: 'var(--text)', marginBottom: '4px' }}>{c.name}</div>
-                <div className="mono" style={{ fontSize: '0.74rem', color: 'var(--text-dimmer)', marginBottom: '14px' }}>{c.handle}</div>
-                <div className="mono" style={{ fontSize: '0.8rem', fontWeight: 600, color: ACCENT, marginBottom: '18px' }}>{c.subs}</div>
+                <div style={{ fontSize: '1.08rem', fontWeight: 700, color: 'var(--text)', marginBottom: '4px' }}>{c.name}</div>
+                <div className="mono" style={{ fontSize: '0.8rem', color: 'var(--text-dimmer)', marginBottom: '14px' }}>{c.handle}</div>
+                <div className="mono" style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--text)', marginBottom: '18px' }}>{c.subs}</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', fontWeight: 700, color: 'var(--text)' }}>
                   유튜브에서 보기
                   <span style={{ fontSize: '0.9rem' }}>↗</span>
@@ -353,8 +353,8 @@ export default function Home() {
       <section id="contact" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem) 120px', borderTop: '1px solid var(--border)' }}>
         <div ref={contactRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="Contact" />
-          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 16px' }}>연락처</h2>
-          <p style={{ fontSize: '1rem', color: 'var(--text-dim)', margin: '0 0 32px' }}>같이 작업하고 싶다면 메일 주세요.</p>
+          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 16px' }}>연락처</h2>
+          <p style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-dim)', margin: '0 0 32px' }}>같이 작업하고 싶다면 메일 주세요.</p>
           <a
             href="mailto:brightpants97@gmail.com"
             style={{
@@ -365,7 +365,7 @@ export default function Home() {
               background: ACCENT,
               color: '#0a0a0b',
               borderRadius: '11px',
-              fontWeight: 800,
+              fontWeight: 700,
               fontSize: '0.96rem',
               textDecoration: 'none',
             }}
@@ -378,7 +378,7 @@ export default function Home() {
       </section>
 
       <footer style={{ borderTop: '1px solid var(--border)', padding: '24px clamp(1.2rem,4vw,2rem)' }}>
-        <div className="mono" style={{ maxWidth: '960px', margin: '0 auto', fontSize: '0.68rem', color: 'var(--text-dimmer)' }}>
+        <div className="mono" style={{ maxWidth: '960px', margin: '0 auto', fontSize: '0.74rem', color: 'var(--text-dimmer)' }}>
           © 2026 Myeongjin. 채널 콘텐츠의 저작권은 각 채널에 있습니다.
         </div>
       </footer>

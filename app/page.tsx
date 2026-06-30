@@ -81,24 +81,12 @@ function Ruler() {
   );
 }
 
-function ChapterTag({ tc, label }: { tc: string; label: string }) {
+function ChapterTag({ label }: { label: string }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
       <span
         className="mono"
-        style={{
-          fontSize: '0.74rem',
-          fontWeight: 600,
-          color: ACCENT,
-          letterSpacing: '0.02em',
-        }}
-      >
-        {tc}
-      </span>
-      <span style={{ width: '14px', height: '1px', background: 'var(--border-strong)' }} />
-      <span
-        className="mono"
-        style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-dim)', letterSpacing: '0.18em', textTransform: 'uppercase' }}
+        style={{ fontSize: '0.7rem', fontWeight: 600, color: ACCENT, letterSpacing: '0.18em', textTransform: 'uppercase' }}
       >
         {label}
       </span>
@@ -180,8 +168,7 @@ export default function Home() {
                   transition: 'color 0.15s, border-color 0.15s',
                 }}
               >
-                <span>{c.tc}</span>
-                <span className="chapter-label">{c.label}</span>
+                {c.label}
               </a>
             ))}
           </nav>
@@ -239,7 +226,7 @@ export default function Home() {
       {/* ABOUT */}
       <section id="about" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
         <div ref={aboutRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
-          <ChapterTag tc="00:08" label="About" />
+          <ChapterTag label="About" />
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
           <p style={{ fontSize: 'clamp(1.1rem,2.8vw,1.6rem)', fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--text)', maxWidth: '620px', margin: '0 0 40px' }}>
             영상 편집 <span style={{ color: 'var(--text-dimmer)' }}>·</span> 썸네일 제작
@@ -310,7 +297,7 @@ export default function Home() {
       {/* WORKS */}
       <section id="works" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
         <div ref={worksRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
-          <ChapterTag tc="00:21" label="Works" />
+          <ChapterTag label="Works" />
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 12px' }}>작업물</h2>
           <p style={{ fontSize: '0.96rem', color: 'var(--text-dim)', margin: '0 0 36px' }}>함께 작업한 채널입니다.</p>
 
@@ -365,7 +352,7 @@ export default function Home() {
       {/* CONTACT */}
       <section id="contact" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem) 120px', borderTop: '1px solid var(--border)' }}>
         <div ref={contactRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
-          <ChapterTag tc="00:34" label="Contact" />
+          <ChapterTag label="Contact" />
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 800, letterSpacing: '-0.02em', margin: '0 0 16px' }}>연락처</h2>
           <p style={{ fontSize: '1rem', color: 'var(--text-dim)', margin: '0 0 32px' }}>같이 작업하고 싶다면 메일 주세요.</p>
           <a

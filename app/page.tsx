@@ -180,11 +180,10 @@ export default function Home() {
         id="intro"
         style={{
           scrollMarginTop: '56px',
-          minHeight: '100svh',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: '120px clamp(1.2rem,4vw,2rem) 60px',
+          padding: '150px clamp(1.2rem,4vw,2rem) 70px',
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -224,7 +223,7 @@ export default function Home() {
       </section>
 
       {/* ABOUT */}
-      <section id="about" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
+      <section id="about" style={{ scrollMarginTop: '56px', padding: '72px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
         <div ref={aboutRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="About" />
           <div className="about-grid">

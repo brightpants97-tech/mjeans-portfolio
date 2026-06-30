@@ -247,40 +247,65 @@ export default function Home() {
             유튜브 콘텐츠를 중심으로 영상을 편집합니다.
             정확한 컷과 자연스러운 스토리 전개의 편집을 지향합니다.
           </p>
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {TOOLS.map((t) => (
-              <div
-                key={t.abbr}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '9px',
-                  padding: '8px 14px 8px 8px',
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '9px',
-                }}
-              >
-                <span
-                  className="mono"
+          <div
+            style={{
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: '16px',
+              padding: '20px 22px',
+              maxWidth: '420px',
+            }}
+          >
+            <p
+              className="mono"
+              style={{
+                fontSize: '0.66rem',
+                fontWeight: 700,
+                color: 'var(--text-dimmer)',
+                letterSpacing: '0.18em',
+                margin: '0 0 16px',
+              }}
+            >
+              TOOLS
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+              {TOOLS.map((t) => (
+                <div
+                  key={t.abbr}
                   style={{
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '6px',
-                    background: `${t.color}20`,
-                    color: t.color,
-                    fontWeight: 700,
-                    fontSize: '0.72rem',
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    gap: '8px',
+                    padding: '16px 8px',
+                    background: 'var(--surface-2)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '11px',
                   }}
                 >
-                  {t.abbr}
-                </span>
-                <span style={{ fontSize: '0.86rem', fontWeight: 600, color: 'var(--text)' }}>{t.name}</span>
-              </div>
-            ))}
+                  <span
+                    className="mono"
+                    style={{
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '8px',
+                      background: `${t.color}1a`,
+                      color: t.color,
+                      fontWeight: 700,
+                      fontSize: '0.8rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {t.abbr}
+                  </span>
+                  <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
+                    {t.name}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

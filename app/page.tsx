@@ -217,15 +217,16 @@ export default function Home() {
           </p>
           <h1
             style={{
-              fontSize: 'clamp(3.6rem,13vw,8.5rem)',
+              fontSize: 'clamp(2.6rem,9vw,6rem)',
               fontWeight: 900,
-              letterSpacing: '-0.045em',
-              lineHeight: 0.95,
+              letterSpacing: '-0.02em',
+              lineHeight: 0.98,
               margin: '0 0 22px',
               color: 'var(--text)',
             }}
           >
-            명진
+            MYEONGJIN<br />
+            <span style={{ color: ACCENT }}>PORTFOLIO</span>
           </h1>
           <p style={{ fontSize: 'clamp(1rem,2.4vw,1.3rem)', color: 'var(--text-dim)', fontWeight: 500, lineHeight: 1.6, maxWidth: '480px', margin: '0 0 30px' }}>
             장면과 장면 사이를 잇는 일을 합니다.

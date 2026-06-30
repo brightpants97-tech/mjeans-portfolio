@@ -228,8 +228,8 @@ export default function Home() {
             MYEONGJIN<br />
             <span style={{ color: ACCENT }}>PORTFOLIO</span>
           </h1>
-          <p style={{ fontSize: 'clamp(1rem,2.4vw,1.3rem)', color: 'var(--text-dim)', fontWeight: 500, lineHeight: 1.6, maxWidth: '480px', margin: '0 0 30px' }}>
-            장면과 장면 사이를 잇는 일을 합니다.
+          <p style={{ fontSize: 'clamp(1rem,2.4vw,1.3rem)', color: 'var(--text-dim)', fontWeight: 500, lineHeight: 1.6, maxWidth: '620px', margin: '0 0 30px' }}>
+            유튜브 콘텐츠를 중심으로 영상을 편집합니다. 정확한 컷과 자연스러운 스토리 전개의 편집을 지향합니다.
           </p>
           <p className="mono" style={{ fontSize: '0.74rem', color: 'var(--text-dimmer)', letterSpacing: '0.02em', marginBottom: '46px' }}>
             MYEONGJIN_PORTFOLIO.mp4 · 1920×1080 · 29.97fps · H.264

@@ -77,5 +77,15 @@ a {
   outline-offset: 3px;
 }
 
-@media (max-width: 559px) {
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.618fr) minmax(260px, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 639px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
 }

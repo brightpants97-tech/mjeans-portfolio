@@ -227,68 +227,74 @@ export default function Home() {
       <section id="about" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
         <div ref={aboutRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="About" />
-          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
-          <p style={{ fontSize: 'clamp(1.1rem,2.8vw,1.6rem)', fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--text)', maxWidth: '620px', margin: '0 0 40px' }}>
-            영상 편집 <span style={{ color: 'var(--text-dimmer)' }}>·</span> 썸네일 제작
-          </p>
-          <div
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: '16px',
-              padding: '20px 22px',
-              maxWidth: '420px',
-            }}
-          >
-            <p
-              className="mono"
+          <div className="about-grid">
+            {/* 왼쪽 593: 텍스트 */}
+            <div>
+              <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
+              <p style={{ fontSize: 'clamp(1.1rem,2.8vw,1.6rem)', fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--text)', margin: 0 }}>
+                영상 편집 <span style={{ color: 'var(--text-dimmer)' }}>·</span> 썸네일 제작
+              </p>
+            </div>
+
+            {/* 오른쪽 367: TOOLS 패널 */}
+            <div
               style={{
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                color: 'var(--text-dimmer)',
-                letterSpacing: '0.18em',
-                margin: '0 0 16px',
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderRadius: '16px',
+                padding: '20px 22px',
               }}
             >
-              TOOLS
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-              {TOOLS.map((t) => (
-                <div
-                  key={t.abbr}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '16px 8px',
-                    background: 'var(--surface-2)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '11px',
-                  }}
-                >
-                  <span
-                    className="mono"
+              <p
+                className="mono"
+                style={{
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  color: 'var(--text-dimmer)',
+                  letterSpacing: '0.18em',
+                  margin: '0 0 16px',
+                }}
+              >
+                TOOLS
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+                {TOOLS.map((t) => (
+                  <div
+                    key={t.abbr}
                     style={{
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '8px',
-                      background: 'rgba(255,255,255,0.06)',
-                      color: 'var(--text)',
-                      fontWeight: 700,
-                      fontSize: '0.8rem',
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
-                      justifyContent: 'center',
+                      gap: '8px',
+                      padding: '16px 8px',
+                      background: 'var(--surface-2)',
+                      border: '1px solid var(--border)',
+                      borderRadius: '11px',
                     }}
                   >
-                    {t.abbr}
-                  </span>
-                  <span style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
-                    {t.name}
-                  </span>
-                </div>
-              ))}
+                    <span
+                      className="mono"
+                      style={{
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '8px',
+                        background: 'rgba(255,255,255,0.06)',
+                        color: 'var(--text)',
+                        fontWeight: 700,
+                        fontSize: '0.8rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      {t.abbr}
+                    </span>
+                    <span style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
+                      {t.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

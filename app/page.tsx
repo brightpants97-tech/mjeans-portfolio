@@ -134,7 +134,7 @@ export default function Home() {
     // 스크롤 애니메이션이 끝날 때까지 스크롤 기반 감지를 잠시 잠금
     clickLock.current = window.setTimeout(() => {
       clickLock.current = null;
-    }, 700);
+    }, 1300);
   };
 
   const aboutRef = useReveal();

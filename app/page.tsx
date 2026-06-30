@@ -183,7 +183,7 @@ export default function Home() {
                 className="mono"
                 style={{
                   fontSize: '0.86rem',
-                  fontWeight: 700,
+                  fontWeight: 800,
                   whiteSpace: 'nowrap',
                   textDecoration: 'none',
                   display: 'flex',

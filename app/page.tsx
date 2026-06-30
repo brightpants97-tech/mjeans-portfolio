@@ -96,20 +96,46 @@ function ChapterTag({ label }: { label: string }) {
 
 export default function Home() {
   const [active, setActive] = useState('intro');
+  const clickLock = useRef<number | null>(null);
 
   useEffect(() => {
     const sections = CHAPTERS.map((c) => document.getElementById(c.id)).filter(Boolean) as HTMLElement[];
+    const ratios = new Map<string, number>();
+
     const obs = new IntersectionObserver(
       (entries) => {
+        // 클릭으로 이동 중일 때는 스크롤 감지가 끼어들지 않도록 잠금
+        if (clickLock.current !== null) return;
+
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
+          ratios.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0);
         });
+
+        // 현재 가장 많이 보이는(=화면 중앙에 가까운) 섹션 하나만 활성화
+        let bestId: string | null = null;
+        let bestRatio = 0;
+        ratios.forEach((ratio, id) => {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            bestId = id;
+          }
+        });
+        if (bestId && bestRatio > 0) setActive(bestId);
       },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+      { rootMargin: '-35% 0px -50% 0px', threshold: [0, 0.1, 0.25, 0.5, 0.75, 1] }
     );
     sections.forEach((s) => obs.observe(s));
     return () => obs.disconnect();
   }, []);
+
+  const handleNavClick = (id: string) => {
+    setActive(id);
+    if (clickLock.current) window.clearTimeout(clickLock.current);
+    // 스크롤 애니메이션이 끝날 때까지 스크롤 기반 감지를 잠시 잠금
+    clickLock.current = window.setTimeout(() => {
+      clickLock.current = null;
+    }, 700);
+  };
 
   const aboutRef = useReveal();
   const worksRef = useReveal();
@@ -143,7 +169,7 @@ export default function Home() {
             gap: '12px',
           }}
         >
-          <a href="#intro" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
+          <a href="#intro" onClick={() => handleNavClick('intro')} style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
             <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--rec)', animation: 'blink 1.8s ease-in-out infinite', flexShrink: 0 }} />
             <span className="mono" style={{ fontWeight: 700, fontSize: '0.84rem', letterSpacing: '0.04em', color: 'var(--text)' }}>MJ</span>
           </a>
@@ -153,6 +179,7 @@ export default function Home() {
               <a
                 key={c.id}
                 href={`#${c.id}`}
+                onClick={() => handleNavClick(c.id)}
                 className="mono"
                 style={{
                   fontSize: '0.86rem',

@@ -148,24 +148,25 @@ export default function Home() {
             <span className="mono" style={{ fontWeight: 700, fontSize: '0.84rem', letterSpacing: '0.04em', color: 'var(--text)' }}>MJ</span>
           </a>
 
-          <nav style={{ display: 'flex', gap: 'clamp(6px,2vw,18px)', overflowX: 'auto' }}>
+          <nav style={{ display: 'flex', gap: 'clamp(4px,1.4vw,10px)', overflowX: 'auto' }}>
             {CHAPTERS.map((c) => (
               <a
                 key={c.id}
                 href={`#${c.id}`}
                 className="mono"
                 style={{
-                  fontSize: '0.78rem',
+                  fontSize: '0.86rem',
                   fontWeight: 700,
                   whiteSpace: 'nowrap',
                   textDecoration: 'none',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 2px',
-                  color: active === c.id ? ACCENT : 'var(--text-dim)',
-                  borderBottom: active === c.id ? `1.5px solid ${ACCENT}` : '1.5px solid transparent',
-                  transition: 'color 0.15s, border-color 0.15s',
+                  padding: '7px 14px',
+                  borderRadius: '999px',
+                  color: active === c.id ? '#121210' : 'var(--text)',
+                  background: active === c.id ? ACCENT : 'transparent',
+                  opacity: active === c.id ? 1 : 0.55,
+                  transition: 'background 0.15s, opacity 0.15s, color 0.15s',
                 }}
               >
                 {c.label}

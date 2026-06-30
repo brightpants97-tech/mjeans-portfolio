@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-const BG = '#0a0a0b';
-const ACCENT = '#e7a53d';
+const BG = '#faf9f5';
+const ACCENT = '#a3e635';
 
 const CHAPTERS = [
   { id: 'intro', tc: '00:00', label: '인트로' },
@@ -125,7 +125,7 @@ export default function Home() {
           left: 0,
           right: 0,
           zIndex: 50,
-          background: 'rgba(10,10,11,0.78)',
+          background: 'rgba(250,249,245,0.82)',
           backdropFilter: 'blur(14px)',
           WebkitBackdropFilter: 'blur(14px)',
           borderBottom: '1px solid var(--border)',
@@ -194,7 +194,7 @@ export default function Home() {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(ellipse 70% 60% at 18% 30%, rgba(231,165,61,0.07) 0%, transparent 65%)',
+            background: 'radial-gradient(ellipse 70% 60% at 18% 30%, rgba(163,230,53,0.1) 0%, transparent 65%)',
             pointerEvents: 'none',
           }}
         />
@@ -240,7 +240,7 @@ export default function Home() {
             <div
               style={{
                 background: 'var(--surface)',
-                border: '1px solid var(--border)',
+                border: '1px solid var(--card-border)',
                 borderRadius: '16px',
                 padding: '20px 22px',
               }}
@@ -250,7 +250,7 @@ export default function Home() {
                 style={{
                   fontSize: '0.72rem',
                   fontWeight: 700,
-                  color: 'var(--text-dimmer)',
+                  color: 'var(--card-text-dimmer)',
                   letterSpacing: '0.18em',
                   margin: '0 0 16px',
                 }}
@@ -268,7 +268,7 @@ export default function Home() {
                       gap: '8px',
                       padding: '16px 8px',
                       background: 'var(--surface-2)',
-                      border: '1px solid var(--border)',
+                      border: '1px solid var(--card-border)',
                       borderRadius: '11px',
                     }}
                   >
@@ -278,8 +278,8 @@ export default function Home() {
                         width: '34px',
                         height: '34px',
                         borderRadius: '8px',
-                        background: 'rgba(255,255,255,0.06)',
-                        color: 'var(--text)',
+                        background: 'rgba(255,255,255,0.08)',
+                        color: 'var(--card-text)',
                         fontWeight: 700,
                         fontSize: '0.8rem',
                         display: 'flex',
@@ -289,7 +289,7 @@ export default function Home() {
                     >
                       {t.abbr}
                     </span>
-                    <span style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
+                    <span style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--card-text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
                       {t.name}
                     </span>
                   </div>
@@ -318,7 +318,7 @@ export default function Home() {
                   display: 'block',
                   textDecoration: 'none',
                   background: 'var(--surface)',
-                  border: '1px solid var(--border)',
+                  border: '1px solid var(--card-border)',
                   borderRadius: '16px',
                   padding: '28px 26px',
                   transition: 'border-color 0.18s, transform 0.18s',
@@ -328,7 +328,7 @@ export default function Home() {
                   (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)';
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--card-border)';
                   (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
                 }}
               >
@@ -342,10 +342,10 @@ export default function Home() {
                     style={{ width: '72px', height: '72px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
                   />
                 </div>
-                <div style={{ fontSize: '1.08rem', fontWeight: 700, color: 'var(--text)', marginBottom: '4px' }}>{c.name}</div>
-                <div className="mono" style={{ fontSize: '0.8rem', color: 'var(--text-dimmer)', marginBottom: '14px' }}>{c.handle}</div>
-                <div className="mono" style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--text)', marginBottom: '18px' }}>{c.subs}</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', fontWeight: 700, color: 'var(--text)' }}>
+                <div style={{ fontSize: '1.08rem', fontWeight: 700, color: 'var(--card-text)', marginBottom: '4px' }}>{c.name}</div>
+                <div className="mono" style={{ fontSize: '0.8rem', color: 'var(--card-text-dimmer)', marginBottom: '14px' }}>{c.handle}</div>
+                <div className="mono" style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--card-text)', marginBottom: '18px' }}>{c.subs}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', fontWeight: 700, color: 'var(--card-text)' }}>
                   유튜브에서 보기
                   <span style={{ fontSize: '0.9rem' }}>↗</span>
                 </div>
@@ -369,7 +369,7 @@ export default function Home() {
               gap: '10px',
               padding: '15px 26px',
               background: ACCENT,
-              color: '#0a0a0b',
+              color: '#121210',
               borderRadius: '11px',
               fontWeight: 700,
               fontSize: '0.96rem',

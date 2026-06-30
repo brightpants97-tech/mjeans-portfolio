@@ -1,17 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0a0a0b;
-  --surface: #131316;
-  --surface-2: #1b1b1f;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-  --text: #f4f2ec;
-  --text-dim: rgba(244, 242, 236, 0.56);
-  --text-dimmer: rgba(244, 242, 236, 0.3);
-  --accent: #e7a53d;
-  --accent-soft: rgba(231, 165, 61, 0.13);
-  --accent-strong: rgba(231, 165, 61, 0.45);
+  --bg: #faf9f5;
+  --surface: #121210;
+  --surface-2: #1c1c19;
+  --border: rgba(17, 17, 14, 0.1);
+  --border-strong: rgba(17, 17, 14, 0.18);
+  --text: #121210;
+  --text-dim: rgba(18, 18, 16, 0.6);
+  --text-dimmer: rgba(18, 18, 16, 0.32);
+  --card-text: #faf9f5;
+  --card-text-dim: rgba(250, 249, 245, 0.62);
+  --card-text-dimmer: rgba(250, 249, 245, 0.32);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-border-strong: rgba(255, 255, 255, 0.18);
+  --accent: #a3e635;
+  --accent-soft: rgba(163, 230, 53, 0.16);
+  --accent-strong: rgba(163, 230, 53, 0.55);
   --rec: #e2483a;
 }
 

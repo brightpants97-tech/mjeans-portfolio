@@ -380,7 +380,7 @@ export default function Home() {
         <div ref={contactRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="Contact" />
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 16px' }}>연락처</h2>
-          <p style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-dim)', margin: '0 0 32px' }}>같이 작업하고 싶다면 메일 주세요.</p>
+          <p style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-dim)', margin: '0 0 32px' }}>작업하길 원하신다면 언제든 메일 주세요.</p>
           <a
             href="mailto:brightpants97@gmail.com"
             style={{

@@ -253,19 +253,17 @@ export default function Home() {
       <section id="about" style={{ scrollMarginTop: '56px', padding: '72px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
         <div ref={aboutRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="About" />
-          <div className="about-grid">
-            {/* 왼쪽: 사용툴 제목 */}
-            <div>
-              <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 }}>사용툴</h2>
-            </div>
+          <div>
+            <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 20px' }}>사용툴</h2>
 
-            {/* 오른쪽 367: TOOLS 패널 */}
+            {/* TOOLS 패널 */}
             <div
               style={{
                 background: 'var(--surface)',
                 border: '1px solid var(--card-border)',
                 borderRadius: '16px',
                 padding: '20px 24px',
+                maxWidth: '400px',
               }}
             >
               <p

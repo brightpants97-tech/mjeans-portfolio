@@ -254,12 +254,9 @@ export default function Home() {
         <div ref={aboutRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="About" />
           <div className="about-grid">
-            {/* 왼쪽 593: 텍스트 */}
+            {/* 왼쪽: 사용툴 제목 */}
             <div>
-              <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 20px' }}>소개</h2>
-              <p style={{ fontSize: 'clamp(1.1rem,2.8vw,1.6rem)', fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--text)', margin: 0 }}>
-                영상 편집 <span style={{ color: 'var(--text-dimmer)' }}>·</span> 썸네일 제작
-              </p>
+              <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 }}>사용툴</h2>
             </div>
 
             {/* 오른쪽 367: TOOLS 패널 */}
@@ -304,8 +301,8 @@ export default function Home() {
                         width: '34px',
                         height: '34px',
                         borderRadius: '8px',
-                        background: 'rgba(255,255,255,0.08)',
-                        color: 'var(--card-text)',
+                        background: `${t.color}22`,
+                        color: t.color,
                         fontWeight: 700,
                         fontSize: '0.8rem',
                         display: 'flex',

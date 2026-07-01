@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Myeongjin — Video Editor",
   description: "유튜브 콘텐츠를 편집합니다. 장지수, 장지수2 채널과 함께 작업했습니다.",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

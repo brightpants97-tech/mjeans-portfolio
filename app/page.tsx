@@ -180,7 +180,6 @@ export default function Home() {
                 key={c.id}
                 href={`#${c.id}`}
                 onClick={() => handleNavClick(c.id)}
-                className="mono"
                 style={{
                   fontSize: '0.86rem',
                   fontWeight: 800,

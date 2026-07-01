@@ -14,11 +14,6 @@ export default function RootLayout({
       <head>
         <link
           rel="stylesheet"
-          as="style"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
-        />
-        <link
-          rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.0.20/index.css"
         />
         <link

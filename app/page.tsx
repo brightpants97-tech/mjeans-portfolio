@@ -29,9 +29,9 @@ const CHANNELS = [
 ];
 
 const TOOLS = [
-  { abbr: 'Pr', name: 'Premiere Pro', color: '#9468F2' },
-  { abbr: 'Ps', name: 'Photoshop', color: '#3FA9F5' },
-  { abbr: 'Ai', name: 'Illustrator', color: '#FF9A3D' },
+  { abbr: 'Pr', name: 'Premiere Pro', desc: '영상 편집', color: '#9468F2', bg: '#2a0a3e' },
+  { abbr: 'Ps', name: 'Photoshop',    desc: '썸네일 제작', color: '#3FA9F5', bg: '#001a3e' },
+  { abbr: 'Ai', name: 'Illustrator',  desc: '그래픽 작업', color: '#FF9A3D', bg: '#2d1a00' },
 ];
 
 function useReveal() {
@@ -265,7 +265,7 @@ export default function Home() {
                 background: 'var(--surface)',
                 border: '1px solid var(--card-border)',
                 borderRadius: '16px',
-                padding: '20px 22px',
+                padding: '20px 24px',
               }}
             >
               <p
@@ -280,41 +280,40 @@ export default function Home() {
               >
                 TOOLS
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
-                {TOOLS.map((t) => (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                {TOOLS.map((t, i) => (
                   <div
                     key={t.abbr}
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
                       alignItems: 'center',
-                      gap: '8px',
-                      padding: '16px 8px',
-                      background: 'var(--surface-2)',
-                      border: '1px solid var(--card-border)',
-                      borderRadius: '11px',
+                      gap: '16px',
+                      padding: '14px 0',
+                      borderBottom: i < TOOLS.length - 1 ? '1px solid var(--card-border)' : 'none',
                     }}
                   >
-                    <span
+                    <div
                       className="mono"
                       style={{
-                        width: '34px',
-                        height: '34px',
-                        borderRadius: '8px',
-                        background: `${t.color}22`,
-                        color: t.color,
-                        fontWeight: 700,
-                        fontSize: '0.8rem',
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '10px',
+                        background: t.bg,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        flexShrink: 0,
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        color: t.color,
                       }}
                     >
                       {t.abbr}
-                    </span>
-                    <span style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--card-text-dim)', textAlign: 'center', lineHeight: 1.3 }}>
-                      {t.name}
-                    </span>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--card-text)', lineHeight: 1.2 }}>{t.name}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--card-text-dimmer)', marginTop: '3px' }}>{t.desc}</div>
+                    </div>
                   </div>
                 ))}
               </div>

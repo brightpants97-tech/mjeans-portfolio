@@ -169,9 +169,11 @@ export default function Home() {
             gap: '12px',
           }}
         >
-          <a href="#intro" onClick={() => handleNavClick('intro')} style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--rec)', animation: 'blink 1.8s ease-in-out infinite', flexShrink: 0 }} />
-            <span className="mono" style={{ fontWeight: 700, fontSize: '0.84rem', letterSpacing: '0.04em', color: 'var(--text)' }}>MJ</span>
+          <a href="#intro" onClick={() => handleNavClick('intro')} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+            <svg width="32" height="32" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect width="80" height="80" rx="18" fill="#121210"/>
+              <text x="40" y="57" textAnchor="middle" fontFamily="'Paperlogy','Arial Black',sans-serif" fontWeight="900" fontSize="48" fill="#a3e635">M</text>
+            </svg>
           </a>
 
           <nav style={{ display: 'flex', gap: 'clamp(4px,1.4vw,10px)', overflowX: 'auto' }}>

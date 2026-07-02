@@ -136,22 +136,17 @@ export default function WorksClient() {
           height: '56px', display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', gap: '16px',
         }}>
-          <a href="/" style={{
-            display: 'flex', alignItems: 'center', gap: '8px',
-            textDecoration: 'none', flexShrink: 0,
-          }}>
-            <span style={{
-              width: '7px', height: '7px', borderRadius: '50%',
-              background: '#e2483a', flexShrink: 0,
-              animation: 'blink 1.8s ease-in-out infinite',
-            }} />
-            <span style={{ fontWeight: 800, fontSize: '0.84rem', color: TEXT }}>MJ</span>
-          </a>
           <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }} title="홈으로">
             <svg width="32" height="32" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
               <rect width="80" height="80" rx="18" fill="#121210"/>
               <text x="40" y="57" textAnchor="middle" fontFamily="'Paperlogy','Arial Black',sans-serif" fontWeight="900" fontSize="48" fill="#a3e635">M</text>
             </svg>
+          </a>
+          <a href="/" style={{
+            fontSize: '0.82rem', fontWeight: 700,
+            color: TEXT, opacity: 0.45, textDecoration: 'none',
+          }}>
+            ← 홈으로
           </a>
         </div>
       </header>

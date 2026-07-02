@@ -348,7 +348,7 @@ export default function Home() {
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 12px' }}>채널</h2>
           <p style={{ fontSize: '0.96rem', fontWeight: 500, color: 'var(--text-dim)', margin: '0 0 36px' }}>함께 작업한 채널입니다.</p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '18px' }}>
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
             {CHANNELS.map((c) => (
               <a
                 key={c.handle}
@@ -356,39 +356,35 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
-                  display: 'block',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '12px',
+                  padding: '22px 18px',
+                  background: '#fff',
+                  border: '1px solid rgba(18,18,16,0.1)',
+                  borderRadius: '14px',
                   textDecoration: 'none',
-                  background: 'var(--surface)',
-                  border: '1px solid var(--card-border)',
-                  borderRadius: '16px',
-                  padding: '28px 26px',
-                  transition: 'border-color 0.18s, transform 0.18s',
+                  width: '150px',
+                  transition: 'border-color 0.15s, transform 0.15s',
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent-strong)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-3px)';
+                  (e.currentTarget as HTMLElement).style.borderColor = ACCENT;
+                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'var(--card-border)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(18,18,16,0.1)';
                   (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
                 }}
               >
-                <div style={{ position: 'relative', width: '72px', height: '72px', marginBottom: '20px' }}>
-                  {/* 뷰파인더 프레임 코너 */}
-                  <span style={{ position: 'absolute', top: -6, left: -6, width: '14px', height: '14px', borderTop: `2px solid ${ACCENT}`, borderLeft: `2px solid ${ACCENT}` }} />
-                  <span style={{ position: 'absolute', bottom: -6, right: -6, width: '14px', height: '14px', borderBottom: `2px solid ${ACCENT}`, borderRight: `2px solid ${ACCENT}` }} />
-                  <img
-                    src={c.img}
-                    alt={c.name}
-                    style={{ width: '72px', height: '72px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
-                  />
-                </div>
-                <div style={{ fontSize: '1.08rem', fontWeight: 700, color: 'var(--card-text)', marginBottom: '4px' }}>{c.name}</div>
-                <div className="mono" style={{ fontSize: '0.8rem', color: 'var(--card-text-dimmer)', marginBottom: '14px' }}>{c.handle}</div>
-                <div className="mono" style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--card-text)', marginBottom: '18px' }}>{c.subs}</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.84rem', fontWeight: 700, color: 'var(--card-text)' }}>
-                  유튜브에서 보기
-                  <span style={{ fontSize: '0.9rem' }}>↗</span>
+                <img
+                  src={c.img}
+                  alt={c.name}
+                  style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+                />
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--text)', marginBottom: '3px' }}>{c.name}</div>
+                  <div style={{ fontSize: '0.76rem', color: 'var(--text-dim)', fontWeight: 500 }}>{c.subs}</div>
                 </div>
               </a>
             ))}

@@ -322,8 +322,8 @@ export default function Home() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0,
-                        fontSize: '0.8rem',
-                        fontWeight: 700,
+                        fontSize: '1rem',
+                        fontWeight: 900,
                         color: t.color,
                       }}
                     >

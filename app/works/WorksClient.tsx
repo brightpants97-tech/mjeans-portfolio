@@ -166,7 +166,7 @@ export default function WorksClient() {
             RECENT WORKS
           </p>
           <h1 style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 900, letterSpacing: '-0.03em', margin: 0, lineHeight: 1 }}>
-            최근 작업물
+            작업물
           </h1>
         </div>
 

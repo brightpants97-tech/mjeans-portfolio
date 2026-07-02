@@ -147,11 +147,11 @@ export default function WorksClient() {
             }} />
             <span style={{ fontWeight: 800, fontSize: '0.84rem', color: TEXT }}>MJ</span>
           </a>
-          <a href="/" style={{
-            fontSize: '0.82rem', fontWeight: 700,
-            color: TEXT, opacity: 0.45, textDecoration: 'none',
-          }}>
-            ← 홈으로
+          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }} title="홈으로">
+            <svg width="32" height="32" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect width="80" height="80" rx="18" fill="#121210"/>
+              <text x="40" y="57" textAnchor="middle" fontFamily="'Paperlogy','Arial Black',sans-serif" fontWeight="900" fontSize="48" fill="#a3e635">M</text>
+            </svg>
           </a>
         </div>
       </header>

@@ -198,6 +198,25 @@ export default function Home() {
                 {c.label}
               </a>
             ))}
+            <a
+              href="/works"
+              style={{
+                fontSize: '0.86rem',
+                fontWeight: 800,
+                whiteSpace: 'nowrap',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '7px 14px',
+                borderRadius: '999px',
+                color: 'var(--text)',
+                background: 'transparent',
+                opacity: 0.55,
+                transition: 'opacity 0.15s',
+              }}
+            >
+              최근 작업물
+            </a>
           </nav>
         </div>
       </header>

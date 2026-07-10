@@ -25,7 +25,7 @@ const HAPBANG_WORKS: Work[] = [
     title: '세상에서 제일 재밌는 포켓몬카드깡 (feat. MEOVV 안나)',
     channel: '장지수',
     handle: '@jisoujang',
-    href: 'https://www.youtube.com/watch?v=FGmwBAOQcQw&t=23s',
+    href: 'https://youtu.be/FGmwBAOQcQw?si=aL-9l5yTX3tzxF8J',
     thumbnail: 'https://i.ytimg.com/vi/FGmwBAOQcQw/hqdefault.jpg',
   },
   {
@@ -34,7 +34,7 @@ const HAPBANG_WORKS: Work[] = [
     title: '도파민 중독자들이 새벽에 한 포켓몬카드깡 w/ 피넛',
     channel: '장지수',
     handle: '@jisoujang',
-    href: 'https://www.youtube.com/watch?v=oY2HtUujWTk&t=1060s',
+    href: 'https://youtu.be/oY2HtUujWTk?si=60OVlBLf86uGgP8Z',
     thumbnail: 'https://i.ytimg.com/vi/oY2HtUujWTk/hqdefault.jpg',
   },
   {
@@ -43,7 +43,7 @@ const HAPBANG_WORKS: Work[] = [
     title: '도파민 지렸던 포켓몬카드깡 w/ 감스트',
     channel: '장지수',
     handle: '@jisoujang',
-    href: 'https://www.youtube.com/watch?v=1_c_aaoiUIo&t=686s',
+    href: 'https://youtu.be/1_c_aaoiUIo?si=Y_Q7UOt4cu7dfa2d',
     thumbnail: 'https://i.ytimg.com/vi/1_c_aaoiUIo/hqdefault.jpg',
   },
   {
@@ -61,7 +61,7 @@ const HAPBANG_WORKS: Work[] = [
     title: '쇼메이커&시우 초대석 그리고 칸을 곁들인',
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=GlISMMoUghk&t=45s',
+    href: 'https://youtu.be/GlISMMoUghk?si=c_VkayIKDyxwLo5O',
     thumbnail: 'https://i.ytimg.com/vi/GlISMMoUghk/hqdefault.jpg',
   },
 ];
@@ -73,7 +73,7 @@ const ILSANG_WORKS: Work[] = [
     title: '인생 첫 포켓몬카드 500만원 1카톤 카드깡',
     channel: '장지수',
     handle: '@jisoujang',
-    href: 'https://www.youtube.com/watch?v=7EeI-6Gom0M&t=1115s',
+    href: 'https://youtu.be/7EeI-6Gom0M?si=IswE_7qs2I0-dX15',
     thumbnail: 'https://i.ytimg.com/vi/7EeI-6Gom0M/hqdefault.jpg',
   },
   {
@@ -82,7 +82,7 @@ const ILSANG_WORKS: Work[] = [
     title: '태어나서 처음 해본 포켓몬카드깡',
     channel: '장지수',
     handle: '@jisoujang',
-    href: 'https://www.youtube.com/watch?v=GK22XIl4EZQ&t=4s',
+    href: 'https://youtu.be/GK22XIl4EZQ?si=Awl6dABp9Vptl0Ep',
     thumbnail: 'https://i.ytimg.com/vi/GK22XIl4EZQ/hqdefault.jpg',
   },
   {
@@ -91,7 +91,7 @@ const ILSANG_WORKS: Work[] = [
     title: "'빙시머리'",
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=NvYXXr_T8Jk&t=7s',
+    href: 'https://youtu.be/NvYXXr_T8Jk?si=mdg0qqZjTiVo7Pg8',
     thumbnail: 'https://i.ytimg.com/vi/NvYXXr_T8Jk/hqdefault.jpg',
   },
   {
@@ -100,7 +100,7 @@ const ILSANG_WORKS: Work[] = [
     title: '코스프레 시켜준다던 그녀의 집에 가봤습니다..[바반끼]',
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=-9LN4JGjwDo&t=933s',
+    href: 'https://youtu.be/-9LN4JGjwDo?si=GZd9plEml792zcU5',
     thumbnail: 'https://i.ytimg.com/vi/-9LN4JGjwDo/hqdefault.jpg',
   },
   {
@@ -109,7 +109,7 @@ const ILSANG_WORKS: Work[] = [
     title: '일본에서 만난 그녀가 한국으로 찾아왔습니다..',
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=Z4EOp1tgwb4&t=121s',
+    href: 'https://youtu.be/Z4EOp1tgwb4?si=8mQ_jU_QfRisqlLU',
     thumbnail: 'https://i.ytimg.com/vi/Z4EOp1tgwb4/hqdefault.jpg',
   },
 ];
@@ -121,7 +121,7 @@ const YEOHAENG_WORKS: Work[] = [
     title: '3500m 페루 절벽호텔 숙박 리뷰',
     channel: '장지수',
     handle: '@jisoujang',
-    href: 'https://www.youtube.com/watch?v=TCCYdS35MGU&t=810s',
+    href: 'https://youtu.be/TCCYdS35MGU?si=xCZXeLfJkBoojGsA',
     thumbnail: 'https://i.ytimg.com/vi/TCCYdS35MGU/hqdefault.jpg',
   },
   {
@@ -130,7 +130,7 @@ const YEOHAENG_WORKS: Work[] = [
     title: '비행만 35시간 걸리는 페루 탐방기',
     channel: '장지수',
     handle: '@jisoujang',
-    href: 'https://www.youtube.com/watch?v=QD51rKatpe4&t=1192s',
+    href: 'https://youtu.be/QD51rKatpe4?si=mPqVqsfsNjiOOvyX',
     thumbnail: 'https://i.ytimg.com/vi/QD51rKatpe4/hqdefault.jpg',
   },
   {
@@ -139,7 +139,7 @@ const YEOHAENG_WORKS: Work[] = [
     title: '유니버설 폼 미쳤네.. 그리고 싱가포르에서 미녀 모델...',
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=VmyXQhz3xxQ&t=8s',
+    href: 'https://youtu.be/VmyXQhz3xxQ?si=-79REATQKXnYqcXr',
     thumbnail: 'https://i.ytimg.com/vi/VmyXQhz3xxQ/hqdefault.jpg',
   },
   {
@@ -148,7 +148,7 @@ const YEOHAENG_WORKS: Work[] = [
     title: '발리의 밤은 낮보다 뜨겁다.. 마지막 밤의 아찔한 비치 클럽【발리 EP.3】',
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=51NuFqPq0yM&t=2s&pp=0gcJCU8LAYcqIYzv',
+    href: 'https://youtu.be/51NuFqPq0yM?si=wOCqrmmSLODem3g2',
     thumbnail: 'https://i.ytimg.com/vi/51NuFqPq0yM/hqdefault.jpg',
   },
   {
@@ -157,7 +157,7 @@ const YEOHAENG_WORKS: Work[] = [
     title: '발리 수영장을 미녀들이랑 가면 생기는 일 【발리 EP.2】',
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=_x8WKzf0FcM&t=55s',
+    href: 'https://youtu.be/_x8WKzf0FcM?si=5AQqiue-XZNNbHQl',
     thumbnail: 'https://i.ytimg.com/vi/_x8WKzf0FcM/hqdefault.jpg',
   },
   {
@@ -166,7 +166,7 @@ const YEOHAENG_WORKS: Work[] = [
     title: '미녀 두명과 떠난 인생 첫 휴양지【발리 EP.1】',
     channel: '장지수2',
     handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=fqIMsIO6DSc&t=11s',
+    href: 'https://youtu.be/fqIMsIO6DSc?si=7ALx9X8L2II3IdSt',
     thumbnail: 'https://i.ytimg.com/vi/fqIMsIO6DSc/hqdefault.jpg',
   },
   {

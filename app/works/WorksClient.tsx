@@ -5,7 +5,7 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const TEXT   = '#121210';
 
-const CATEGORIES = ['전체', '일상', '합방', '예능', '게임', '여행'] as const;
+const CATEGORIES = ['전체', '일상', '합방', '여행'] as const;
 type Category = typeof CATEGORIES[number];
 
 interface Work {
@@ -184,17 +184,6 @@ const PLACEHOLDER_WORKS: Work[] = [
   ...HAPBANG_WORKS,
   ...ILSANG_WORKS,
   ...YEOHAENG_WORKS,
-  ...(['예능', '게임'] as const).flatMap((cat) =>
-    Array.from({ length: 5 }, (_, i) => ({
-      id: `${cat}-${i}`,
-      category: cat,
-      title: '영상 제목',
-      channel: '장지수',
-      handle: '@jisoujang',
-      href: '#',
-      thumbnail: null,
-    }))
-  ),
 ];
 
 function WorkCard({ work }: { work: Work }) {

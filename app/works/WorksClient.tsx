@@ -79,6 +79,24 @@ const ILSANG_WORKS: Work[] = [
   {
     id: 'ilsang-3',
     category: '일상',
+    title: '아픈데 여사친이 간호하러 오면 생기는 일',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://youtu.be/EBayftdTP7U?si=fGAPUcxjPk4zVVqA',
+    thumbnail: 'https://i.ytimg.com/vi/EBayftdTP7U/hqdefault.jpg',
+  },
+  {
+    id: 'ilsang-4',
+    category: '일상',
+    title: '핸들에서 손 뗐습니다 테슬라 FSD 리얼 체험기.. 그리고 BYD도 시승 (광고X)',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://youtu.be/j5_zuStASBY?si=UrSqPSIp6DSsEHrI',
+    thumbnail: 'https://i.ytimg.com/vi/j5_zuStASBY/hqdefault.jpg',
+  },
+  {
+    id: 'ilsang-5',
+    category: '일상',
     title: "'빙시머리'",
     channel: '장지수2',
     handle: '@jangjisou2',
@@ -86,7 +104,7 @@ const ILSANG_WORKS: Work[] = [
     thumbnail: 'https://i.ytimg.com/vi/NvYXXr_T8Jk/hqdefault.jpg',
   },
   {
-    id: 'ilsang-4',
+    id: 'ilsang-6',
     category: '일상',
     title: '코스프레 시켜준다던 그녀의 집에 가봤습니다..[바반끼]',
     channel: '장지수2',
@@ -95,7 +113,7 @@ const ILSANG_WORKS: Work[] = [
     thumbnail: 'https://i.ytimg.com/vi/-9LN4JGjwDo/hqdefault.jpg',
   },
   {
-    id: 'ilsang-5',
+    id: 'ilsang-7',
     category: '일상',
     title: '일본에서 만난 그녀가 한국으로 찾아왔습니다..',
     channel: '장지수2',
@@ -159,6 +177,15 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/fqIMsIO6DSc?si=7ALx9X8L2II3IdSt',
     thumbnail: 'https://i.ytimg.com/vi/fqIMsIO6DSc/hqdefault.jpg',
+  },
+  {
+    id: 'yeohaeng-7',
+    category: '여행',
+    title: '일본 여행 도중 찾아온 손님들 【일본 EP.3】',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://youtu.be/zntm46z1_os?si=dvmHIw5fFJuZ2b7t',
+    thumbnail: 'https://i.ytimg.com/vi/zntm46z1_os/hqdefault.jpg',
   },
 ];
 

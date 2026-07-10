@@ -215,7 +215,7 @@ export default function WorksClient() {
             RECENT WORKS
           </p>
           <h1 style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 900, letterSpacing: '-0.03em', margin: 0, lineHeight: 1 }}>
-            작업물
+            영상
           </h1>
         </div>
 
@@ -247,7 +247,7 @@ export default function WorksClient() {
 
         {/* 영상 수 */}
         <p style={{ fontSize: '0.8rem', color: 'rgba(18,18,16,0.35)', fontWeight: 500, marginBottom: '24px' }}>
-          {filtered.length}개의 작업물
+          {filtered.length}개의 영상
         </p>
 
         {/* 카드 그리드 */}

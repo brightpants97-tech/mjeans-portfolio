@@ -278,7 +278,7 @@ export default function Home() {
             <span style={{ color: ACCENT }}>PORTFOLIO</span>
           </h1>
           <p style={{ fontSize: 'clamp(1rem,2.4vw,1.3rem)', color: 'var(--text-dim)', fontWeight: 500, lineHeight: 1.6, maxWidth: '620px', margin: '0 0 46px' }}>
-            개인방송, 합방, 예능, 게임, 여행 등 다양한 콘텐츠를 중심으로 영상을 편집합니다.
+            다양한 콘텐츠를 중심으로 영상을 편집합니다.
             정확한 컷과 자연스러운 스토리 전개의 편집을 지향합니다.
           </p>
           <Ruler />

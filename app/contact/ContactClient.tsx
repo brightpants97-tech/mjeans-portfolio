@@ -81,6 +81,55 @@ export default function ContactClient() {
         </div>
 
         {/* 문의 카드 */}
+        {/* 카카오톡 오픈채팅 CTA */}
+        <a
+          href="https://open.kakao.com/o/sFNT3pDi"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '16px',
+            padding: '26px 28px',
+            marginBottom: '16px',
+            borderRadius: '16px',
+            background: ACCENT,
+            color: '#121210',
+            textDecoration: 'none',
+            transition: 'transform 0.15s, box-shadow 0.15s',
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+            (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 24px rgba(163,230,53,0.35)';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+            (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              width: '48px', height: '48px', borderRadius: '12px',
+              background: '#121210', flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3C6.48 3 2 6.58 2 11c0 2.86 1.87 5.37 4.68 6.78-.15.53-.98 3.4-1 3.62 0 0-.02.17.09.24.11.07.24.02.24.02.31-.04 3.6-2.38 4.16-2.78.6.08 1.22.12 1.83.12 5.52 0 10-3.58 10-8s-4.48-8-10-8z" fill="#FEE500"/>
+              </svg>
+            </div>
+            <div>
+              <p className="mono" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(18,18,16,0.55)', letterSpacing: '0.16em', margin: '0 0 4px' }}>
+                가장 빠른 답장
+              </p>
+              <p style={{ fontSize: '1.15rem', fontWeight: 900, margin: 0 }}>
+                카카오톡 오픈채팅으로 문의하기
+              </p>
+            </div>
+          </div>
+          <span style={{ fontSize: '1.3rem', fontWeight: 900, flexShrink: 0 }}>↗</span>
+        </a>
+
         <div
           style={{
             background: '#fff',
@@ -110,34 +159,6 @@ export default function ContactClient() {
               </p>
               <p style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>
                 brightpants97@gmail.com
-              </p>
-            </div>
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.4, flexShrink: 0 }}>↗</span>
-          </a>
-
-          {/* 카카오톡 오픈채팅 */}
-          <a
-            href="https://open.kakao.com/o/sFNT3pDi"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '16px',
-              padding: '22px 24px',
-              textDecoration: 'none',
-              color: TEXT,
-              borderBottom: '1px solid rgba(18,18,16,0.08)',
-              transition: 'background 0.15s',
-            }}
-          >
-            <div>
-              <p className="mono" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(18,18,16,0.38)', letterSpacing: '0.16em', margin: '0 0 6px' }}>
-                KAKAOTALK
-              </p>
-              <p style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0 }}>
-                카카오톡 오픈채팅
               </p>
             </div>
             <span style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.4, flexShrink: 0 }}>↗</span>

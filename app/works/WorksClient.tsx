@@ -136,18 +136,53 @@ export default function WorksClient() {
           height: '56px', display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', gap: '16px',
         }}>
-          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }} title="홈으로">
+          <a href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0 }} title="홈으로">
             <svg width="32" height="32" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
               <rect width="80" height="80" rx="18" fill="#121210"/>
               <text x="40" y="57" textAnchor="middle" fontFamily="'Paperlogy','Arial Black',sans-serif" fontWeight="900" fontSize="48" fill="#a3e635">M</text>
             </svg>
           </a>
-          <a href="/" style={{
-            fontSize: '0.82rem', fontWeight: 700,
-            color: TEXT, opacity: 0.45, textDecoration: 'none',
-          }}>
-            ← 홈으로
-          </a>
+
+          <nav style={{ display: 'flex', gap: 'clamp(4px,1.4vw,10px)' }}>
+            <a
+              href="/"
+              style={{
+                fontSize: '0.86rem',
+                fontWeight: 800,
+                whiteSpace: 'nowrap',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '7px 14px',
+                borderRadius: '999px',
+                color: TEXT,
+                background: 'transparent',
+                opacity: 0.55,
+                transition: 'background 0.15s, opacity 0.15s, color 0.15s',
+              }}
+            >
+              홈
+            </a>
+            <a
+              href="/works"
+              style={{
+                fontSize: '0.86rem',
+                fontWeight: 800,
+                whiteSpace: 'nowrap',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '7px 14px',
+                borderRadius: '999px',
+                color: '#121210',
+                background: ACCENT,
+                opacity: 1,
+                transition: 'background 0.15s, opacity 0.15s, color 0.15s',
+              }}
+            >
+              영상
+            </a>
+          </nav>
         </div>
       </header>
 

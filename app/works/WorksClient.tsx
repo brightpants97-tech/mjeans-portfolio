@@ -47,15 +47,6 @@ const HAPBANG_WORKS: Work[] = [
     thumbnail: 'https://i.ytimg.com/vi/1_c_aaoiUIo/hqdefault.jpg',
   },
   {
-    id: 'hapbang-4',
-    category: '합방',
-    title: '아픈데 여사친이 간호하러 오면 생기는 일',
-    channel: '장지수2',
-    handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=EBayftdTP7U&t=346s',
-    thumbnail: 'https://i.ytimg.com/vi/EBayftdTP7U/hqdefault.jpg',
-  },
-  {
     id: 'hapbang-5',
     category: '합방',
     title: '쇼메이커&시우 초대석 그리고 칸을 곁들인',
@@ -168,15 +159,6 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/fqIMsIO6DSc?si=7ALx9X8L2II3IdSt',
     thumbnail: 'https://i.ytimg.com/vi/fqIMsIO6DSc/hqdefault.jpg',
-  },
-  {
-    id: 'yeohaeng-7',
-    category: '여행',
-    title: '일본 여행 도중 찾아온 손님들 【일본 EP.3】',
-    channel: '장지수2',
-    handle: '@jangjisou2',
-    href: 'https://www.youtube.com/watch?v=zntm46z1_os&t=3s&pp=0gcJCU8LAYcqIYzv',
-    thumbnail: 'https://i.ytimg.com/vi/zntm46z1_os/hqdefault.jpg',
   },
 ];
 

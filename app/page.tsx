@@ -216,6 +216,25 @@ export default function Home() {
             >
               영상
             </a>
+            <a
+              href="/contact"
+              style={{
+                fontSize: '0.86rem',
+                fontWeight: 800,
+                whiteSpace: 'nowrap',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '7px 14px',
+                borderRadius: '999px',
+                color: 'var(--text)',
+                background: 'transparent',
+                opacity: 0.55,
+                transition: 'opacity 0.15s',
+              }}
+            >
+              문의
+            </a>
           </nav>
         </div>
       </header>
@@ -408,6 +427,22 @@ export default function Home() {
           >
             brightpants97@gmail.com
           </a>
+          <div style={{ marginTop: '20px' }}>
+            <a
+              href="/contact"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontSize: '0.86rem',
+                fontWeight: 700,
+                color: 'var(--text-dim)',
+                textDecoration: 'none',
+              }}
+            >
+              카카오톡 오픈채팅 · 소통 가능 시간 보기 ↗
+            </a>
+          </div>
         </div>
       </section>
 

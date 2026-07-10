@@ -182,6 +182,25 @@ export default function WorksClient() {
             >
               영상
             </a>
+            <a
+              href="/contact"
+              style={{
+                fontSize: '0.86rem',
+                fontWeight: 800,
+                whiteSpace: 'nowrap',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '7px 14px',
+                borderRadius: '999px',
+                color: TEXT,
+                background: 'transparent',
+                opacity: 0.55,
+                transition: 'background 0.15s, opacity 0.15s, color 0.15s',
+              }}
+            >
+              문의
+            </a>
           </nav>
         </div>
       </header>

@@ -66,9 +66,58 @@ const HAPBANG_WORKS: Work[] = [
   },
 ];
 
+const ILSANG_WORKS: Work[] = [
+  {
+    id: 'ilsang-1',
+    category: '일상',
+    title: '인생 첫 포켓몬카드 500만원 1카톤 카드깡',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://www.youtube.com/watch?v=7EeI-6Gom0M&t=1115s',
+    thumbnail: 'https://i.ytimg.com/vi/7EeI-6Gom0M/hqdefault.jpg',
+  },
+  {
+    id: 'ilsang-2',
+    category: '일상',
+    title: '태어나서 처음 해본 포켓몬카드깡',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://www.youtube.com/watch?v=GK22XIl4EZQ&t=4s',
+    thumbnail: 'https://i.ytimg.com/vi/GK22XIl4EZQ/hqdefault.jpg',
+  },
+  {
+    id: 'ilsang-3',
+    category: '일상',
+    title: "'빙시머리'",
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=NvYXXr_T8Jk&t=7s',
+    thumbnail: 'https://i.ytimg.com/vi/NvYXXr_T8Jk/hqdefault.jpg',
+  },
+  {
+    id: 'ilsang-4',
+    category: '일상',
+    title: '코스프레 시켜준다던 그녀의 집에 가봤습니다..[바반끼]',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=-9LN4JGjwDo&t=933s',
+    thumbnail: 'https://i.ytimg.com/vi/-9LN4JGjwDo/hqdefault.jpg',
+  },
+  {
+    id: 'ilsang-5',
+    category: '일상',
+    title: '일본에서 만난 그녀가 한국으로 찾아왔습니다..',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=Z4EOp1tgwb4&t=121s',
+    thumbnail: 'https://i.ytimg.com/vi/Z4EOp1tgwb4/hqdefault.jpg',
+  },
+];
+
 const PLACEHOLDER_WORKS: Work[] = [
   ...HAPBANG_WORKS,
-  ...(['일상', '예능', '게임', '여행'] as const).flatMap((cat) =>
+  ...ILSANG_WORKS,
+  ...(['예능', '게임', '여행'] as const).flatMap((cat) =>
     Array.from({ length: 5 }, (_, i) => ({
       id: `${cat}-${i}`,
       category: cat,

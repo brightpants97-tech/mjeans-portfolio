@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
@@ -277,6 +277,12 @@ function WorkCard({ work }: { work: Work }) {
 
 export default function WorksClient() {
   const [active, setActive] = useState<Category>('일상');
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setRevealed(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   const filtered = PLACEHOLDER_WORKS.filter((w) => w.category === active);
 
@@ -368,7 +374,7 @@ export default function WorksClient() {
 
       <style>{`@keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}`}</style>
 
-      <main style={{ maxWidth: '1040px', margin: '0 auto', padding: '52px clamp(1.2rem,4vw,2rem) 80px' }}>
+      <main className={`reveal${revealed ? ' in' : ''}`} style={{ maxWidth: '1040px', margin: '0 auto', padding: '52px clamp(1.2rem,4vw,2rem) 80px' }}>
 
         {/* 페이지 제목 */}
         <div style={{ marginBottom: '40px' }}>

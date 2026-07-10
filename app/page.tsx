@@ -281,7 +281,7 @@ export default function Home() {
             <div
               style={{
                 background: 'var(--surface)',
-                border: '1px solid var(--card-border)',
+                border: '1px solid rgba(255,255,255,0.85)',
                 borderRadius: '16px',
                 padding: '20px 24px',
                 maxWidth: '400px',

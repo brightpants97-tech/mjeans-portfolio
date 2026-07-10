@@ -114,10 +114,77 @@ const ILSANG_WORKS: Work[] = [
   },
 ];
 
+const YEOHAENG_WORKS: Work[] = [
+  {
+    id: 'yeohaeng-1',
+    category: '여행',
+    title: '3500m 페루 절벽호텔 숙박 리뷰',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://www.youtube.com/watch?v=TCCYdS35MGU&t=810s',
+    thumbnail: 'https://i.ytimg.com/vi/TCCYdS35MGU/hqdefault.jpg',
+  },
+  {
+    id: 'yeohaeng-2',
+    category: '여행',
+    title: '비행만 35시간 걸리는 페루 탐방기',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://www.youtube.com/watch?v=QD51rKatpe4&t=1192s',
+    thumbnail: 'https://i.ytimg.com/vi/QD51rKatpe4/hqdefault.jpg',
+  },
+  {
+    id: 'yeohaeng-3',
+    category: '여행',
+    title: '유니버설 폼 미쳤네.. 그리고 싱가포르에서 미녀 모델...',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=VmyXQhz3xxQ&t=8s',
+    thumbnail: 'https://i.ytimg.com/vi/VmyXQhz3xxQ/hqdefault.jpg',
+  },
+  {
+    id: 'yeohaeng-4',
+    category: '여행',
+    title: '발리의 밤은 낮보다 뜨겁다.. 마지막 밤의 아찔한 비치 클럽【발리 EP.3】',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=51NuFqPq0yM&t=2s&pp=0gcJCU8LAYcqIYzv',
+    thumbnail: 'https://i.ytimg.com/vi/51NuFqPq0yM/hqdefault.jpg',
+  },
+  {
+    id: 'yeohaeng-5',
+    category: '여행',
+    title: '발리 수영장을 미녀들이랑 가면 생기는 일 【발리 EP.2】',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=_x8WKzf0FcM&t=55s',
+    thumbnail: 'https://i.ytimg.com/vi/_x8WKzf0FcM/hqdefault.jpg',
+  },
+  {
+    id: 'yeohaeng-6',
+    category: '여행',
+    title: '미녀 두명과 떠난 인생 첫 휴양지【발리 EP.1】',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=fqIMsIO6DSc&t=11s',
+    thumbnail: 'https://i.ytimg.com/vi/fqIMsIO6DSc/hqdefault.jpg',
+  },
+  {
+    id: 'yeohaeng-7',
+    category: '여행',
+    title: '일본 여행 도중 찾아온 손님들 【일본 EP.3】',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=zntm46z1_os&t=3s&pp=0gcJCU8LAYcqIYzv',
+    thumbnail: 'https://i.ytimg.com/vi/zntm46z1_os/hqdefault.jpg',
+  },
+];
+
 const PLACEHOLDER_WORKS: Work[] = [
   ...HAPBANG_WORKS,
   ...ILSANG_WORKS,
-  ...(['예능', '게임', '여행'] as const).flatMap((cat) =>
+  ...YEOHAENG_WORKS,
+  ...(['예능', '게임'] as const).flatMap((cat) =>
     Array.from({ length: 5 }, (_, i) => ({
       id: `${cat}-${i}`,
       category: cat,

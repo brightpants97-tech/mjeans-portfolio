@@ -5,12 +5,12 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const TEXT   = '#121210';
 
-const CATEGORIES = ['전체', '일상', '합방', '여행'] as const;
+const CATEGORIES = ['일상', '합방', '여행'] as const;
 type Category = typeof CATEGORIES[number];
 
 interface Work {
   id: string;
-  category: Exclude<Category, '전체'>;
+  category: Category;
   title: string;
   channel: string;
   handle: string;
@@ -267,11 +267,9 @@ function WorkCard({ work }: { work: Work }) {
 }
 
 export default function WorksClient() {
-  const [active, setActive] = useState<Category>('전체');
+  const [active, setActive] = useState<Category>('일상');
 
-  const filtered = active === '전체'
-    ? PLACEHOLDER_WORKS
-    : PLACEHOLDER_WORKS.filter((w) => w.category === active);
+  const filtered = PLACEHOLDER_WORKS.filter((w) => w.category === active);
 
   return (
     <div style={{ background: BG, minHeight: '100vh', color: TEXT, fontFamily: "'Paperlogy', -apple-system, sans-serif" }}>

@@ -5,7 +5,7 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const TEXT   = '#121210';
 
-const CATEGORIES = ['전체', '개인방송', '합방', '예능', '게임', '여행'] as const;
+const CATEGORIES = ['전체', '일상', '합방', '예능', '게임', '여행'] as const;
 type Category = typeof CATEGORIES[number];
 
 interface Work {
@@ -19,7 +19,7 @@ interface Work {
 }
 
 const PLACEHOLDER_WORKS: Work[] = [
-  ...(['개인방송', '합방', '예능', '게임', '여행'] as const).flatMap((cat) =>
+  ...(['일상', '합방', '예능', '게임', '여행'] as const).flatMap((cat) =>
     Array.from({ length: 5 }, (_, i) => ({
       id: `${cat}-${i}`,
       category: cat,

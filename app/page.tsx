@@ -5,10 +5,7 @@ const BG = '#faf9f5';
 const ACCENT = '#a3e635';
 
 const CHAPTERS = [
-  { id: 'intro', tc: '00:00', label: '인트로' },
-  { id: 'about', tc: '00:08', label: '소개' },
-  { id: 'works', tc: '00:21', label: '채널' },
-  { id: 'contact', tc: '00:34', label: '연락처' },
+  { id: 'intro', tc: '00:00', label: '홈' },
 ];
 
 const CHANNELS = [
@@ -217,7 +214,7 @@ export default function Home() {
                 transition: 'opacity 0.15s',
               }}
             >
-              작업물
+              영상
             </a>
           </nav>
         </div>

@@ -136,7 +136,6 @@ export default function Home() {
 
   const aboutRef = useReveal();
   const worksRef = useReveal();
-  const contactRef = useReveal();
 
   return (
     <div style={{ background: BG, minHeight: '100vh', color: 'var(--text)' }}>
@@ -338,7 +337,7 @@ export default function Home() {
       </section>
 
       {/* ABOUT */}
-      <section id="about" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem)', borderTop: '1px solid var(--border)' }}>
+      <section id="about" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem) 120px', borderTop: '1px solid var(--border)' }}>
         <div ref={aboutRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
           <ChapterTag label="About" />
           <div>
@@ -404,44 +403,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" style={{ scrollMarginTop: '56px', padding: '90px clamp(1.2rem,4vw,2rem) 120px', borderTop: '1px solid var(--border)' }}>
-        <div ref={contactRef} className="reveal" style={{ maxWidth: '960px', margin: '0 auto' }}>
-          <ChapterTag label="Contact" />
-          <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 16px' }}>연락처</h2>
-          <p style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--text-dim)', margin: '0 0 16px' }}>작업하길 원하신다면 언제든 메일 주세요.</p>
-          <a
-            href="mailto:brightpants97@gmail.com"
-            style={{
-              fontSize: '1.1rem',
-              fontWeight: 700,
-              color: 'var(--text)',
-              textDecoration: 'none',
-              borderBottom: '2px solid var(--accent)',
-              paddingBottom: '2px',
-            }}
-          >
-            brightpants97@gmail.com
-          </a>
-          <div style={{ marginTop: '20px' }}>
-            <a
-              href="/contact"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                fontSize: '0.86rem',
-                fontWeight: 700,
-                color: 'var(--text-dim)',
-                textDecoration: 'none',
-              }}
-            >
-              카카오톡 오픈채팅 · 소통 가능 시간 보기 ↗
-            </a>
           </div>
         </div>
       </section>

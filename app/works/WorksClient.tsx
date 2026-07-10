@@ -18,8 +18,57 @@ interface Work {
   thumbnail: string | null;
 }
 
+const HAPBANG_WORKS: Work[] = [
+  {
+    id: 'hapbang-1',
+    category: '합방',
+    title: '세상에서 제일 재밌는 포켓몬카드깡 (feat. MEOVV 안나)',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://www.youtube.com/watch?v=FGmwBAOQcQw&t=23s',
+    thumbnail: 'https://i.ytimg.com/vi/FGmwBAOQcQw/hqdefault.jpg',
+  },
+  {
+    id: 'hapbang-2',
+    category: '합방',
+    title: '도파민 중독자들이 새벽에 한 포켓몬카드깡 w/ 피넛',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://www.youtube.com/watch?v=oY2HtUujWTk&t=1060s',
+    thumbnail: 'https://i.ytimg.com/vi/oY2HtUujWTk/hqdefault.jpg',
+  },
+  {
+    id: 'hapbang-3',
+    category: '합방',
+    title: '도파민 지렸던 포켓몬카드깡 w/ 감스트',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://www.youtube.com/watch?v=1_c_aaoiUIo&t=686s',
+    thumbnail: 'https://i.ytimg.com/vi/1_c_aaoiUIo/hqdefault.jpg',
+  },
+  {
+    id: 'hapbang-4',
+    category: '합방',
+    title: '아픈데 여사친이 간호하러 오면 생기는 일',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=EBayftdTP7U&t=346s',
+    thumbnail: 'https://i.ytimg.com/vi/EBayftdTP7U/hqdefault.jpg',
+  },
+  {
+    id: 'hapbang-5',
+    category: '합방',
+    title: '쇼메이커&시우 초대석 그리고 칸을 곁들인',
+    channel: '장지수2',
+    handle: '@jangjisou2',
+    href: 'https://www.youtube.com/watch?v=GlISMMoUghk&t=45s',
+    thumbnail: 'https://i.ytimg.com/vi/GlISMMoUghk/hqdefault.jpg',
+  },
+];
+
 const PLACEHOLDER_WORKS: Work[] = [
-  ...(['일상', '합방', '예능', '게임', '여행'] as const).flatMap((cat) =>
+  ...HAPBANG_WORKS,
+  ...(['일상', '예능', '게임', '여행'] as const).flatMap((cat) =>
     Array.from({ length: 5 }, (_, i) => ({
       id: `${cat}-${i}`,
       category: cat,

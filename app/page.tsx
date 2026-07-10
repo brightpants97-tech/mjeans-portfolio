@@ -280,8 +280,8 @@ export default function Home() {
             {/* TOOLS 패널 */}
             <div
               style={{
-                background: 'var(--surface)',
-                border: '1px solid rgba(255,255,255,0.85)',
+                background: 'var(--bg)',
+                border: '1px solid var(--border-strong)',
                 borderRadius: '16px',
                 padding: '20px 24px',
                 maxWidth: '400px',
@@ -292,7 +292,7 @@ export default function Home() {
                 style={{
                   fontSize: '0.72rem',
                   fontWeight: 700,
-                  color: 'var(--card-text-dimmer)',
+                  color: 'var(--text-dimmer)',
                   letterSpacing: '0.18em',
                   margin: '0 0 16px',
                 }}
@@ -308,7 +308,7 @@ export default function Home() {
                       alignItems: 'center',
                       gap: '16px',
                       padding: '14px 0',
-                      borderBottom: i < TOOLS.length - 1 ? '1px solid var(--card-border)' : 'none',
+                      borderBottom: i < TOOLS.length - 1 ? '1px solid var(--border)' : 'none',
                     }}
                   >
                     <div
@@ -330,8 +330,8 @@ export default function Home() {
                       {t.abbr}
                     </div>
                     <div>
-                      <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--card-text)', lineHeight: 1.2 }}>{t.name}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--card-text-dimmer)', marginTop: '3px' }}>{t.desc}</div>
+                      <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.2 }}>{t.name}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-dimmer)', marginTop: '3px' }}>{t.desc}</div>
                     </div>
                   </div>
                 ))}

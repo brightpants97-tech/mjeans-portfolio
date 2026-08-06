@@ -13,6 +13,7 @@ const NAV_ITEMS = [
 
 export default function ContactClient() {
   const [revealed, setRevealed] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setRevealed(true));
@@ -147,16 +148,25 @@ export default function ContactClient() {
           }}
         >
           {/* 이메일 */}
-          <a
-            href="mailto:brightpants97@gmail.com"
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText('brightpants97@gmail.com');
+              setEmailCopied(true);
+              setTimeout(() => setEmailCopied(false), 1800);
+            }}
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: '16px',
               padding: '22px 24px',
-              textDecoration: 'none',
+              width: '100%',
+              border: 'none',
+              background: 'transparent',
+              cursor: 'pointer',
+              textAlign: 'left',
               color: TEXT,
+              fontFamily: 'inherit',
               borderBottom: '1px solid rgba(18,18,16,0.08)',
               transition: 'background 0.15s',
             }}
@@ -169,8 +179,22 @@ export default function ContactClient() {
                 brightpants97@gmail.com
               </p>
             </div>
-            <span style={{ fontSize: '0.85rem', fontWeight: 700, opacity: 0.4, flexShrink: 0 }}>↗</span>
-          </a>
+            <span
+              className="mono"
+              style={{
+                fontSize: '0.76rem',
+                fontWeight: 700,
+                flexShrink: 0,
+                padding: '5px 10px',
+                borderRadius: '999px',
+                background: emailCopied ? ACCENT : 'rgba(18,18,16,0.06)',
+                color: emailCopied ? '#121210' : 'rgba(18,18,16,0.5)',
+                transition: 'background 0.15s, color 0.15s',
+              }}
+            >
+              {emailCopied ? '복사됨 ✓' : '복사'}
+            </span>
+          </button>
 
           {/* 소통 가능 시간 */}
           <div

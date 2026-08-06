@@ -55,10 +55,29 @@ function useReveal() {
 }
 
 function Ruler() {
-  // 타임라인 룰러: 5px 간격 눈금, 약한 강조 눈금, 플레이헤드 삼각형
+  // 타임라인 룰러: 5px 간격 눈금, 약한 강조 눈금, 호버 시 마우스를 따라오는 플레이헤드
   const ticks = Array.from({ length: 61 }, (_, i) => i);
+  const [playheadX, setPlayheadX] = useState(0);
+  const [scrubbing, setScrubbing] = useState(false);
+
   return (
-    <svg viewBox="0 0 600 28" width="100%" height="28" preserveAspectRatio="none" style={{ display: 'block' }}>
+    <svg
+      viewBox="0 0 600 28"
+      width="100%"
+      height="28"
+      preserveAspectRatio="none"
+      style={{ display: 'block', cursor: 'pointer' }}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const fraction = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+        setPlayheadX(fraction * 600);
+        setScrubbing(true);
+      }}
+      onMouseLeave={() => {
+        setScrubbing(false);
+        setPlayheadX(0);
+      }}
+    >
       <line x1="0" y1="22" x2="600" y2="22" stroke="var(--border)" strokeWidth="1" />
       {ticks.map((i) => {
         const x = i * 10;
@@ -76,7 +95,15 @@ function Ruler() {
           />
         );
       })}
-      <polygon points="0,0 9,0 4.5,7" fill={ACCENT} />
+      <g
+        style={{
+          transform: `translateX(${playheadX}px)`,
+          transition: scrubbing ? 'none' : 'transform 0.45s cubic-bezier(0.16,1,0.3,1)',
+        }}
+      >
+        <line x1="4.5" y1="0" x2="4.5" y2="22" stroke={ACCENT} strokeWidth="1" />
+        <polygon points="0,0 9,0 4.5,7" fill={ACCENT} />
+      </g>
     </svg>
   );
 }

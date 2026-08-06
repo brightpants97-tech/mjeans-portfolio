@@ -234,8 +234,8 @@ export default function Home() {
         >
           <a href="#intro" onClick={() => handleNavClick('intro')} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', flexShrink: 0 }}>
             <svg width="32" height="32" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-              <rect width="80" height="80" rx="18" fill="#121210"/>
-              <text x="40" y="57" textAnchor="middle" fontFamily="'Paperlogy','Arial Black',sans-serif" fontWeight="900" fontSize="48" fill="#a3e635">M</text>
+              <rect className="logo-rect" width="76" height="76" x="2" y="2" rx="18" fill="transparent"/>
+              <text className="logo-text" x="40" y="57" textAnchor="middle" fontFamily="'Paperlogy','Arial Black',sans-serif" fontWeight="900" fontSize="48" fill="#a3e635">M</text>
             </svg>
           </a>
 

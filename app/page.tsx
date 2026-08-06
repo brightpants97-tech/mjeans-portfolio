@@ -158,7 +158,7 @@ export default function Home() {
       >
         <div
           style={{
-            maxWidth: '960px',
+            maxWidth: '1040px',
             margin: '0 auto',
             padding: '0 clamp(1.2rem,4vw,2rem)',
             height: '56px',

@@ -403,14 +403,13 @@ export default function Home() {
             >
               {[
                 { value: '2', label: '함께한 채널' },
-                { value: '112만+', label: '합계 구독자' },
                 { value: `${TOTAL_WORKS}+`, label: '편집 영상' },
               ].map((stat, i) => (
                 <div
                   key={stat.label}
                   style={{
                     flex: 1,
-                    padding: '20px 14px',
+                    padding: '28px 16px',
                     textAlign: 'center',
                     borderLeft: i > 0 ? '1px solid rgba(18,18,16,0.08)' : 'none',
                     display: 'flex',
@@ -418,10 +417,10 @@ export default function Home() {
                     justifyContent: 'center',
                   }}
                 >
-                  <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 900, color: ACCENT, lineHeight: 1, marginBottom: '8px', WebkitTextStroke: '0.5px rgba(18,18,16,0.5)' }}>
+                  <div className="mono" style={{ fontSize: '2.4rem', fontWeight: 900, color: ACCENT, lineHeight: 1, marginBottom: '10px', WebkitTextStroke: '0.6px rgba(18,18,16,0.5)' }}>
                     {stat.value}
                   </div>
-                  <div style={{ fontSize: '0.74rem', fontWeight: 600, color: 'var(--text-dim)' }}>{stat.label}</div>
+                  <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-dim)' }}>{stat.label}</div>
                 </div>
               ))}
             </div>

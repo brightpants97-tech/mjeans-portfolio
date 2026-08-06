@@ -81,6 +81,43 @@ function Ruler() {
   );
 }
 
+function CountUp({ target, suffix = '' }: { target: number; suffix?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [value, setValue] = useState(0);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const duration = 900;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setValue(Math.round(eased * target));
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          obs.unobserve(el);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target]);
+
+  return (
+    <div ref={ref} className="mono" style={{ fontSize: '2.4rem', fontWeight: 900, color: ACCENT, lineHeight: 1, marginBottom: '10px', WebkitTextStroke: '0.6px rgba(18,18,16,0.5)' }}>
+      {value}{suffix}
+    </div>
+  );
+}
+
 function ChapterTag({ label }: { label: string }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '18px' }}>
@@ -402,8 +439,8 @@ export default function Home() {
               }}
             >
               {[
-                { value: '2', label: '함께한 채널' },
-                { value: `${TOTAL_WORKS}+`, label: '편집 영상' },
+                { target: 2, suffix: '', label: '함께한 채널' },
+                { target: TOTAL_WORKS, suffix: '+', label: '편집 영상' },
               ].map((stat, i) => (
                 <div
                   key={stat.label}
@@ -417,9 +454,7 @@ export default function Home() {
                     justifyContent: 'center',
                   }}
                 >
-                  <div className="mono" style={{ fontSize: '2.4rem', fontWeight: 900, color: ACCENT, lineHeight: 1, marginBottom: '10px', WebkitTextStroke: '0.6px rgba(18,18,16,0.5)' }}>
-                    {stat.value}
-                  </div>
+                  <CountUp target={stat.target} suffix={stat.suffix} />
                   <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-dim)' }}>{stat.label}</div>
                 </div>
               ))}

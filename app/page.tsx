@@ -278,10 +278,53 @@ export default function Home() {
             MYEONGJIN<br />
             <span style={{ color: ACCENT }}>PORTFOLIO</span>
           </h1>
-          <p style={{ fontSize: 'clamp(1rem,2.4vw,1.3rem)', color: 'var(--text-dim)', fontWeight: 500, lineHeight: 1.6, maxWidth: '620px', margin: '0 0 46px' }}>
+          <p style={{ fontSize: 'clamp(1rem,2.4vw,1.3rem)', color: 'var(--text-dim)', fontWeight: 500, lineHeight: 1.6, maxWidth: '620px', margin: '0 0 32px' }}>
             다양한 콘텐츠를 중심으로 영상을 편집합니다.<br />
             정확한 컷과 자연스러운 스토리 전개의 편집을 지향합니다.
           </p>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '46px' }}>
+            <a
+              href="/works"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '13px 24px',
+                borderRadius: '999px',
+                background: ACCENT,
+                color: '#121210',
+                fontSize: '0.94rem',
+                fontWeight: 800,
+                textDecoration: 'none',
+                transition: 'transform 0.15s',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}
+            >
+              영상 보기 ↗
+            </a>
+            <a
+              href="/contact"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '13px 24px',
+                borderRadius: '999px',
+                background: 'transparent',
+                border: '1px solid var(--border-strong)',
+                color: 'var(--text)',
+                fontSize: '0.94rem',
+                fontWeight: 800,
+                textDecoration: 'none',
+                transition: 'border-color 0.15s',
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--text)'; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-strong)'; }}
+            >
+              문의하기
+            </a>
+          </div>
           <Ruler />
         </div>
       </section>

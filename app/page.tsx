@@ -288,8 +288,12 @@ export default function Home() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '8px',
-                padding: '13px 24px',
+                padding: '14px 24px',
+                minHeight: '48px',
+                flex: '1 1 150px',
+                boxSizing: 'border-box',
                 borderRadius: '999px',
                 background: ACCENT,
                 color: '#121210',
@@ -308,8 +312,12 @@ export default function Home() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '8px',
-                padding: '13px 24px',
+                padding: '14px 24px',
+                minHeight: '48px',
+                flex: '1 1 150px',
+                boxSizing: 'border-box',
                 borderRadius: '999px',
                 background: 'transparent',
                 border: '1px solid var(--border-strong)',
@@ -394,51 +402,52 @@ export default function Home() {
                 border: '1px solid var(--border-strong)',
                 borderRadius: '16px',
                 padding: '20px 24px',
-                maxWidth: '400px',
+                maxWidth: '460px',
               }}
             >
               <p
                 className="mono"
                 style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
                   color: 'var(--text-dimmer)',
-                  letterSpacing: '0.18em',
+                  letterSpacing: '0.2em',
                   margin: '0 0 16px',
                 }}
               >
                 TOOLS
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {TOOLS.map((t, i) => (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                {TOOLS.map((t) => (
                   <div
                     key={t.abbr}
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '16px',
-                      padding: '14px 0',
-                      borderBottom: i < TOOLS.length - 1 ? '1px solid var(--border)' : 'none',
+                      gap: '12px',
+                      padding: '14px',
+                      borderRadius: '12px',
+                      border: '1px solid var(--border)',
                     }}
                   >
                     <div
                       className={t.icon ? undefined : 'mono'}
                       style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '10px',
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '9px',
                         background: t.bg,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0,
-                        fontSize: '1rem',
+                        fontSize: '0.9rem',
                         fontWeight: 900,
                         color: t.color,
                       }}
                     >
                       {t.icon ? (
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
                           <path d="M12 2.5L13.8 8.2L19.5 10L13.8 11.8L12 17.5L10.2 11.8L4.5 10L10.2 8.2L12 2.5Z" fill={t.color} />
                           <path d="M19 2.5L19.7 4.7L22 5.5L19.7 6.3L19 8.5L18.3 6.3L16 5.5L18.3 4.7L19 2.5Z" fill={t.color} />
                         </svg>
@@ -446,9 +455,9 @@ export default function Home() {
                         t.abbr
                       )}
                     </div>
-                    <div>
-                      <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.2 }}>{t.name}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-dimmer)', marginTop: '3px' }}>{t.desc}</div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.name}</div>
+                      <div style={{ fontSize: '0.76rem', color: 'var(--text-dimmer)', marginTop: '3px' }}>{t.desc}</div>
                     </div>
                   </div>
                 ))}

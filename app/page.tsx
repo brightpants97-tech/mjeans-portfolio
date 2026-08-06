@@ -29,6 +29,7 @@ const TOOLS = [
   { abbr: 'Pr', name: 'Premiere Pro', desc: '영상 편집', color: '#9468F2', bg: '#2a0a3e' },
   { abbr: 'Ps', name: 'Photoshop',    desc: '썸네일 제작', color: '#3FA9F5', bg: '#001a3e' },
   { abbr: 'Ai', name: 'Illustrator',  desc: '그래픽 작업', color: '#FF9A3D', bg: '#2d1a00' },
+  { abbr: 'AI', name: 'AI',           desc: '생성형 AI 활용', color: '#a3e635', bg: '#16210a', icon: true },
 ];
 
 function useReveal() {
@@ -378,7 +379,7 @@ export default function Home() {
                     }}
                   >
                     <div
-                      className="mono"
+                      className={t.icon ? undefined : 'mono'}
                       style={{
                         width: '48px',
                         height: '48px',
@@ -393,7 +394,14 @@ export default function Home() {
                         color: t.color,
                       }}
                     >
-                      {t.abbr}
+                      {t.icon ? (
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 2.5L13.8 8.2L19.5 10L13.8 11.8L12 17.5L10.2 11.8L4.5 10L10.2 8.2L12 2.5Z" fill={t.color} />
+                          <path d="M19 2.5L19.7 4.7L22 5.5L19.7 6.3L19 8.5L18.3 6.3L16 5.5L18.3 4.7L19 2.5Z" fill={t.color} />
+                        </svg>
+                      ) : (
+                        t.abbr
+                      )}
                     </div>
                     <div>
                       <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.2 }}>{t.name}</div>

@@ -442,7 +442,7 @@ export default function Home() {
                 border: '1px solid var(--border-strong)',
                 borderRadius: '16px',
                 padding: '20px 24px',
-                maxWidth: '460px',
+                maxWidth: '100%',
               }}
             >
               <p
@@ -457,15 +457,17 @@ export default function Home() {
               >
                 TOOLS
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
                 {TOOLS.map((t) => (
                   <div
                     key={t.abbr}
                     style={{
                       display: 'flex',
+                      flexDirection: 'column',
                       alignItems: 'center',
-                      gap: '12px',
-                      padding: '14px',
+                      textAlign: 'center',
+                      gap: '10px',
+                      padding: '20px 12px',
                       borderRadius: '12px',
                       border: '1px solid var(--border)',
                     }}
@@ -473,21 +475,21 @@ export default function Home() {
                     <div
                       className={t.icon ? undefined : 'mono'}
                       style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '9px',
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '10px',
                         background: t.bg,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         flexShrink: 0,
-                        fontSize: '0.9rem',
+                        fontSize: '1rem',
                         fontWeight: 900,
                         color: t.color,
                       }}
                     >
                       {t.icon ? (
-                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                           <path d="M12 2.5L13.8 8.2L19.5 10L13.8 11.8L12 17.5L10.2 11.8L4.5 10L10.2 8.2L12 2.5Z" fill={t.color} />
                           <path d="M19 2.5L19.7 4.7L22 5.5L19.7 6.3L19 8.5L18.3 6.3L16 5.5L18.3 4.7L19 2.5Z" fill={t.color} />
                         </svg>
@@ -495,9 +497,9 @@ export default function Home() {
                         t.abbr
                       )}
                     </div>
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.name}</div>
-                      <div style={{ fontSize: '0.76rem', color: 'var(--text-dimmer)', marginTop: '3px' }}>{t.desc}</div>
+                    <div style={{ minWidth: 0, width: '100%' }}>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text)', lineHeight: 1.25 }}>{t.name}</div>
+                      <div style={{ fontSize: '0.74rem', color: 'var(--text-dimmer)', marginTop: '4px' }}>{t.desc}</div>
                     </div>
                   </div>
                 ))}

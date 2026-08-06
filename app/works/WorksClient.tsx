@@ -265,13 +265,14 @@ export default function WorksClient() {
               key={cat}
               onClick={() => setActive(cat)}
               style={{
+                boxSizing: 'border-box',
                 padding: '8px 18px', borderRadius: '999px',
-                border: active === cat ? 'none' : '1px solid rgba(18,18,16,0.12)',
+                border: active === cat ? '1px solid transparent' : '1px solid rgba(18,18,16,0.12)',
                 background: active === cat ? TEXT : 'transparent',
                 color: active === cat ? BG : TEXT,
                 fontSize: '0.84rem', fontWeight: 700,
                 cursor: 'pointer', fontFamily: 'inherit',
-                transition: 'all 0.14s',
+                transition: 'background 0.14s, color 0.14s, border-color 0.14s, opacity 0.14s',
                 opacity: active === cat ? 1 : 0.55,
               }}
             >

@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import worksData from '@/data/works.json';
 
 const BG = '#faf9f5';
 const ACCENT = '#a3e635';
+const TOTAL_WORKS = worksData.length;
 
 const CHAPTERS = [
   { id: 'intro', tc: '00:00', label: '홈' },
@@ -344,46 +346,85 @@ export default function Home() {
           <h2 style={{ fontSize: 'clamp(1.7rem,4vw,2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', margin: '0 0 12px' }}>채널</h2>
           <p style={{ fontSize: '0.96rem', fontWeight: 500, color: 'var(--text-dim)', margin: '0 0 36px' }}>함께 작업한 채널입니다.</p>
 
-          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
-            {CHANNELS.map((c) => (
-              <a
-                key={c.handle}
-                href={c.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '12px',
-                  padding: '22px 18px',
-                  background: '#fff',
-                  border: '1px solid rgba(18,18,16,0.1)',
-                  borderRadius: '14px',
-                  textDecoration: 'none',
-                  width: '150px',
-                  transition: 'border-color 0.15s, transform 0.15s',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = ACCENT;
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(18,18,16,0.1)';
-                  (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-                }}
-              >
-                <img
-                  src={c.img}
-                  alt={c.name}
-                  style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
-                />
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--text)', marginBottom: '3px' }}>{c.name}</div>
-                  <div style={{ fontSize: '0.76rem', color: 'var(--text-dim)', fontWeight: 500 }}>{c.subs}</div>
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'stretch' }}>
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+              {CHANNELS.map((c) => (
+                <a
+                  key={c.handle}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '22px 18px',
+                    background: '#fff',
+                    border: '1px solid rgba(18,18,16,0.1)',
+                    borderRadius: '14px',
+                    textDecoration: 'none',
+                    width: '150px',
+                    transition: 'border-color 0.15s, transform 0.15s',
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = ACCENT;
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(18,18,16,0.1)';
+                    (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                  }}
+                >
+                  <img
+                    src={c.img}
+                    alt={c.name}
+                    style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
+                  />
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '0.92rem', fontWeight: 700, color: 'var(--text)', marginBottom: '3px' }}>{c.name}</div>
+                    <div style={{ fontSize: '0.76rem', color: 'var(--text-dim)', fontWeight: 500 }}>{c.subs}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            {/* 통계 카드 */}
+            <div
+              style={{
+                flex: '1 1 260px',
+                display: 'flex',
+                gap: '0',
+                background: '#fff',
+                border: '1px solid rgba(18,18,16,0.1)',
+                borderRadius: '14px',
+                overflow: 'hidden',
+              }}
+            >
+              {[
+                { value: '2', label: '함께한 채널' },
+                { value: '112만+', label: '합계 구독자' },
+                { value: `${TOTAL_WORKS}+`, label: '편집 영상' },
+              ].map((stat, i) => (
+                <div
+                  key={stat.label}
+                  style={{
+                    flex: 1,
+                    padding: '20px 14px',
+                    textAlign: 'center',
+                    borderLeft: i > 0 ? '1px solid rgba(18,18,16,0.08)' : 'none',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 900, color: ACCENT, lineHeight: 1, marginBottom: '8px', WebkitTextStroke: '0.5px rgba(18,18,16,0.5)' }}>
+                    {stat.value}
+                  </div>
+                  <div style={{ fontSize: '0.74rem', fontWeight: 600, color: 'var(--text-dim)' }}>{stat.label}</div>
                 </div>
-              </a>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>

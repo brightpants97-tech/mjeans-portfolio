@@ -26,7 +26,6 @@ const PLACEHOLDER_WORKS: Work[] = worksData as Work[];
 
 function WorkCard({ work }: { work: Work }) {
   const [hovered, setHovered] = useState(false);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
 
   return (
     <a
@@ -48,17 +47,12 @@ function WorkCard({ work }: { work: Work }) {
     >
       {/* 썸네일 */}
       <div
-        onMouseMove={(e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          setPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-        }}
         style={{
           position: 'relative',
           width: '100%',
           aspectRatio: '16/9',
           background: '#121210',
           overflow: 'hidden',
-          cursor: work.thumbnail && hovered ? 'none' : 'pointer',
         }}
       >
         {work.thumbnail ? (
@@ -83,31 +77,6 @@ function WorkCard({ work }: { work: Work }) {
               <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
             </svg>
             <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.2)', fontWeight: 500 }}>영상 준비 중</span>
-          </div>
-        )}
-        {/* 커서를 따라다니는 재생 뱃지 */}
-        {work.thumbnail && hovered && (
-          <div
-            style={{
-              position: 'absolute',
-              left: pos.x,
-              top: pos.y,
-              transform: 'translate(-50%, -50%)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '8px 14px',
-              borderRadius: '999px',
-              background: ACCENT,
-              color: '#121210',
-              fontSize: '0.78rem',
-              fontWeight: 800,
-              pointerEvents: 'none',
-              whiteSpace: 'nowrap',
-              boxShadow: '0 6px 16px rgba(0,0,0,0.25)',
-            }}
-          >
-            ▶ 재생
           </div>
         )}
         {/* 카테고리 뱃지 */}

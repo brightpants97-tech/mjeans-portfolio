@@ -22,6 +22,16 @@ interface Work {
 
 const HAPBANG_WORKS: Work[] = [
   {
+    id: 'hapbang-0',
+    category: '합방',
+    title: '포켓몬의 대한 모든것.. 교수님들을 초청했습니다',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://youtu.be/KLz8BlRvr3M?si=zZ1sPQmxkK329xB_',
+    thumbnail: 'https://i.ytimg.com/vi/KLz8BlRvr3M/hqdefault.jpg',
+    publishedAt: '2026-08-04T09:30:04Z',
+  },
+  {
     id: 'hapbang-1',
     category: '합방',
     title: '세상에서 제일 재밌는 포켓몬카드깡 (feat. MEOVV 안나)',
@@ -64,6 +74,36 @@ const HAPBANG_WORKS: Work[] = [
 ];
 
 const ILSANG_WORKS: Work[] = [
+  {
+    id: 'ilsang-0a',
+    category: '일상',
+    title: '고대 포켓몬카드깡 까지 손대버린 나',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://youtu.be/9Q1LFjLAefs?si=rVIkMDoapLS1lpu_',
+    thumbnail: 'https://i.ytimg.com/vi/9Q1LFjLAefs/hqdefault.jpg',
+    publishedAt: '2026-07-30T10:00:10Z',
+  },
+  {
+    id: 'ilsang-0b',
+    category: '일상',
+    title: '200만원어치 포켓몬카드 들고 도망갔습니다ㅋㅋㅋㅋ',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://youtu.be/pT7CnWR0wEI?si=1i06mHtGlaZW86uT',
+    thumbnail: 'https://i.ytimg.com/vi/pT7CnWR0wEI/hqdefault.jpg',
+    publishedAt: '2026-07-22T10:15:34Z',
+  },
+  {
+    id: 'ilsang-0c',
+    category: '일상',
+    title: '카드쇼에서 오리파 대박났습니다 ㅋㅋㅋㅋ',
+    channel: '장지수',
+    handle: '@jisoujang',
+    href: 'https://youtu.be/RS8PgJKsNNU?si=F3u4R4K7ccTapd5S',
+    thumbnail: 'https://i.ytimg.com/vi/RS8PgJKsNNU/hqdefault.jpg',
+    publishedAt: '2026-07-19T10:00:17Z',
+  },
   {
     id: 'ilsang-1',
     category: '일상',

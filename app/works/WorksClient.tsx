@@ -5,17 +5,19 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const TEXT   = '#121210';
 
-const CATEGORIES = ['일상', '합방', '여행'] as const;
+const CATEGORIES = ['최근영상', '일상', '합방', '여행'] as const;
 type Category = typeof CATEGORIES[number];
+type WorkCategory = Exclude<Category, '최근영상'>;
 
 interface Work {
   id: string;
-  category: Category;
+  category: WorkCategory;
   title: string;
   channel: string;
   handle: string;
   href: string;
   thumbnail: string | null;
+  publishedAt: string;
 }
 
 const HAPBANG_WORKS: Work[] = [
@@ -27,6 +29,7 @@ const HAPBANG_WORKS: Work[] = [
     handle: '@jisoujang',
     href: 'https://youtu.be/FGmwBAOQcQw?si=aL-9l5yTX3tzxF8J',
     thumbnail: 'https://i.ytimg.com/vi/FGmwBAOQcQw/hqdefault.jpg',
+    publishedAt: '2026-07-10T10:00:06Z',
   },
   {
     id: 'hapbang-2',
@@ -36,6 +39,7 @@ const HAPBANG_WORKS: Work[] = [
     handle: '@jisoujang',
     href: 'https://youtu.be/oY2HtUujWTk?si=60OVlBLf86uGgP8Z',
     thumbnail: 'https://i.ytimg.com/vi/oY2HtUujWTk/hqdefault.jpg',
+    publishedAt: '2026-05-28T09:00:00Z',
   },
   {
     id: 'hapbang-3',
@@ -45,6 +49,7 @@ const HAPBANG_WORKS: Work[] = [
     handle: '@jisoujang',
     href: 'https://youtu.be/1_c_aaoiUIo?si=Y_Q7UOt4cu7dfa2d',
     thumbnail: 'https://i.ytimg.com/vi/1_c_aaoiUIo/hqdefault.jpg',
+    publishedAt: '2026-05-23T09:00:38Z',
   },
   {
     id: 'hapbang-5',
@@ -54,6 +59,7 @@ const HAPBANG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/GlISMMoUghk?si=c_VkayIKDyxwLo5O',
     thumbnail: 'https://i.ytimg.com/vi/GlISMMoUghk/hqdefault.jpg',
+    publishedAt: '2026-05-02T10:00:33Z',
   },
 ];
 
@@ -66,6 +72,7 @@ const ILSANG_WORKS: Work[] = [
     handle: '@jisoujang',
     href: 'https://youtu.be/7EeI-6Gom0M?si=IswE_7qs2I0-dX15',
     thumbnail: 'https://i.ytimg.com/vi/7EeI-6Gom0M/hqdefault.jpg',
+    publishedAt: '2026-06-13T09:00:23Z',
   },
   {
     id: 'ilsang-2',
@@ -75,6 +82,7 @@ const ILSANG_WORKS: Work[] = [
     handle: '@jisoujang',
     href: 'https://youtu.be/GK22XIl4EZQ?si=Awl6dABp9Vptl0Ep',
     thumbnail: 'https://i.ytimg.com/vi/GK22XIl4EZQ/hqdefault.jpg',
+    publishedAt: '2026-05-20T09:32:10Z',
   },
   {
     id: 'ilsang-3',
@@ -84,6 +92,7 @@ const ILSANG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/EBayftdTP7U?si=fGAPUcxjPk4zVVqA',
     thumbnail: 'https://i.ytimg.com/vi/EBayftdTP7U/hqdefault.jpg',
+    publishedAt: '2026-05-04T10:00:31Z',
   },
   {
     id: 'ilsang-4',
@@ -93,6 +102,7 @@ const ILSANG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/j5_zuStASBY?si=UrSqPSIp6DSsEHrI',
     thumbnail: 'https://i.ytimg.com/vi/j5_zuStASBY/hqdefault.jpg',
+    publishedAt: '2026-05-03T10:01:10Z',
   },
   {
     id: 'ilsang-5',
@@ -102,6 +112,7 @@ const ILSANG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/NvYXXr_T8Jk?si=mdg0qqZjTiVo7Pg8',
     thumbnail: 'https://i.ytimg.com/vi/NvYXXr_T8Jk/hqdefault.jpg',
+    publishedAt: '2026-05-01T10:00:40Z',
   },
   {
     id: 'ilsang-6',
@@ -111,6 +122,7 @@ const ILSANG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/-9LN4JGjwDo?si=GZd9plEml792zcU5',
     thumbnail: 'https://i.ytimg.com/vi/-9LN4JGjwDo/hqdefault.jpg',
+    publishedAt: '2026-03-22T09:30:01Z',
   },
   {
     id: 'ilsang-7',
@@ -120,6 +132,7 @@ const ILSANG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/Z4EOp1tgwb4?si=8mQ_jU_QfRisqlLU',
     thumbnail: 'https://i.ytimg.com/vi/Z4EOp1tgwb4/hqdefault.jpg',
+    publishedAt: '2026-03-18T09:15:07Z',
   },
 ];
 
@@ -132,6 +145,7 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jisoujang',
     href: 'https://youtu.be/TCCYdS35MGU?si=xCZXeLfJkBoojGsA',
     thumbnail: 'https://i.ytimg.com/vi/TCCYdS35MGU/hqdefault.jpg',
+    publishedAt: '2026-07-04T09:45:06Z',
   },
   {
     id: 'yeohaeng-2',
@@ -141,6 +155,7 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jisoujang',
     href: 'https://youtu.be/QD51rKatpe4?si=mPqVqsfsNjiOOvyX',
     thumbnail: 'https://i.ytimg.com/vi/QD51rKatpe4/hqdefault.jpg',
+    publishedAt: '2026-07-01T10:00:37Z',
   },
   {
     id: 'yeohaeng-3',
@@ -150,6 +165,7 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/VmyXQhz3xxQ?si=-79REATQKXnYqcXr',
     thumbnail: 'https://i.ytimg.com/vi/VmyXQhz3xxQ/hqdefault.jpg',
+    publishedAt: '2026-04-30T10:00:55Z',
   },
   {
     id: 'yeohaeng-4',
@@ -159,6 +175,7 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/51NuFqPq0yM?si=wOCqrmmSLODem3g2',
     thumbnail: 'https://i.ytimg.com/vi/51NuFqPq0yM/hqdefault.jpg',
+    publishedAt: '2026-04-28T22:00:06Z',
   },
   {
     id: 'yeohaeng-5',
@@ -168,6 +185,7 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/_x8WKzf0FcM?si=5AQqiue-XZNNbHQl',
     thumbnail: 'https://i.ytimg.com/vi/_x8WKzf0FcM/hqdefault.jpg',
+    publishedAt: '2026-04-28T10:01:04Z',
   },
   {
     id: 'yeohaeng-6',
@@ -177,6 +195,7 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/fqIMsIO6DSc?si=7ALx9X8L2II3IdSt',
     thumbnail: 'https://i.ytimg.com/vi/fqIMsIO6DSc/hqdefault.jpg',
+    publishedAt: '2026-03-31T10:00:46Z',
   },
   {
     id: 'yeohaeng-7',
@@ -186,6 +205,7 @@ const YEOHAENG_WORKS: Work[] = [
     handle: '@jangjisou2',
     href: 'https://youtu.be/zntm46z1_os?si=dvmHIw5fFJuZ2b7t',
     thumbnail: 'https://i.ytimg.com/vi/zntm46z1_os/hqdefault.jpg',
+    publishedAt: '2026-03-13T10:30:50Z',
   },
 ];
 
@@ -276,7 +296,7 @@ function WorkCard({ work }: { work: Work }) {
 }
 
 export default function WorksClient() {
-  const [active, setActive] = useState<Category>('일상');
+  const [active, setActive] = useState<Category>('최근영상');
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -284,7 +304,11 @@ export default function WorksClient() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  const filtered = PLACEHOLDER_WORKS.filter((w) => w.category === active);
+  const filtered = active === '최근영상'
+    ? [...PLACEHOLDER_WORKS]
+        .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+        .slice(0, 9)
+    : PLACEHOLDER_WORKS.filter((w) => w.category === active);
 
   return (
     <div style={{ background: BG, minHeight: '100vh', color: TEXT, fontFamily: "'Paperlogy', -apple-system, sans-serif" }}>

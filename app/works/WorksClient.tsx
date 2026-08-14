@@ -24,6 +24,14 @@ interface Work {
 const PLACEHOLDER_WORKS: Work[] = worksData as Work[];
 
 
+function fmtDate(iso: string) {
+  const d = new Date(iso);
+  const yy = String(d.getFullYear()).slice(2);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yy}.${mm}.${dd}`;
+}
+
 function WorkCard({ work }: { work: Work }) {
   const [hovered, setHovered] = useState(false);
 
@@ -87,6 +95,19 @@ function WorkCard({ work }: { work: Work }) {
           padding: '3px 8px', borderRadius: '999px',
         }}>
           {work.category}
+        </span>
+        {/* 업로드일 뱃지 */}
+        <span
+          className="mono"
+          style={{
+            position: 'absolute', bottom: '8px', right: '8px',
+            fontSize: '0.68rem', fontWeight: 700,
+            background: 'rgba(0,0,0,0.72)', color: '#fff',
+            padding: '3px 7px', borderRadius: '5px',
+            letterSpacing: '0.02em',
+          }}
+        >
+          {fmtDate(work.publishedAt)}
         </span>
       </div>
 

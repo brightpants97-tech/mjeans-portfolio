@@ -122,15 +122,11 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
             }}
           />
         )}
-        <h1 style={{ fontSize: 'clamp(1.8rem,4.5vw,2.4rem)', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 36px' }}>
-          자기소개서
-        </h1>
-
         {resume.resumeInfo && (
-          <div style={{ marginBottom: '48px' }}>
-            <p className="mono" style={{ fontSize: '0.74rem', fontWeight: 800, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.16em', marginBottom: '14px' }}>
+          <div style={{ marginBottom: '56px' }}>
+            <h1 style={{ fontSize: 'clamp(1.8rem,4.5vw,2.4rem)', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 28px' }}>
               이력서
-            </p>
+            </h1>
 
             <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', padding: '22px 24px', marginBottom: '18px' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '18px 20px' }}>
@@ -211,9 +207,9 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
           </div>
         )}
 
-        <p className="mono" style={{ fontSize: '0.74rem', fontWeight: 800, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.16em', marginBottom: '14px' }}>
+        <h1 style={{ fontSize: 'clamp(1.8rem,4.5vw,2.4rem)', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 28px' }}>
           자기소개서
-        </p>
+        </h1>
         <div style={{
           whiteSpace: 'pre-wrap',
           fontSize: '1.02rem',

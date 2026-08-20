@@ -48,12 +48,16 @@ interface Resume {
   resumeInfo: ResumeInfo | null;
 }
 
-function InfoRow({ label, value }: { label: string; value?: string }) {
+function Field({ label, value }: { label: string; value?: string }) {
   if (!value) return null;
   return (
-    <div style={{ display: 'flex', gap: '10px', fontSize: '0.92rem', padding: '7px 0', borderBottom: '1px solid rgba(18,18,16,0.06)' }}>
-      <span className="mono" style={{ width: '76px', flexShrink: 0, fontSize: '0.72rem', fontWeight: 700, color: 'rgba(18,18,16,0.42)', paddingTop: '2px' }}>{label}</span>
-      <span style={{ color: 'rgba(18,18,16,0.85)' }}>{value}</span>
+    <div>
+      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.04em', marginBottom: '5px' }}>
+        {label}
+      </div>
+      <div style={{ fontSize: '0.96rem', fontWeight: 600, color: 'rgba(18,18,16,0.92)', lineHeight: 1.4 }}>
+        {value}
+      </div>
     </div>
   );
 }
@@ -128,23 +132,40 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
               이력서
             </p>
 
-            <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', padding: '18px 20px', marginBottom: '18px' }}>
-              <InfoRow label="이름" value={resume.resumeInfo.name} />
-              <InfoRow label="생년월일" value={resume.resumeInfo.birthDate} />
-              <InfoRow label="휴대전화" value={resume.resumeInfo.phone} />
-              <InfoRow label="이메일" value={resume.resumeInfo.email} />
-              <InfoRow label="주소" value={resume.resumeInfo.address} />
-              {resume.resumeInfo.military && (resume.resumeInfo.military.status) && (
-                <InfoRow
-                  label="병역"
-                  value={[
-                    resume.resumeInfo.military.status,
-                    resume.resumeInfo.military.branch,
-                    resume.resumeInfo.military.rank,
-                    resume.resumeInfo.military.specialty,
-                    resume.resumeInfo.military.period,
-                  ].filter(Boolean).join(' · ')}
-                />
+            <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', padding: '22px 24px', marginBottom: '18px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '18px 20px' }}>
+                <Field label="이름" value={resume.resumeInfo.name} />
+                <Field label="생년월일" value={resume.resumeInfo.birthDate} />
+                <Field label="휴대전화" value={resume.resumeInfo.phone} />
+                <Field label="이메일" value={resume.resumeInfo.email} />
+              </div>
+              {resume.resumeInfo.address && (
+                <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid rgba(18,18,16,0.07)' }}>
+                  <Field label="주소" value={resume.resumeInfo.address} />
+                </div>
+              )}
+              {resume.resumeInfo.military?.status && (
+                <div style={{ marginTop: '18px', paddingTop: '18px', borderTop: '1px solid rgba(18,18,16,0.07)' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.04em', marginBottom: '8px' }}>
+                    병역
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {[
+                      resume.resumeInfo.military.status,
+                      resume.resumeInfo.military.branch,
+                      resume.resumeInfo.military.rank,
+                      resume.resumeInfo.military.specialty,
+                      resume.resumeInfo.military.period,
+                    ].filter(Boolean).map((v, i) => (
+                      <span key={i} style={{
+                        fontSize: '0.86rem', fontWeight: 600, color: 'rgba(18,18,16,0.92)',
+                        background: 'rgba(18,18,16,0.05)', padding: '5px 12px', borderRadius: '999px',
+                      }}>
+                        {v}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
 
@@ -154,11 +175,11 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
                 <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', overflow: 'hidden' }}>
                   {resume.resumeInfo.education.map((edu, i) => (
                     <div key={i} style={{ padding: '13px 18px', borderBottom: i < resume.resumeInfo!.education.length - 1 ? '1px solid rgba(18,18,16,0.07)' : 'none' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', fontSize: '0.9rem', fontWeight: 700 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', fontSize: '0.92rem', fontWeight: 700 }}>
                         <span>{edu.school}</span>
-                        <span className="mono" style={{ fontSize: '0.76rem', color: 'rgba(18,18,16,0.45)', flexShrink: 0 }}>{edu.period}</span>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'rgba(18,18,16,0.45)', flexShrink: 0 }}>{edu.period}</span>
                       </div>
-                      <div style={{ fontSize: '0.82rem', color: 'rgba(18,18,16,0.55)', marginTop: '3px' }}>
+                      <div style={{ fontSize: '0.84rem', fontWeight: 500, color: 'rgba(18,18,16,0.55)', marginTop: '3px' }}>
                         {[edu.major, edu.status].filter(Boolean).join(' · ')}
                       </div>
                     </div>
@@ -173,12 +194,12 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
                 <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', overflow: 'hidden' }}>
                   {resume.resumeInfo.career.map((c, i) => (
                     <div key={i} style={{ padding: '13px 18px', borderBottom: i < resume.resumeInfo!.career.length - 1 ? '1px solid rgba(18,18,16,0.07)' : 'none' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', fontSize: '0.9rem', fontWeight: 700 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', fontSize: '0.92rem', fontWeight: 700 }}>
                         <span>{c.company}{c.position && ` · ${c.position}`}</span>
-                        <span className="mono" style={{ fontSize: '0.76rem', color: 'rgba(18,18,16,0.45)', flexShrink: 0 }}>{c.period}</span>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'rgba(18,18,16,0.45)', flexShrink: 0 }}>{c.period}</span>
                       </div>
                       {c.description && (
-                        <div style={{ fontSize: '0.84rem', color: 'rgba(18,18,16,0.6)', marginTop: '4px', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
+                        <div style={{ fontSize: '0.86rem', fontWeight: 500, color: 'rgba(18,18,16,0.6)', marginTop: '4px', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
                           {c.description}
                         </div>
                       )}

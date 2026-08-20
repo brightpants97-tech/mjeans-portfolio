@@ -36,6 +36,11 @@ interface ResumeInfo {
   career: CareerItem[];
 }
 
+interface PhotoPosition {
+  x: number;
+  y: number;
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -45,6 +50,7 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  photoPosition?: PhotoPosition | null;
   resumeInfo: ResumeInfo | null;
 }
 
@@ -117,7 +123,9 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
             alt={resume.company}
             style={{
               width: '140px', height: '140px', borderRadius: '16px',
-              objectFit: 'cover', display: 'block', marginBottom: '28px',
+              objectFit: 'cover',
+              objectPosition: `${resume.photoPosition?.x ?? 50}% ${resume.photoPosition?.y ?? 50}%`,
+              display: 'block', marginBottom: '28px',
               border: '1px solid rgba(18,18,16,0.1)',
             }}
           />

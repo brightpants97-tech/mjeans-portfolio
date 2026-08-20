@@ -33,6 +33,11 @@ interface ResumeInfo {
   career: CareerItem[];
 }
 
+interface PhotoPosition {
+  x: number;
+  y: number;
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -42,6 +47,7 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  photoPosition: PhotoPosition | null;
   resumeInfo: ResumeInfo | null;
 }
 
@@ -89,7 +95,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
   }
 
-  const { company, role, body, published, slug: customSlug, photo, resumeInfo } = await req.json();
+  const { company, role, body, published, slug: customSlug, photo, resumeInfo, photoPosition } = await req.json();
   if (typeof company !== 'string' || !company.trim()) {
     return NextResponse.json({ error: '회사명을 입력해주세요.' }, { status: 400 });
   }
@@ -118,6 +124,7 @@ export async function POST(req: NextRequest) {
       createdAt: new Date().toISOString(),
       views: [],
       photo: photoPath,
+      photoPosition: photoPath ? (photoPosition && typeof photoPosition === 'object' ? photoPosition : { x: 50, y: 50 }) : null,
       resumeInfo: resumeInfo && typeof resumeInfo === 'object' ? resumeInfo : null,
     };
 
@@ -135,7 +142,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
   }
 
-  const { slug, company, role, body, published, photo, removePhoto, resumeInfo } = await req.json();
+  const { slug, company, role, body, published, photo, removePhoto, resumeInfo, photoPosition } = await req.json();
   if (typeof slug !== 'string' || !slug) {
     return NextResponse.json({ error: '수정할 페이지를 지정해주세요.' }, { status: 400 });
   }
@@ -149,10 +156,16 @@ export async function PUT(req: NextRequest) {
     }
 
     let photoPath = resumes[idx].photo ?? null;
+    let photoPos = resumes[idx].photoPosition ?? null;
     if (removePhoto) {
       photoPath = null;
+      photoPos = null;
     } else if (typeof photo === 'string' && photo.startsWith('data:image/')) {
       photoPath = await uploadPhotoIfProvided(photo, slug);
+      photoPos = { x: 50, y: 50 };
+    }
+    if (photoPath && photoPosition && typeof photoPosition === 'object') {
+      photoPos = photoPosition;
     }
 
     const updatedResume: Resume = {
@@ -162,6 +175,7 @@ export async function PUT(req: NextRequest) {
       body: typeof body === 'string' ? body : resumes[idx].body,
       published: typeof published === 'boolean' ? published : resumes[idx].published,
       photo: photoPath,
+      photoPosition: photoPos,
       resumeInfo: resumeInfo !== undefined ? (resumeInfo && typeof resumeInfo === 'object' ? resumeInfo : null) : (resumes[idx].resumeInfo ?? null),
     };
 

@@ -36,6 +36,11 @@ interface ResumeInfo {
   career: CareerItem[];
 }
 
+interface PhotoPosition {
+  x: number;
+  y: number;
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -45,6 +50,7 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  photoPosition: PhotoPosition | null;
   resumeInfo: ResumeInfo | null;
 }
 
@@ -59,6 +65,7 @@ const emptyCareer: CareerItem = { company: '', position: '', period: '', descrip
 const emptyForm = {
   slug: '', company: '', role: '', body: '', published: true,
   photo: null as string | null, removePhoto: false,
+  photoPosition: { x: 50, y: 50 } as PhotoPosition,
   includeResume: false,
   name: '', address: '', phone: '', birthDate: '', email: '',
   militaryStatus: '', militaryBranch: '', militaryRank: '', militarySpecialty: '', militaryPeriod: '',
@@ -140,6 +147,7 @@ export default function ResumesClient() {
     setForm({
       slug: r.slug, company: r.company, role: r.role, body: r.body, published: r.published,
       photo: null, removePhoto: false,
+      photoPosition: r.photoPosition || { x: 50, y: 50 },
       includeResume: !!info,
       name: info?.name || '', address: info?.address || '', phone: info?.phone || '',
       birthDate: info?.birthDate || '', email: info?.email || '',
@@ -190,7 +198,7 @@ export default function ResumesClient() {
     }
     const reader = new FileReader();
     reader.onload = () => {
-      setForm((f) => ({ ...f, photo: reader.result as string, removePhoto: false }));
+      setForm((f) => ({ ...f, photo: reader.result as string, removePhoto: false, photoPosition: { x: 50, y: 50 } }));
     };
     reader.readAsDataURL(file);
   }
@@ -226,8 +234,8 @@ export default function ResumesClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
           isNew
-            ? { company: form.company, role: form.role, body: form.body, published: form.published, slug: form.slug || undefined, photo: form.photo, resumeInfo }
-            : { slug: editingSlug, company: form.company, role: form.role, body: form.body, published: form.published, photo: form.photo, removePhoto: form.removePhoto, resumeInfo }
+            ? { company: form.company, role: form.role, body: form.body, published: form.published, slug: form.slug || undefined, photo: form.photo, photoPosition: form.photoPosition, resumeInfo }
+            : { slug: editingSlug, company: form.company, role: form.role, body: form.body, published: form.published, photo: form.photo, removePhoto: form.removePhoto, photoPosition: form.photoPosition, resumeInfo }
         ),
       });
       const data = await res.json();
@@ -380,25 +388,49 @@ export default function ResumesClient() {
               style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.88rem', marginBottom: '12px', fontFamily: 'inherit', boxSizing: 'border-box' }}
             />
 
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, marginBottom: '4px' }}>사진 (선택)</label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, marginBottom: '8px' }}>사진 (선택)</label>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '12px', flexWrap: 'wrap' }}>
               {(form.photo || (currentPhotoUrl && !form.removePhoto)) && (
                 <img
                   src={form.photo || currentPhotoUrl || ''}
                   alt=""
-                  style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(18,18,16,0.12)' }}
+                  style={{
+                    width: '96px', height: '96px', borderRadius: '12px', objectFit: 'cover',
+                    objectPosition: `${form.photoPosition.x}% ${form.photoPosition.y}%`,
+                    border: '1px solid rgba(18,18,16,0.12)', flexShrink: 0,
+                  }}
                 />
               )}
-              <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handlePhotoSelect} style={{ fontSize: '0.8rem' }} />
-              {(form.photo || (currentPhotoUrl && !form.removePhoto)) && (
-                <button
-                  type="button"
-                  onClick={() => setForm({ ...form, photo: null, removePhoto: true })}
-                  style={{ fontSize: '0.76rem', fontWeight: 700, color: '#d33', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}
-                >
-                  제거
-                </button>
-              )}
+              <div style={{ flex: 1, minWidth: '180px' }}>
+                <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handlePhotoSelect} style={{ fontSize: '0.8rem', marginBottom: '10px', display: 'block' }} />
+                {(form.photo || (currentPhotoUrl && !form.removePhoto)) && (
+                  <>
+                    <div style={{ marginBottom: '8px' }}>
+                      <label style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.5)' }}>가로 위치</label>
+                      <input
+                        type="range" min={0} max={100} value={form.photoPosition.x}
+                        onChange={(e) => setForm({ ...form, photoPosition: { ...form.photoPosition, x: Number(e.target.value) } })}
+                        style={{ width: '100%', display: 'block' }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: '8px' }}>
+                      <label style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.5)' }}>세로 위치</label>
+                      <input
+                        type="range" min={0} max={100} value={form.photoPosition.y}
+                        onChange={(e) => setForm({ ...form, photoPosition: { ...form.photoPosition, y: Number(e.target.value) } })}
+                        style={{ width: '100%', display: 'block' }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setForm({ ...form, photo: null, removePhoto: true })}
+                      style={{ fontSize: '0.76rem', fontWeight: 700, color: '#d33', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}
+                    >
+                      사진 제거
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', margin: '18px 0 12px' }}>

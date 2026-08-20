@@ -36,6 +36,11 @@ interface ResumeInfo {
   career: CareerItem[];
 }
 
+interface PhotoPosition {
+  x: number;
+  y: number;
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -45,6 +50,7 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  photoPosition?: PhotoPosition | null;
   resumeInfo: ResumeInfo | null;
 }
 

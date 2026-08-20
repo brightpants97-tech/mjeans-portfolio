@@ -4,6 +4,11 @@ import worksData from '@/data/works.json';
 
 const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
+const CATEGORY_COLORS: Record<string, string> = {
+  일상: '#a3e635',
+  합방: '#7fc93f',
+  여행: '#cdf078',
+};
 const TEXT   = '#121210';
 
 const CATEGORIES = ['최근영상', '일상', '합방', '여행'] as const;
@@ -91,7 +96,7 @@ function WorkCard({ work }: { work: Work }) {
         <span style={{
           position: 'absolute', top: '10px', left: '10px',
           fontSize: '0.68rem', fontWeight: 700,
-          background: ACCENT, color: '#121210',
+          background: CATEGORY_COLORS[work.category] || ACCENT, color: '#121210',
           padding: '3px 8px', borderRadius: '999px',
         }}>
           {work.category}

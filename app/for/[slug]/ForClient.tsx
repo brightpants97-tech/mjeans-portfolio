@@ -81,6 +81,13 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
         @media print {
           .no-print { display: none !important; }
           body { background: #fff !important; }
+          @page { margin: 16mm 14mm; }
+          main { max-width: 100% !important; padding: 0 !important; }
+          h1 { font-size: 20pt !important; margin-bottom: 14pt !important; }
+          p, div, span { color: #000 !important; }
+          a { color: #000 !important; text-decoration: none !important; }
+          [style*="border-radius: 999px"] { border: 1px solid #999 !important; background: #fff !important; }
+          [style*="marginBottom: '48px'"], [style*="margin-bottom: 48px"] { break-inside: avoid; }
         }
       `}</style>
 

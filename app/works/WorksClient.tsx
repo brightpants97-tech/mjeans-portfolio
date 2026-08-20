@@ -6,13 +6,13 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const CATEGORY_COLORS: Record<string, string> = {
   일상: '#a3e635',
-  합방: '#8BB34D',
-  여행: '#6D8050',
+  합방: '#E65535',
+  여행: '#7BD599',
 };
 const CATEGORY_TEXT_COLORS: Record<string, string> = {
   일상: '#121210',
-  합방: '#121210',
-  여행: '#ffffff',
+  합방: '#ffffff',
+  여행: '#121210',
 };
 const TEXT   = '#121210';
 

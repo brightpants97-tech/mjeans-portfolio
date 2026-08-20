@@ -5,6 +5,37 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const TEXT   = '#121210';
 
+interface EducationItem {
+  school: string;
+  major: string;
+  period: string;
+  status: string;
+}
+
+interface CareerItem {
+  company: string;
+  position: string;
+  period: string;
+  description: string;
+}
+
+interface ResumeInfo {
+  name: string;
+  address: string;
+  phone: string;
+  birthDate: string;
+  email: string;
+  military: {
+    status: string;
+    branch: string;
+    rank: string;
+    specialty: string;
+    period: string;
+  };
+  education: EducationItem[];
+  career: CareerItem[];
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -14,6 +45,17 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  resumeInfo: ResumeInfo | null;
+}
+
+function InfoRow({ label, value }: { label: string; value?: string }) {
+  if (!value) return null;
+  return (
+    <div style={{ display: 'flex', gap: '10px', fontSize: '0.92rem', padding: '7px 0', borderBottom: '1px solid rgba(18,18,16,0.06)' }}>
+      <span className="mono" style={{ width: '76px', flexShrink: 0, fontSize: '0.72rem', fontWeight: 700, color: 'rgba(18,18,16,0.42)', paddingTop: '2px' }}>{label}</span>
+      <span style={{ color: 'rgba(18,18,16,0.85)' }}>{value}</span>
+    </div>
+  );
 }
 
 export default function ForClient({ resume, isAdminViewer }: { resume: Resume; isAdminViewer: boolean }) {
@@ -70,8 +112,8 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
             src={resume.photo}
             alt={resume.company}
             style={{
-              width: '84px', height: '84px', borderRadius: '50%',
-              objectFit: 'cover', display: 'block', marginBottom: '24px',
+              width: '140px', height: '140px', borderRadius: '16px',
+              objectFit: 'cover', display: 'block', marginBottom: '28px',
               border: '1px solid rgba(18,18,16,0.1)',
             }}
           />
@@ -79,6 +121,78 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
         <h1 style={{ fontSize: 'clamp(1.8rem,4.5vw,2.4rem)', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 36px' }}>
           자기소개서
         </h1>
+
+        {resume.resumeInfo && (
+          <div style={{ marginBottom: '48px' }}>
+            <p className="mono" style={{ fontSize: '0.74rem', fontWeight: 800, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.16em', marginBottom: '14px' }}>
+              이력서
+            </p>
+
+            <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', padding: '18px 20px', marginBottom: '18px' }}>
+              <InfoRow label="이름" value={resume.resumeInfo.name} />
+              <InfoRow label="생년월일" value={resume.resumeInfo.birthDate} />
+              <InfoRow label="휴대전화" value={resume.resumeInfo.phone} />
+              <InfoRow label="이메일" value={resume.resumeInfo.email} />
+              <InfoRow label="주소" value={resume.resumeInfo.address} />
+              {resume.resumeInfo.military && (resume.resumeInfo.military.status) && (
+                <InfoRow
+                  label="병역"
+                  value={[
+                    resume.resumeInfo.military.status,
+                    resume.resumeInfo.military.branch,
+                    resume.resumeInfo.military.rank,
+                    resume.resumeInfo.military.specialty,
+                    resume.resumeInfo.military.period,
+                  ].filter(Boolean).join(' · ')}
+                />
+              )}
+            </div>
+
+            {resume.resumeInfo.education.length > 0 && (
+              <div style={{ marginBottom: '18px' }}>
+                <p style={{ fontSize: '0.86rem', fontWeight: 800, marginBottom: '8px' }}>학력사항</p>
+                <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', overflow: 'hidden' }}>
+                  {resume.resumeInfo.education.map((edu, i) => (
+                    <div key={i} style={{ padding: '13px 18px', borderBottom: i < resume.resumeInfo!.education.length - 1 ? '1px solid rgba(18,18,16,0.07)' : 'none' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', fontSize: '0.9rem', fontWeight: 700 }}>
+                        <span>{edu.school}</span>
+                        <span className="mono" style={{ fontSize: '0.76rem', color: 'rgba(18,18,16,0.45)', flexShrink: 0 }}>{edu.period}</span>
+                      </div>
+                      <div style={{ fontSize: '0.82rem', color: 'rgba(18,18,16,0.55)', marginTop: '3px' }}>
+                        {[edu.major, edu.status].filter(Boolean).join(' · ')}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {resume.resumeInfo.career.length > 0 && (
+              <div>
+                <p style={{ fontSize: '0.86rem', fontWeight: 800, marginBottom: '8px' }}>경력</p>
+                <div style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px', overflow: 'hidden' }}>
+                  {resume.resumeInfo.career.map((c, i) => (
+                    <div key={i} style={{ padding: '13px 18px', borderBottom: i < resume.resumeInfo!.career.length - 1 ? '1px solid rgba(18,18,16,0.07)' : 'none' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', fontSize: '0.9rem', fontWeight: 700 }}>
+                        <span>{c.company}{c.position && ` · ${c.position}`}</span>
+                        <span className="mono" style={{ fontSize: '0.76rem', color: 'rgba(18,18,16,0.45)', flexShrink: 0 }}>{c.period}</span>
+                      </div>
+                      {c.description && (
+                        <div style={{ fontSize: '0.84rem', color: 'rgba(18,18,16,0.6)', marginTop: '4px', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
+                          {c.description}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        <p className="mono" style={{ fontSize: '0.74rem', fontWeight: 800, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.16em', marginBottom: '14px' }}>
+          자기소개서
+        </p>
         <div style={{
           whiteSpace: 'pre-wrap',
           fontSize: '1.02rem',

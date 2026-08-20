@@ -5,6 +5,37 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const TEXT   = '#121210';
 
+interface EducationItem {
+  school: string;
+  major: string;
+  period: string;
+  status: string;
+}
+
+interface CareerItem {
+  company: string;
+  position: string;
+  period: string;
+  description: string;
+}
+
+interface ResumeInfo {
+  name: string;
+  address: string;
+  phone: string;
+  birthDate: string;
+  email: string;
+  military: {
+    status: string;
+    branch: string;
+    rank: string;
+    specialty: string;
+    period: string;
+  };
+  education: EducationItem[];
+  career: CareerItem[];
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -14,6 +45,7 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  resumeInfo: ResumeInfo | null;
 }
 
 function fmtDateTime(iso: string) {
@@ -21,7 +53,18 @@ function fmtDateTime(iso: string) {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
-const emptyForm = { slug: '', company: '', role: '', body: '', published: true, photo: null as string | null, removePhoto: false };
+const emptyEducation: EducationItem = { school: '', major: '', period: '', status: '' };
+const emptyCareer: CareerItem = { company: '', position: '', period: '', description: '' };
+
+const emptyForm = {
+  slug: '', company: '', role: '', body: '', published: true,
+  photo: null as string | null, removePhoto: false,
+  includeResume: false,
+  name: '', address: '', phone: '', birthDate: '', email: '',
+  militaryStatus: '', militaryBranch: '', militaryRank: '', militarySpecialty: '', militaryPeriod: '',
+  education: [] as EducationItem[],
+  career: [] as CareerItem[],
+};
 
 export default function ResumesClient() {
   const [checking, setChecking] = useState(true);
@@ -93,7 +136,19 @@ export default function ResumesClient() {
   }
 
   function startEdit(r: Resume) {
-    setForm({ slug: r.slug, company: r.company, role: r.role, body: r.body, published: r.published, photo: null, removePhoto: false });
+    const info = r.resumeInfo;
+    setForm({
+      slug: r.slug, company: r.company, role: r.role, body: r.body, published: r.published,
+      photo: null, removePhoto: false,
+      includeResume: !!info,
+      name: info?.name || '', address: info?.address || '', phone: info?.phone || '',
+      birthDate: info?.birthDate || '', email: info?.email || '',
+      militaryStatus: info?.military.status || '', militaryBranch: info?.military.branch || '',
+      militaryRank: info?.military.rank || '', militarySpecialty: info?.military.specialty || '',
+      militaryPeriod: info?.military.period || '',
+      education: info?.education || [],
+      career: info?.career || [],
+    });
     setCurrentPhotoUrl(r.photo);
     setEditingSlug(r.slug);
     setSaveError(null);
@@ -104,6 +159,26 @@ export default function ResumesClient() {
     setForm(emptyForm);
     setCurrentPhotoUrl(null);
     setSaveError(null);
+  }
+
+  function addEducation() {
+    setForm((f) => ({ ...f, education: [...f.education, { ...emptyEducation }] }));
+  }
+  function updateEducation(i: number, patch: Partial<EducationItem>) {
+    setForm((f) => ({ ...f, education: f.education.map((e, idx) => (idx === i ? { ...e, ...patch } : e)) }));
+  }
+  function removeEducation(i: number) {
+    setForm((f) => ({ ...f, education: f.education.filter((_, idx) => idx !== i) }));
+  }
+
+  function addCareer() {
+    setForm((f) => ({ ...f, career: [...f.career, { ...emptyCareer }] }));
+  }
+  function updateCareer(i: number, patch: Partial<CareerItem>) {
+    setForm((f) => ({ ...f, career: f.career.map((c, idx) => (idx === i ? { ...c, ...patch } : c)) }));
+  }
+  function removeCareer(i: number) {
+    setForm((f) => ({ ...f, career: f.career.filter((_, idx) => idx !== i) }));
   }
 
   function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
@@ -127,13 +202,32 @@ export default function ResumesClient() {
     setNotice(null);
     try {
       const isNew = editingSlug === 'new';
+      const resumeInfo = form.includeResume
+        ? {
+            name: form.name.trim(),
+            address: form.address.trim(),
+            phone: form.phone.trim(),
+            birthDate: form.birthDate.trim(),
+            email: form.email.trim(),
+            military: {
+              status: form.militaryStatus.trim(),
+              branch: form.militaryBranch.trim(),
+              rank: form.militaryRank.trim(),
+              specialty: form.militarySpecialty.trim(),
+              period: form.militaryPeriod.trim(),
+            },
+            education: form.education,
+            career: form.career,
+          }
+        : null;
+
       const res = await fetch('/api/admin/resumes', {
         method: isNew ? 'POST' : 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
           isNew
-            ? { company: form.company, role: form.role, body: form.body, published: form.published, slug: form.slug || undefined, photo: form.photo }
-            : { slug: editingSlug, company: form.company, role: form.role, body: form.body, published: form.published, photo: form.photo, removePhoto: form.removePhoto }
+            ? { company: form.company, role: form.role, body: form.body, published: form.published, slug: form.slug || undefined, photo: form.photo, resumeInfo }
+            : { slug: editingSlug, company: form.company, role: form.role, body: form.body, published: form.published, photo: form.photo, removePhoto: form.removePhoto, resumeInfo }
         ),
       });
       const data = await res.json();
@@ -306,6 +400,86 @@ export default function ResumesClient() {
                 </button>
               )}
             </div>
+
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.84rem', fontWeight: 700, margin: '18px 0 12px' }}>
+              <input
+                type="checkbox"
+                checked={form.includeResume}
+                onChange={(e) => setForm({ ...form, includeResume: e.target.checked })}
+              />
+              이력서 정보 포함
+            </label>
+
+            {form.includeResume && (
+              <div style={{ background: BG, border: '1px solid rgba(18,18,16,0.08)', borderRadius: '10px', padding: '14px', marginBottom: '16px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '8px' }}>
+                  <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="이름"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                  <input type="text" value={form.birthDate} onChange={(e) => setForm({ ...form, birthDate: e.target.value })} placeholder="생년월일 (예: 1998.03.14)"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                  <input type="text" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="휴대전화"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                  <input type="text" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="이메일"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                </div>
+                <input type="text" value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} placeholder="주소"
+                  style={{ width: '100%', padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', marginBottom: '10px', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+
+                <p className="mono" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.08em', marginBottom: '6px' }}>병역</p>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '14px' }}>
+                  <input type="text" value={form.militaryStatus} onChange={(e) => setForm({ ...form, militaryStatus: e.target.value })} placeholder="군필여부 (군필/미필/면제)"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                  <input type="text" value={form.militaryBranch} onChange={(e) => setForm({ ...form, militaryBranch: e.target.value })} placeholder="군별 (예: 육군)"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                  <input type="text" value={form.militaryRank} onChange={(e) => setForm({ ...form, militaryRank: e.target.value })} placeholder="계급 (예: 병장)"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                  <input type="text" value={form.militarySpecialty} onChange={(e) => setForm({ ...form, militarySpecialty: e.target.value })} placeholder="병과"
+                    style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                  <input type="text" value={form.militaryPeriod} onChange={(e) => setForm({ ...form, militaryPeriod: e.target.value })} placeholder="복무기간 (예: 2020.03 - 2021.11)"
+                    style={{ gridColumn: '1 / -1', padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                  <p className="mono" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.08em', margin: 0 }}>학력사항</p>
+                  <button type="button" onClick={addEducation} style={{ fontSize: '0.76rem', fontWeight: 700, color: TEXT, background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}>+ 추가</button>
+                </div>
+                {form.education.map((edu, i) => (
+                  <div key={i} style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '8px', padding: '10px', marginBottom: '8px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '6px' }}>
+                      <input type="text" value={edu.school} onChange={(e) => updateEducation(i, { school: e.target.value })} placeholder="학교명"
+                        style={{ padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                      <input type="text" value={edu.major} onChange={(e) => updateEducation(i, { major: e.target.value })} placeholder="전공"
+                        style={{ padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                      <input type="text" value={edu.period} onChange={(e) => updateEducation(i, { period: e.target.value })} placeholder="재학기간 (예: 2018.03 - 2024.02)"
+                        style={{ padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                      <input type="text" value={edu.status} onChange={(e) => updateEducation(i, { status: e.target.value })} placeholder="상태 (졸업/재학/휴학 등)"
+                        style={{ padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                    </div>
+                    <button type="button" onClick={() => removeEducation(i)} style={{ fontSize: '0.74rem', fontWeight: 700, color: '#d33', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}>삭제</button>
+                  </div>
+                ))}
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '10px 0 6px' }}>
+                  <p className="mono" style={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.08em', margin: 0 }}>경력</p>
+                  <button type="button" onClick={addCareer} style={{ fontSize: '0.76rem', fontWeight: 700, color: TEXT, background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}>+ 추가</button>
+                </div>
+                {form.career.map((c, i) => (
+                  <div key={i} style={{ background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '8px', padding: '10px', marginBottom: '8px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', marginBottom: '6px' }}>
+                      <input type="text" value={c.company} onChange={(e) => updateCareer(i, { company: e.target.value })} placeholder="회사/채널명"
+                        style={{ padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                      <input type="text" value={c.position} onChange={(e) => updateCareer(i, { position: e.target.value })} placeholder="직무/역할"
+                        style={{ padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                      <input type="text" value={c.period} onChange={(e) => updateCareer(i, { period: e.target.value })} placeholder="근무기간"
+                        style={{ gridColumn: '1 / -1', padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
+                    </div>
+                    <textarea value={c.description} onChange={(e) => updateCareer(i, { description: e.target.value })} placeholder="담당 업무 설명 (선택)" rows={2}
+                      style={{ width: '100%', padding: '7px 9px', borderRadius: '6px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.82rem', fontFamily: 'inherit', boxSizing: 'border-box', resize: 'vertical', marginBottom: '6px' }} />
+                    <button type="button" onClick={() => removeCareer(i)} style={{ fontSize: '0.74rem', fontWeight: 700, color: '#d33', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}>삭제</button>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
               <label style={{ fontSize: '0.78rem', fontWeight: 700 }}>자기소개서 본문</label>

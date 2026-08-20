@@ -5,6 +5,37 @@ import resumesData from '@/data/resumes.json';
 import { ADMIN_COOKIE, verifySessionToken } from '@/lib/adminAuth';
 import ForClient from './ForClient';
 
+interface EducationItem {
+  school: string;
+  major: string;
+  period: string;
+  status: string;
+}
+
+interface CareerItem {
+  company: string;
+  position: string;
+  period: string;
+  description: string;
+}
+
+interface ResumeInfo {
+  name: string;
+  address: string;
+  phone: string;
+  birthDate: string;
+  email: string;
+  military: {
+    status: string;
+    branch: string;
+    rank: string;
+    specialty: string;
+    period: string;
+  };
+  education: EducationItem[];
+  career: CareerItem[];
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -14,6 +45,7 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  resumeInfo: ResumeInfo | null;
 }
 
 export const metadata: Metadata = {

@@ -2,6 +2,37 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_COOKIE, verifySessionToken } from '@/lib/adminAuth';
 import { getResumesFile, updateResumesFile, upsertRepoBinaryFile, deleteRepoFile } from '@/lib/github';
 
+interface EducationItem {
+  school: string;
+  major: string;
+  period: string;
+  status: string;
+}
+
+interface CareerItem {
+  company: string;
+  position: string;
+  period: string;
+  description: string;
+}
+
+interface ResumeInfo {
+  name: string;
+  address: string;
+  phone: string;
+  birthDate: string;
+  email: string;
+  military: {
+    status: string;
+    branch: string;
+    rank: string;
+    specialty: string;
+    period: string;
+  };
+  education: EducationItem[];
+  career: CareerItem[];
+}
+
 interface Resume {
   slug: string;
   company: string;
@@ -11,6 +42,7 @@ interface Resume {
   createdAt: string;
   views: string[];
   photo: string | null;
+  resumeInfo: ResumeInfo | null;
 }
 
 function requireAuth(req: NextRequest): boolean {
@@ -57,7 +89,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
   }
 
-  const { company, role, body, published, slug: customSlug, photo } = await req.json();
+  const { company, role, body, published, slug: customSlug, photo, resumeInfo } = await req.json();
   if (typeof company !== 'string' || !company.trim()) {
     return NextResponse.json({ error: '회사명을 입력해주세요.' }, { status: 400 });
   }
@@ -86,6 +118,7 @@ export async function POST(req: NextRequest) {
       createdAt: new Date().toISOString(),
       views: [],
       photo: photoPath,
+      resumeInfo: resumeInfo && typeof resumeInfo === 'object' ? resumeInfo : null,
     };
 
     const updated = [newResume, ...resumes];
@@ -102,7 +135,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
   }
 
-  const { slug, company, role, body, published, photo, removePhoto } = await req.json();
+  const { slug, company, role, body, published, photo, removePhoto, resumeInfo } = await req.json();
   if (typeof slug !== 'string' || !slug) {
     return NextResponse.json({ error: '수정할 페이지를 지정해주세요.' }, { status: 400 });
   }
@@ -129,6 +162,7 @@ export async function PUT(req: NextRequest) {
       body: typeof body === 'string' ? body : resumes[idx].body,
       published: typeof published === 'boolean' ? published : resumes[idx].published,
       photo: photoPath,
+      resumeInfo: resumeInfo !== undefined ? (resumeInfo && typeof resumeInfo === 'object' ? resumeInfo : null) : (resumes[idx].resumeInfo ?? null),
     };
 
     const updated = [...resumes];

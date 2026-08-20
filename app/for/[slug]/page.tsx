@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 export default async function ForPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const resumes = resumesData as Resume[];
+  // Next.js가 URL 세그먼트를 자동으로 디코딩해 넘겨주므로 slug는 원문(한글 등) 그대로 비교한다.
   const resume = resumes.find((r) => r.slug === slug);
 
   const cookieStore = await cookies();

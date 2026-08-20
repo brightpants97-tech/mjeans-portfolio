@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "slug": "하이",
+    "company": "하이",
+    "role": "영상 편집자",
+    "body": "열심히 하겠습니다",
+    "published": true,
+    "createdAt": "2026-08-20T02:21:56.332Z",
+    "views": []
+  }
+]

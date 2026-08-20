@@ -40,6 +40,7 @@ export default function AdminClient() {
   const [addError, setAddError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [changingId, setChangingId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/admin/session')
@@ -132,6 +133,27 @@ export default function AdminClient() {
       alert(e instanceof Error ? e.message : '삭제 실패');
     } finally {
       setDeletingId(null);
+    }
+  }
+
+  async function handleChangeCategory(work: Work, newCategory: Work['category']) {
+    if (newCategory === work.category) return;
+    setChangingId(work.id);
+    setNotice(null);
+    try {
+      const res = await fetch('/api/admin/works', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: work.id, category: newCategory }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || '변경 실패');
+      setNotice(`"${work.title}" → ${newCategory}(으)로 이동 완료. 배포까지 약 1분 정도 걸려요.`);
+      loadWorks();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : '변경 실패');
+    } finally {
+      setChangingId(null);
     }
   }
 
@@ -293,6 +315,22 @@ export default function AdminClient() {
                         {w.channel} · {fmtDate(w.publishedAt)}
                       </div>
                     </div>
+                    <select
+                      value={w.category}
+                      disabled={changingId === w.id}
+                      onChange={(e) => handleChangeCategory(w, e.target.value as Work['category'])}
+                      style={{
+                        fontSize: '0.76rem', fontWeight: 600, color: TEXT,
+                        background: 'transparent', border: '1px solid rgba(18,18,16,0.15)',
+                        borderRadius: '6px', padding: '5px 6px', fontFamily: 'inherit',
+                        flexShrink: 0, cursor: changingId === w.id ? 'default' : 'pointer',
+                        opacity: changingId === w.id ? 0.5 : 1,
+                      }}
+                    >
+                      {CATEGORIES.map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
                     <button
                       onClick={() => handleDelete(w)}
                       disabled={deletingId === w.id}

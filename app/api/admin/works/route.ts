@@ -119,6 +119,48 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PUT(req: NextRequest) {
+  if (!requireAuth(req)) {
+    return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
+  }
+
+  const { id, category } = await req.json();
+  if (typeof id !== 'string' || !id) {
+    return NextResponse.json({ error: '변경할 영상을 지정해주세요.' }, { status: 400 });
+  }
+  if (!['일상', '합방', '여행'].includes(category)) {
+    return NextResponse.json({ error: '카테고리가 올바르지 않습니다.' }, { status: 400 });
+  }
+
+  try {
+    const { content, sha } = await getWorksFile();
+    const works = content as Work[];
+    const idx = works.findIndex((w) => w.id === id);
+    if (idx === -1) {
+      return NextResponse.json({ error: '해당 영상을 찾을 수 없습니다.' }, { status: 404 });
+    }
+
+    if (works[idx].category === category) {
+      return NextResponse.json({ ok: true, work: works[idx] });
+    }
+
+    const videoId = works[idx].id.slice(works[idx].category.length + 1);
+    const newId = `${category}-${videoId}`;
+    if (works.some((w) => w.id === newId)) {
+      return NextResponse.json({ error: '이미 해당 카테고리에 같은 영상이 있습니다.' }, { status: 409 });
+    }
+
+    const updatedWork: Work = { ...works[idx], id: newId, category };
+    const updated = works.map((w) => (w.id === id ? updatedWork : w));
+
+    await updateWorksFile(updated, sha, `admin: 영상 카테고리 변경 (${works[idx].category} → ${category}, ${updatedWork.title})`);
+
+    return NextResponse.json({ ok: true, work: updatedWork });
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : '변경 실패' }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   if (!requireAuth(req)) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });

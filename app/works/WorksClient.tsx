@@ -6,8 +6,13 @@ const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
 const CATEGORY_COLORS: Record<string, string> = {
   일상: '#a3e635',
-  합방: '#7fc93f',
-  여행: '#cdf078',
+  합방: '#8BB34D',
+  여행: '#6D8050',
+};
+const CATEGORY_TEXT_COLORS: Record<string, string> = {
+  일상: '#121210',
+  합방: '#121210',
+  여행: '#ffffff',
 };
 const TEXT   = '#121210';
 
@@ -96,7 +101,7 @@ function WorkCard({ work }: { work: Work }) {
         <span style={{
           position: 'absolute', top: '10px', left: '10px',
           fontSize: '0.68rem', fontWeight: 700,
-          background: CATEGORY_COLORS[work.category] || ACCENT, color: '#121210',
+          background: CATEGORY_COLORS[work.category] || ACCENT, color: CATEGORY_TEXT_COLORS[work.category] || '#121210',
           padding: '3px 8px', borderRadius: '999px',
         }}>
           {work.category}

@@ -97,10 +97,10 @@ function WorkCard({ work }: { work: Work }) {
             <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.2)', fontWeight: 500 }}>영상 준비 중</span>
           </div>
         )}
-        {/* 뱃지 시인성을 위한 상하단 그라데이션 */}
+        {/* 뱃지 시인성을 위한 상단 그라데이션 */}
         <div style={{
           position: 'absolute', inset: 0, pointerEvents: 'none',
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 68%, rgba(0,0,0,0.4) 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 30%)',
         }} />
         {/* 카테고리 뱃지 */}
         <span style={{
@@ -111,20 +111,6 @@ function WorkCard({ work }: { work: Work }) {
           boxShadow: '0 2px 6px rgba(0,0,0,0.35)',
         }}>
           {work.category}
-        </span>
-        {/* 업로드일 뱃지 */}
-        <span
-          className="mono"
-          style={{
-            position: 'absolute', bottom: '8px', right: '8px',
-            fontSize: '0.68rem', fontWeight: 700,
-            background: 'rgba(0,0,0,0.72)', color: '#fff',
-            padding: '3px 7px', borderRadius: '5px',
-            letterSpacing: '0.02em',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.35)',
-          }}
-        >
-          {fmtDate(work.publishedAt)}
         </span>
       </div>
 
@@ -137,9 +123,14 @@ function WorkCard({ work }: { work: Work }) {
           <div style={{ fontSize: '0.78rem', color: 'rgba(18,18,16,0.45)', fontWeight: 500 }}>
             {work.channel} · {work.handle}
           </div>
-          {work.href !== '#' && (
-            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: TEXT }}>↗</span>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="mono" style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.38)' }}>
+              {fmtDate(work.publishedAt)}
+            </span>
+            {work.href !== '#' && (
+              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: TEXT }}>↗</span>
+            )}
+          </div>
         </div>
       </div>
     </a>

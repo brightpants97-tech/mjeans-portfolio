@@ -184,7 +184,7 @@ export default function AdminClient() {
     <div style={{ background: BG, minHeight: '100vh', color: TEXT, fontFamily: "'Paperlogy', -apple-system, sans-serif" }}>
       <div style={{ maxWidth: '760px', margin: '0 auto', padding: '40px clamp(1.2rem,4vw,2rem) 100px' }}>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
           <h1 style={{ fontSize: '1.6rem', fontWeight: 900, margin: 0 }}>영상 관리</h1>
           <button
             onClick={handleLogout}
@@ -196,6 +196,9 @@ export default function AdminClient() {
             로그아웃
           </button>
         </div>
+        <a href="/admin/resumes" style={{ display: 'inline-block', fontSize: '0.8rem', fontWeight: 700, color: ACCENT, textDecoration: 'none', marginBottom: '24px' }}>
+          → 자기소개서 관리로
+        </a>
 
         {/* 추가 폼 */}
         <form onSubmit={handleAdd} style={{

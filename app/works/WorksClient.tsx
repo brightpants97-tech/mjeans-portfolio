@@ -116,7 +116,11 @@ function WorkCard({ work }: { work: Work }) {
 
       {/* 정보 */}
       <div style={{ padding: '14px 16px' }}>
-        <div style={{ fontSize: '0.94rem', fontWeight: 700, color: TEXT, marginBottom: '6px', lineHeight: 1.35 }}>
+        <div style={{
+          fontSize: '0.94rem', fontWeight: 700, color: TEXT, marginBottom: '6px', lineHeight: 1.35,
+          wordBreak: 'keep-all', overflowWrap: 'break-word',
+          display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+        }}>
           {work.title}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

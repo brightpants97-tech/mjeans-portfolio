@@ -59,6 +59,21 @@ function fmtDateTime(iso: string) {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
+function formatPhone(input: string): string {
+  const digits = input.replace(/\D/g, '').slice(0, 11);
+  if (!digits) return '';
+  if (digits.startsWith('02')) {
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 5) return `${digits.slice(0, 2)}-${digits.slice(2)}`;
+    if (digits.length <= 9) return `${digits.slice(0, 2)}-${digits.slice(2, 5)}-${digits.slice(5)}`;
+    return `${digits.slice(0, 2)}-${digits.slice(2, 6)}-${digits.slice(6, 10)}`;
+  }
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  if (digits.length <= 10) return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7, 11)}`;
+}
+
 const emptyEducation: EducationItem = { school: '', major: '', period: '', status: '' };
 const emptyCareer: CareerItem = { company: '', position: '', period: '', description: '' };
 
@@ -479,7 +494,7 @@ export default function ResumesClient() {
                     style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
                   <input type="text" value={form.birthDate} onChange={(e) => setForm({ ...form, birthDate: e.target.value })} placeholder="생년월일 (예: 1998.03.14)"
                     style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
-                  <input type="text" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="휴대전화"
+                  <input type="text" value={form.phone} onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })} placeholder="휴대전화" inputMode="numeric"
                     style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />
                   <input type="text" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="이메일"
                     style={{ padding: '9px 11px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.84rem', fontFamily: 'inherit', boxSizing: 'border-box' }} />

@@ -12,6 +12,22 @@
       "2026-08-20T02:45:48.095Z",
       "2026-08-20T02:53:01.135Z"
     ],
-    "photo": "/resumes/하이.png"
+    "photo": "/resumes/하이.png",
+    "resumeInfo": {
+      "name": "김명진",
+      "address": "서울시 금천구 시흥대로 73길 11 (6동 606)",
+      "phone": "01047739544",
+      "birthDate": "1997.07.10",
+      "email": "brightpants97@gmail.com",
+      "military": {
+        "status": "군필",
+        "branch": "육군",
+        "rank": "병장",
+        "specialty": "폭파병",
+        "period": "2017.04~2019.01"
+      },
+      "education": [],
+      "career": []
+    }
   }
 ]

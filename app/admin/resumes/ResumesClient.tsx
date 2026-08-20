@@ -13,6 +13,7 @@ interface Resume {
   published: boolean;
   createdAt: string;
   views: string[];
+  photo: string | null;
 }
 
 function fmtDateTime(iso: string) {
@@ -20,7 +21,7 @@ function fmtDateTime(iso: string) {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 }
 
-const emptyForm = { slug: '', company: '', role: '', body: '', published: true };
+const emptyForm = { slug: '', company: '', role: '', body: '', published: true, photo: null as string | null, removePhoto: false };
 
 export default function ResumesClient() {
   const [checking, setChecking] = useState(true);
@@ -33,6 +34,7 @@ export default function ResumesClient() {
   const [loadError, setLoadError] = useState<string | null>(null);
 
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
+  const [currentPhotoUrl, setCurrentPhotoUrl] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -85,12 +87,14 @@ export default function ResumesClient() {
 
   function startCreate() {
     setForm(emptyForm);
+    setCurrentPhotoUrl(null);
     setEditingSlug('new');
     setSaveError(null);
   }
 
   function startEdit(r: Resume) {
-    setForm({ slug: r.slug, company: r.company, role: r.role, body: r.body, published: r.published });
+    setForm({ slug: r.slug, company: r.company, role: r.role, body: r.body, published: r.published, photo: null, removePhoto: false });
+    setCurrentPhotoUrl(r.photo);
     setEditingSlug(r.slug);
     setSaveError(null);
   }
@@ -98,7 +102,22 @@ export default function ResumesClient() {
   function cancelEdit() {
     setEditingSlug(null);
     setForm(emptyForm);
+    setCurrentPhotoUrl(null);
     setSaveError(null);
+  }
+
+  function handlePhotoSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 3 * 1024 * 1024) {
+      setSaveError('사진 용량은 3MB 이하로 올려주세요.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setForm((f) => ({ ...f, photo: reader.result as string, removePhoto: false }));
+    };
+    reader.readAsDataURL(file);
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -113,8 +132,8 @@ export default function ResumesClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(
           isNew
-            ? { company: form.company, role: form.role, body: form.body, published: form.published, slug: form.slug || undefined }
-            : { slug: editingSlug, company: form.company, role: form.role, body: form.body, published: form.published }
+            ? { company: form.company, role: form.role, body: form.body, published: form.published, slug: form.slug || undefined, photo: form.photo }
+            : { slug: editingSlug, company: form.company, role: form.role, body: form.body, published: form.published, photo: form.photo, removePhoto: form.removePhoto }
         ),
       });
       const data = await res.json();
@@ -263,7 +282,31 @@ export default function ResumesClient() {
               style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.88rem', marginBottom: '12px', fontFamily: 'inherit', boxSizing: 'border-box' }}
             />
 
-            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, marginBottom: '4px' }}>자기소개서 본문</label>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, marginBottom: '4px' }}>사진 (선택)</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+              {(form.photo || (currentPhotoUrl && !form.removePhoto)) && (
+                <img
+                  src={form.photo || currentPhotoUrl || ''}
+                  alt=""
+                  style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: '1px solid rgba(18,18,16,0.12)' }}
+                />
+              )}
+              <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handlePhotoSelect} style={{ fontSize: '0.8rem' }} />
+              {(form.photo || (currentPhotoUrl && !form.removePhoto)) && (
+                <button
+                  type="button"
+                  onClick={() => setForm({ ...form, photo: null, removePhoto: true })}
+                  style={{ fontSize: '0.76rem', fontWeight: 700, color: '#d33', background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0 }}
+                >
+                  제거
+                </button>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <label style={{ fontSize: '0.78rem', fontWeight: 700 }}>자기소개서 본문</label>
+              <span className="mono" style={{ fontSize: '0.74rem', color: 'rgba(18,18,16,0.4)' }}>{form.body.length.toLocaleString()}자</span>
+            </div>
             <textarea
               value={form.body}
               onChange={(e) => setForm({ ...form, body: e.target.value })}

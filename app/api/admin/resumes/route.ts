@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_COOKIE, verifySessionToken } from '@/lib/adminAuth';
-import { getResumesFile, updateResumesFile } from '@/lib/github';
+import { getResumesFile, updateResumesFile, upsertRepoBinaryFile, deleteRepoFile } from '@/lib/github';
 
 interface Resume {
   slug: string;
@@ -10,6 +10,7 @@ interface Resume {
   published: boolean;
   createdAt: string;
   views: string[];
+  photo: string | null;
 }
 
 function requireAuth(req: NextRequest): boolean {
@@ -25,6 +26,18 @@ function slugify(input: string): string {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .slice(0, 60);
+}
+
+/** data:image/jpeg;base64,xxxx 형태의 문자열을 저장소에 업로드하고 공개 경로를 반환한다. */
+async function uploadPhotoIfProvided(photoDataUrl: string | undefined | null, slug: string): Promise<string | null> {
+  if (!photoDataUrl) return null;
+  const match = /^data:image\/(png|jpe?g|webp|gif);base64,(.+)$/.exec(photoDataUrl);
+  if (!match) return null;
+  const ext = match[1] === 'jpg' ? 'jpeg' : match[1];
+  const base64 = match[2];
+  const path = `public/resumes/${slug}.${ext}`;
+  await upsertRepoBinaryFile(path, base64, `admin: 자기소개서 사진 업로드 (${slug})`);
+  return `/resumes/${slug}.${ext}`;
 }
 
 export async function GET(req: NextRequest) {
@@ -44,7 +57,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
   }
 
-  const { company, role, body, published, slug: customSlug } = await req.json();
+  const { company, role, body, published, slug: customSlug, photo } = await req.json();
   if (typeof company !== 'string' || !company.trim()) {
     return NextResponse.json({ error: '회사명을 입력해주세요.' }, { status: 400 });
   }
@@ -62,6 +75,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '이미 같은 URL의 페이지가 있습니다.' }, { status: 409 });
     }
 
+    const photoPath = await uploadPhotoIfProvided(photo, slug);
+
     const newResume: Resume = {
       slug,
       company: company.trim(),
@@ -70,6 +85,7 @@ export async function POST(req: NextRequest) {
       published: published !== false,
       createdAt: new Date().toISOString(),
       views: [],
+      photo: photoPath,
     };
 
     const updated = [newResume, ...resumes];
@@ -86,7 +102,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
   }
 
-  const { slug, company, role, body, published } = await req.json();
+  const { slug, company, role, body, published, photo, removePhoto } = await req.json();
   if (typeof slug !== 'string' || !slug) {
     return NextResponse.json({ error: '수정할 페이지를 지정해주세요.' }, { status: 400 });
   }
@@ -99,12 +115,20 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ error: '해당 페이지를 찾을 수 없습니다.' }, { status: 404 });
     }
 
+    let photoPath = resumes[idx].photo ?? null;
+    if (removePhoto) {
+      photoPath = null;
+    } else if (typeof photo === 'string' && photo.startsWith('data:image/')) {
+      photoPath = await uploadPhotoIfProvided(photo, slug);
+    }
+
     const updatedResume: Resume = {
       ...resumes[idx],
       company: typeof company === 'string' && company.trim() ? company.trim() : resumes[idx].company,
       role: typeof role === 'string' ? role.trim() : resumes[idx].role,
       body: typeof body === 'string' ? body : resumes[idx].body,
       published: typeof published === 'boolean' ? published : resumes[idx].published,
+      photo: photoPath,
     };
 
     const updated = [...resumes];
@@ -138,6 +162,11 @@ export async function DELETE(req: NextRequest) {
 
     const updated = resumes.filter((r) => r.slug !== slug);
     await updateResumesFile(updated, sha, `admin: 자기소개서 페이지 삭제 (${target.company})`);
+
+    if (target.photo) {
+      const ext = target.photo.split('.').pop();
+      await deleteRepoFile(`public/resumes/${slug}.${ext}`, `admin: 자기소개서 사진 삭제 (${slug})`).catch(() => {});
+    }
 
     return NextResponse.json({ ok: true });
   } catch (e) {

@@ -13,6 +13,7 @@ interface Resume {
   published: boolean;
   createdAt: string;
   views: string[];
+  photo: string | null;
 }
 
 export const metadata: Metadata = {

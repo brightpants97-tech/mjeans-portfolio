@@ -13,6 +13,7 @@ interface Resume {
   published: boolean;
   createdAt: string;
   views: string[];
+  photo: string | null;
 }
 
 export default function ForClient({ resume, isAdminViewer }: { resume: Resume; isAdminViewer: boolean }) {
@@ -64,11 +65,19 @@ export default function ForClient({ resume, isAdminViewer }: { resume: Resume; i
       </header>
 
       <main style={{ maxWidth: '700px', margin: '0 auto', padding: '52px clamp(1.2rem,4vw,2rem) 100px' }}>
-        <p className="mono" style={{ fontSize: '0.76rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.16em', marginBottom: '10px' }}>
-          {resume.role ? `FOR ${resume.company.toUpperCase()} · ${resume.role.toUpperCase()}` : `FOR ${resume.company.toUpperCase()}`}
-        </p>
+        {resume.photo && (
+          <img
+            src={resume.photo}
+            alt={resume.company}
+            style={{
+              width: '84px', height: '84px', borderRadius: '50%',
+              objectFit: 'cover', display: 'block', marginBottom: '24px',
+              border: '1px solid rgba(18,18,16,0.1)',
+            }}
+          />
+        )}
         <h1 style={{ fontSize: 'clamp(1.8rem,4.5vw,2.4rem)', fontWeight: 900, letterSpacing: '-0.02em', margin: '0 0 36px' }}>
-          {resume.company} 지원 자기소개서
+          자기소개서
         </h1>
         <div style={{
           whiteSpace: 'pre-wrap',

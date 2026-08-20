@@ -61,6 +61,53 @@ export async function updateRepoFile(path: string, newContent: unknown, sha: str
   }
 }
 
+/**
+ * 저장소에 바이너리(이미지 등) 파일을 새로 만들거나 교체한다. 이미 있으면 덮어쓰고, 없으면 새로 만든다.
+ * base64Content는 데이터만 담긴 base64 문자열이어야 한다 (data: 접두사 제외).
+ */
+export async function upsertRepoBinaryFile(path: string, base64Content: string, message: string): Promise<void> {
+  const { owner, repo, branch, token } = repoInfo();
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`;
+
+  let sha: string | undefined;
+  const existing = await fetch(`${url}?ref=${branch}`, { headers: authHeaders(token), cache: 'no-store' });
+  if (existing.ok) {
+    const json = await existing.json();
+    sha = json.sha;
+  }
+
+  const body: Record<string, unknown> = { message, content: base64Content, branch };
+  if (sha) body.sha = sha;
+
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { ...authHeaders(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`GitHub 이미지 업로드 실패 (${res.status}): ${text}`);
+  }
+}
+
+/**
+ * 저장소에서 파일을 삭제한다. 파일이 없으면 조용히 무시한다.
+ */
+export async function deleteRepoFile(path: string, message: string): Promise<void> {
+  const { owner, repo, branch, token } = repoInfo();
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}`;
+
+  const existing = await fetch(`${url}?ref=${branch}`, { headers: authHeaders(token), cache: 'no-store' });
+  if (!existing.ok) return;
+  const json = await existing.json();
+
+  await fetch(url, {
+    method: 'DELETE',
+    headers: { ...authHeaders(token), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message, sha: json.sha, branch }),
+  });
+}
+
 /** data/works.json 전용 별칭 (기존 코드 호환) */
 export const getWorksFile = () => getRepoFile('data/works.json');
 export const updateWorksFile = (newContent: unknown, sha: string, message: string) =>

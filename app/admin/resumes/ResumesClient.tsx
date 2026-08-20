@@ -401,14 +401,44 @@ export default function ResumesClient() {
               )}
             </div>
 
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.84rem', fontWeight: 700, margin: '18px 0 12px' }}>
-              <input
-                type="checkbox"
-                checked={form.includeResume}
-                onChange={(e) => setForm({ ...form, includeResume: e.target.checked })}
-              />
-              이력서 정보 포함
-            </label>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', margin: '18px 0 12px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.84rem', fontWeight: 700 }}>
+                <input
+                  type="checkbox"
+                  checked={form.includeResume}
+                  onChange={(e) => setForm({ ...form, includeResume: e.target.checked })}
+                />
+                이력서 정보 포함
+              </label>
+
+              {resumes && resumes.some((r) => r.resumeInfo) && (
+                <select
+                  defaultValue=""
+                  onChange={(e) => {
+                    const src = resumes.find((r) => r.slug === e.target.value);
+                    if (!src?.resumeInfo) return;
+                    const info = src.resumeInfo;
+                    setForm((f) => ({
+                      ...f,
+                      includeResume: true,
+                      name: info.name, address: info.address, phone: info.phone,
+                      birthDate: info.birthDate, email: info.email,
+                      militaryStatus: info.military.status, militaryBranch: info.military.branch,
+                      militaryRank: info.military.rank, militarySpecialty: info.military.specialty,
+                      militaryPeriod: info.military.period,
+                      education: info.education, career: info.career,
+                    }));
+                    e.target.value = '';
+                  }}
+                  style={{ fontSize: '0.78rem', fontWeight: 600, padding: '6px 8px', borderRadius: '7px', border: '1px solid rgba(18,18,16,0.15)', fontFamily: 'inherit', background: '#fff' }}
+                >
+                  <option value="" disabled>다른 회사에서 이력서 불러오기</option>
+                  {resumes.filter((r) => r.resumeInfo && r.slug !== editingSlug).map((r) => (
+                    <option key={r.slug} value={r.slug}>{r.company}에서 불러오기</option>
+                  ))}
+                </select>
+              )}
+            </div>
 
             {form.includeResume && (
               <div style={{ background: BG, border: '1px solid rgba(18,18,16,0.08)', borderRadius: '10px', padding: '14px', marginBottom: '16px' }}>

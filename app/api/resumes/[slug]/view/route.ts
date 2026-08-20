@@ -12,8 +12,17 @@ interface Resume {
   views: string[];
 }
 
+function safeDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
 export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = safeDecode(rawSlug);
 
   // 관리자 본인이 로그인된 상태로 열람한 경우는 조회로 기록하지 않는다.
   const token = req.cookies.get(ADMIN_COOKIE)?.value;

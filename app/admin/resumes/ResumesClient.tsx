@@ -38,7 +38,7 @@ export default function ResumesClient() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<{ message: string; slug?: string } | null>(null);
   const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
@@ -138,7 +138,11 @@ export default function ResumesClient() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || '저장 실패');
-      setNotice(isNew ? `"${data.resume.company}" 페이지 생성 완료. 배포까지 약 1분 정도 걸려요.` : '수정 완료. 배포까지 약 1분 정도 걸려요.');
+      setNotice(
+        isNew
+          ? { message: `"${data.resume.company}" 페이지 생성 완료. 배포까지 약 1분 정도 걸려요.`, slug: data.resume.slug }
+          : { message: '수정 완료. 배포까지 약 1분 정도 걸려요.', slug: data.resume.slug }
+      );
       cancelEdit();
       loadResumes();
     } catch (e) {
@@ -160,7 +164,7 @@ export default function ResumesClient() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || '삭제 실패');
-      setNotice('삭제 완료. 배포까지 약 1분 정도 걸려요.');
+      setNotice({ message: '삭제 완료. 배포까지 약 1분 정도 걸려요.' });
       loadResumes();
     } catch (e) {
       alert(e instanceof Error ? e.message : '삭제 실패');
@@ -369,7 +373,17 @@ export default function ResumesClient() {
             background: '#f0fbe0', border: `1px solid ${ACCENT}`, borderRadius: '10px',
             padding: '12px 14px', fontSize: '0.82rem', fontWeight: 600, marginBottom: '24px',
           }}>
-            {notice}
+            <div>{notice.message}</div>
+            {notice.slug && (
+              <a
+                href={`/for/${notice.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-block', marginTop: '6px', fontWeight: 700, color: '#121210', textDecoration: 'underline' }}
+              >
+                mjeans.co.kr/for/{notice.slug} 열어보기 ↗
+              </a>
+            )}
           </div>
         )}
 
@@ -393,9 +407,15 @@ export default function ResumesClient() {
                       </span>
                     )}
                   </div>
-                  <div className="mono" style={{ fontSize: '0.76rem', color: 'rgba(18,18,16,0.4)', wordBreak: 'break-all' }}>
+                  <a
+                    href={`/for/${r.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mono"
+                    style={{ display: 'block', fontSize: '0.76rem', color: 'rgba(18,18,16,0.4)', wordBreak: 'break-all', textDecoration: 'underline' }}
+                  >
                     mjeans.co.kr/for/{r.slug}
-                  </div>
+                  </a>
                   <div style={{ fontSize: '0.76rem', color: 'rgba(18,18,16,0.45)', marginTop: '4px' }}>
                     {r.role && `${r.role} · `}{fmtDateTime(r.createdAt)} 생성 · 조회 {r.views.length}회
                   </div>

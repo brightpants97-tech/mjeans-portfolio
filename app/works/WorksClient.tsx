@@ -97,12 +97,18 @@ function WorkCard({ work }: { work: Work }) {
             <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.2)', fontWeight: 500 }}>영상 준비 중</span>
           </div>
         )}
+        {/* 뱃지 시인성을 위한 상하단 그라데이션 */}
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 68%, rgba(0,0,0,0.4) 100%)',
+        }} />
         {/* 카테고리 뱃지 */}
         <span style={{
           position: 'absolute', top: '10px', left: '10px',
           fontSize: '0.68rem', fontWeight: 700,
           background: CATEGORY_COLORS[work.category] || ACCENT, color: CATEGORY_TEXT_COLORS[work.category] || '#121210',
           padding: '3px 8px', borderRadius: '999px',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.35)',
         }}>
           {work.category}
         </span>
@@ -115,6 +121,7 @@ function WorkCard({ work }: { work: Work }) {
             background: 'rgba(0,0,0,0.72)', color: '#fff',
             padding: '3px 7px', borderRadius: '5px',
             letterSpacing: '0.02em',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.35)',
           }}
         >
           {fmtDate(work.publishedAt)}

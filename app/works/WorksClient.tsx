@@ -8,15 +8,17 @@ const CATEGORY_COLORS: Record<string, string> = {
   일상: '#a3e635',
   합방: '#E65535',
   여행: '#7BD599',
+  게임: '#D4A2F6',
 };
 const CATEGORY_TEXT_COLORS: Record<string, string> = {
   일상: '#121210',
   합방: '#ffffff',
   여행: '#121210',
+  게임: '#121210',
 };
 const TEXT   = '#121210';
 
-const CATEGORIES = ['최근영상', '일상', '합방', '여행'] as const;
+const CATEGORIES = ['최근영상', '일상', '합방', '여행', '게임'] as const;
 type Category = typeof CATEGORIES[number];
 type WorkCategory = Exclude<Category, '최근영상'>;
 

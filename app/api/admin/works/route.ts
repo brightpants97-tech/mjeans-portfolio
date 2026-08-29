@@ -4,7 +4,7 @@ import { getWorksFile, updateWorksFile } from '@/lib/github';
 
 interface Work {
   id: string;
-  category: '일상' | '합방' | '여행';
+  category: '일상' | '합방' | '여행' | '게임';
   title: string;
   channel: string;
   handle: string;
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
   if (typeof url !== 'string' || !url.trim()) {
     return NextResponse.json({ error: '유튜브 링크를 입력해주세요.' }, { status: 400 });
   }
-  if (!['일상', '합방', '여행'].includes(category)) {
+  if (!['일상', '합방', '여행', '게임'].includes(category)) {
     return NextResponse.json({ error: '카테고리가 올바르지 않습니다.' }, { status: 400 });
   }
 
@@ -128,7 +128,7 @@ export async function PUT(req: NextRequest) {
   if (typeof id !== 'string' || !id) {
     return NextResponse.json({ error: '변경할 영상을 지정해주세요.' }, { status: 400 });
   }
-  if (!['일상', '합방', '여행'].includes(category)) {
+  if (!['일상', '합방', '여행', '게임'].includes(category)) {
     return NextResponse.json({ error: '카테고리가 올바르지 않습니다.' }, { status: 400 });
   }
 

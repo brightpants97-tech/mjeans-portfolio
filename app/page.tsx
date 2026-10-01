@@ -25,6 +25,13 @@ const CHANNELS = [
     img: 'https://yt3.googleusercontent.com/vzkHa7IwvNlRqgKkO5cxUBrHo4br2s4nO1xInjhMp_95XRXpbelq6914ptpIQLap6seCbVx4=s900-c-k-c0x00ffffff-no-rj',
     href: 'https://www.youtube.com/@jangjisou2',
   },
+  {
+    name: '문월유튜브',
+    handle: '@moonwol0614',
+    subs: '구독자 26만명',
+    img: 'https://yt3.ggpht.com/-ldXjV9OA2kPqEZqrzeYYzOVxAeelu9NqBTRQxAtTYY-6IgbzZo2TpRtm3wRRORyB30fny7Inck=s800-c-k-c0x00ffffff-no-rj',
+    href: 'https://www.youtube.com/@moonwol0614',
+  },
 ];
 
 const TOOLS = [

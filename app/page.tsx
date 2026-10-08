@@ -473,7 +473,7 @@ export default function Home() {
               }}
             >
               {[
-                { target: 2, suffix: '', label: '함께한 채널' },
+                { target: CHANNELS.length, suffix: '', label: '함께한 채널' },
                 { target: TOTAL_WORKS, suffix: '+', label: '편집 영상' },
               ].map((stat, i) => (
                 <div

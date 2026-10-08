@@ -7,7 +7,7 @@ const TEXT   = '#121210';
 
 interface Work {
   id: string;
-  category: '일상' | '합방' | '여행' | '게임';
+  category: '일상' | '합방' | '여행' | '게임' | 'AI';
   title: string;
   channel: string;
   handle: string;
@@ -16,7 +16,7 @@ interface Work {
   publishedAt: string;
 }
 
-const CATEGORIES: Work['category'][] = ['일상', '합방', '여행', '게임'];
+const CATEGORIES: Work['category'][] = ['일상', '합방', '여행', '게임', 'AI'];
 
 function fmtDate(iso: string) {
   const d = new Date(iso);

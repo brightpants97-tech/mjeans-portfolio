@@ -9,16 +9,18 @@ const CATEGORY_COLORS: Record<string, string> = {
   합방: '#E65535',
   여행: '#7BD599',
   게임: '#D4A2F6',
+  AI: '#484C3F',
 };
 const CATEGORY_TEXT_COLORS: Record<string, string> = {
   일상: '#121210',
   합방: '#ffffff',
   여행: '#121210',
   게임: '#121210',
+  AI: '#ffffff',
 };
 const TEXT   = '#121210';
 
-const CATEGORIES = ['최근영상', '일상', '합방', '여행', '게임'] as const;
+const CATEGORIES = ['최근영상', '일상', '합방', '여행', '게임', 'AI'] as const;
 type Category = typeof CATEGORIES[number];
 type WorkCategory = Exclude<Category, '최근영상'>;
 
@@ -153,7 +155,7 @@ export default function WorksClient() {
   }, []);
 
   const filtered = active === '최근영상'
-    ? [...PLACEHOLDER_WORKS]
+    ? PLACEHOLDER_WORKS.filter((w) => w.category !== 'AI')
         .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
         .slice(0, 9)
     : PLACEHOLDER_WORKS.filter((w) => w.category === active);

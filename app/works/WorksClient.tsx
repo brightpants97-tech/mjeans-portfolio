@@ -129,7 +129,7 @@ function WorkCard({ work }: { work: Work }) {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ fontSize: '0.78rem', color: 'rgba(18,18,16,0.45)', fontWeight: 500 }}>
-            {work.channel} · {work.handle}
+            {work.category === 'AI' ? '' : `${work.channel} · ${work.handle}`}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="mono" style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.38)' }}>

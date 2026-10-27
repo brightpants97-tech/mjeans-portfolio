@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import worksData from '@/data/works.json';
+import { CHANNELS } from '@/lib/channels';
 
 const BG = '#faf9f5';
 const ACCENT = '#a3e635';
@@ -8,30 +9,6 @@ const TOTAL_WORKS = worksData.length;
 
 const CHAPTERS = [
   { id: 'intro', tc: '00:00', label: '홈' },
-];
-
-const CHANNELS = [
-  {
-    name: '장지수',
-    handle: '@jisoujang',
-    subs: '구독자 112만명',
-    img: 'https://yt3.googleusercontent.com/UgUieH1W2YrPx6Py3zOe7z1WidNPSAgLzz6SoL-E_ousNOZCCbAYEoyp10SEaCbnJq64-J04xw=s900-c-k-c0x00ffffff-no-rj',
-    href: 'https://www.youtube.com/@jisoujang',
-  },
-  {
-    name: '장지수2',
-    handle: '@jangjisou2',
-    subs: '구독자 2.46천명',
-    img: 'https://yt3.googleusercontent.com/vzkHa7IwvNlRqgKkO5cxUBrHo4br2s4nO1xInjhMp_95XRXpbelq6914ptpIQLap6seCbVx4=s900-c-k-c0x00ffffff-no-rj',
-    href: 'https://www.youtube.com/@jangjisou2',
-  },
-  {
-    name: '문월유튜브',
-    handle: '@moonwol0614',
-    subs: '구독자 26만명',
-    img: 'https://yt3.ggpht.com/-ldXjV9OA2kPqEZqrzeYYzOVxAeelu9NqBTRQxAtTYY-6IgbzZo2TpRtm3wRRORyB30fny7Inck=s800-c-k-c0x00ffffff-no-rj',
-    href: 'https://www.youtube.com/@moonwol0614',
-  },
 ];
 
 const TOOLS = [
@@ -448,8 +425,15 @@ export default function Home() {
                   }}
                 >
                   <img
-                    src={c.img}
+                    src={`/api/channel-avatar/${c.handle}`}
                     alt={c.name}
+                    width={60}
+                    height={60}
+                    onError={(event) => {
+                      const image = event.currentTarget;
+                      const fallback = `/images/channels/${c.handle}.jpg`;
+                      if (image.getAttribute('src') !== fallback) image.src = fallback;
+                    }}
                     style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover', display: 'block' }}
                   />
                   <div style={{ textAlign: 'center' }}>

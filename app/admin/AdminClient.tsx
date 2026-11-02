@@ -37,13 +37,19 @@ export default function AdminClient() {
   const [category, setCategory] = useState<Work['category']>('일상');
   const [file, setFile] = useState<File | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
-  const isThumbnail = category === '썸네일';
-  const canAdd = isThumbnail ? !!file : !!url.trim();
-  const [adding, setAdding] = useState(false);
-  const [addError, setAddError] = useState<string | null>(null);
+  const [preview, setPreview] = useState('');
+  const [adding, setAdding] = useState<'image' | 'video' | null>(null);
+  const [addError, setAddError] = useState<{ kind: 'image' | 'video'; message: string } | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [changingId, setChangingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!file) { setPreview(''); return; }
+    const objectUrl = URL.createObjectURL(file);
+    setPreview(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   useEffect(() => {
     fetch('/api/admin/session')
@@ -95,14 +101,15 @@ export default function AdminClient() {
     setPassword('');
   }
 
-  async function handleAdd(e: React.FormEvent) {
+  async function handleAdd(e: React.FormEvent, kind: 'image' | 'video') {
     e.preventDefault();
-    setAdding(true);
+    if (adding) return;
+    setAdding(kind);
     setAddError(null);
     setNotice(null);
     try {
       let options: RequestInit;
-      if (isThumbnail) {
+      if (kind === 'image') {
         if (!file) throw new Error('원본 이미지를 선택해주세요.');
         const form = new FormData();
         form.set('image', file);
@@ -114,15 +121,18 @@ export default function AdminClient() {
       if (res.status === 413) throw new Error('4MB 이하의 이미지를 선택해주세요.');
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || '추가 실패');
-      setUrl('');
-      setFile(null);
-      if (fileInput.current) fileInput.current.value = '';
-      setNotice(`${isThumbnail ? '썸네일' : `"${data.work.title}"`} 추가 완료. 배포까지 약 1분 정도 걸려요.`);
+      if (kind === 'image') {
+        setFile(null);
+        if (fileInput.current) fileInput.current.value = '';
+      } else {
+        setUrl('');
+      }
+      setNotice(`${kind === 'image' ? '썸네일' : `"${data.work.title}"`} 추가 완료. 배포까지 약 1분 정도 걸려요.`);
       loadWorks();
     } catch (e) {
-      setAddError(e instanceof Error ? e.message : '추가 실패');
+      setAddError({ kind, message: e instanceof Error ? e.message : '추가 실패' });
     } finally {
-      setAdding(false);
+      setAdding(null);
     }
   }
 
@@ -233,33 +243,50 @@ export default function AdminClient() {
           → 자기소개서 관리로
         </a>
 
-        {/* 추가 폼 */}
-        <form onSubmit={handleAdd} style={{
+        <form aria-label="썸네일 이미지 추가" onSubmit={(e) => handleAdd(e, 'image')} style={{
+          background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px',
+          padding: '20px', marginBottom: '14px',
+        }}>
+          <h2 style={{ fontSize: '1rem', margin: '0 0 4px' }}>썸네일 이미지</h2>
+          <p id="image-formats" style={{ fontSize: '0.8rem', marginBottom: '14px' }}>JPG, PNG, WebP · 최대 4MB</p>
+          <input type="file" ref={fileInput} hidden accept="image/jpeg,image/png,image/webp"
+            aria-label="썸네일 원본 파일" onChange={(e) => {
+              const selected = e.target.files?.[0];
+              if (!selected) return;
+              if (selected.size > MAX_THUMBNAIL_BYTES) {
+                e.target.value = '';
+                setAddError({ kind: 'image', message: '4MB 이하의 이미지를 선택해주세요.' });
+                setFile(null);
+                return;
+              }
+              setAddError(null);
+              setFile(selected);
+            }} />
+          {file && <div style={{ marginBottom: 12 }}>
+            {preview && <img src={preview} alt="선택한 썸네일 미리보기" style={{ maxWidth: '100%', maxHeight: 160, borderRadius: 8 }} />}
+            <p style={{ fontSize: '0.8rem', overflowWrap: 'anywhere' }}>{file.name}</p>
+          </div>}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <button type="button" disabled={!!adding} aria-describedby="image-formats" onClick={() => fileInput.current?.click()}
+              style={{ minHeight: 44, padding: '0 18px', borderRadius: 9, background: file ? '#eee' : ACCENT,
+                color: TEXT, fontWeight: 800, cursor: 'pointer' }}>
+              {file ? '다른 이미지 선택' : '＋ 이미지 추가'}
+            </button>
+            {file && <button type="submit" disabled={!!adding} style={{ minHeight: 44, padding: '0 18px', borderRadius: 9,
+              background: TEXT, color: BG, fontWeight: 800, cursor: 'pointer' }}>
+              {adding === 'image' ? '등록 중…' : '썸네일로 등록'}
+            </button>}
+          </div>
+          {addError?.kind === 'image' && <p role="alert" style={{ color: '#d33', marginTop: 10 }}>{addError.message}</p>}
+        </form>
+        <form aria-label="영상 추가" onSubmit={(e) => handleAdd(e, 'video')} style={{
           background: '#fff', border: '1px solid rgba(18,18,16,0.1)', borderRadius: '14px',
           padding: '20px', marginBottom: '28px',
         }}>
           <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.1em', marginBottom: '12px' }}>
-            {isThumbnail ? '썸네일 추가' : '영상 추가'}
+            영상 추가
           </p>
-          {isThumbnail ? (
-            <div style={{ display: 'grid', gap: 10, marginBottom: 14 }}>
-              <label>원본 이미지 · JPG, PNG, WebP · 최대 4MB
-                <input type="file" accept="image/jpeg,image/png,image/webp" ref={fileInput}
-                  disabled={adding} style={{ display: 'block', marginTop: 6, maxWidth: '100%' }}
-                  onChange={(e) => {
-                    const selected = e.target.files?.[0] ?? null;
-                    if (selected && selected.size > MAX_THUMBNAIL_BYTES) {
-                      e.target.value = '';
-                      setFile(null);
-                      setAddError('4MB 이하의 이미지를 선택해주세요.');
-                      return;
-                    }
-                    setAddError(null);
-                    setFile(selected);
-                  }} />
-              </label>
-            </div>
-          ) : <input
+          <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -269,17 +296,14 @@ export default function AdminClient() {
               border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.88rem',
               marginBottom: '10px', fontFamily: 'inherit', boxSizing: 'border-box',
             }}
-          />}
+          />
           <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexWrap: 'wrap' }}>
-            {WORK_CATEGORIES.map((cat) => (
+            {WORK_CATEGORIES.filter((cat) => cat !== '썸네일').map((cat) => (
               <button
                 type="button"
                 key={cat}
-                disabled={adding}
-                onClick={() => {
-                  if (category !== cat) { setFile(null); setAddError(null); }
-                  setCategory(cat);
-                }}
+                disabled={!!adding}
+                onClick={() => setCategory(cat)}
                 style={{
                   padding: '7px 16px', borderRadius: '999px',
                   border: category === cat ? 'none' : '1px solid rgba(18,18,16,0.15)',
@@ -294,17 +318,17 @@ export default function AdminClient() {
           </div>
           <button
             type="submit"
-            disabled={adding || !canAdd}
+            disabled={!!adding || !url.trim()}
             style={{
               width: '100%', padding: '11px', borderRadius: '9px', border: 'none',
               background: TEXT, color: BG, fontWeight: 800, fontSize: '0.88rem',
-              cursor: adding ? 'default' : 'pointer', opacity: adding || !canAdd ? 0.5 : 1,
+              cursor: adding ? 'default' : 'pointer', opacity: adding || !url.trim() ? 0.5 : 1,
               fontFamily: 'inherit',
             }}
           >
-            {adding ? '추가 중...' : '추가'}
+            {adding === 'video' ? '추가 중...' : '영상 추가'}
           </button>
-          {addError && <p style={{ color: '#d33', fontSize: '0.8rem', marginTop: '10px' }}>{addError}</p>}
+          {addError?.kind === 'video' && <p role="alert" style={{ color: '#d33', fontSize: '0.8rem', marginTop: '10px' }}>{addError.message}</p>}
         </form>
 
         {notice && (

@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { WORK_CATEGORIES, type WorkCategory } from '@/lib/work-categories';
+import { useEffect, useRef, useState } from 'react';
+import { MAX_THUMBNAIL_BYTES, WORK_CATEGORIES, type WorkCategory } from '@/lib/work-categories';
 
 const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
@@ -35,6 +35,11 @@ export default function AdminClient() {
 
   const [url, setUrl] = useState('');
   const [category, setCategory] = useState<Work['category']>('일상');
+  const [file, setFile] = useState<File | null>(null);
+  const [title, setTitle] = useState('');
+  const fileInput = useRef<HTMLInputElement>(null);
+  const isThumbnail = category === '썸네일';
+  const canAdd = isThumbnail ? !!file && !!title.trim() : !!url.trim();
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -97,14 +102,24 @@ export default function AdminClient() {
     setAddError(null);
     setNotice(null);
     try {
-      const res = await fetch('/api/admin/works', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, category }),
-      });
+      let options: RequestInit;
+      if (isThumbnail) {
+        if (!file) throw new Error('원본 이미지를 선택해주세요.');
+        const form = new FormData();
+        form.set('image', file);
+        form.set('title', title.trim());
+        options = { method: 'POST', body: form };
+      } else {
+        options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, category }) };
+      }
+      const res = await fetch('/api/admin/works', options);
+      if (res.status === 413) throw new Error('4MB 이하의 이미지를 선택해주세요.');
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || '추가 실패');
       setUrl('');
+      setFile(null);
+      setTitle('');
+      if (fileInput.current) fileInput.current.value = '';
       setNotice(`"${data.work.title}" 추가 완료. 배포까지 약 1분 정도 걸려요.`);
       loadWorks();
     } catch (e) {
@@ -227,9 +242,32 @@ export default function AdminClient() {
           padding: '20px', marginBottom: '28px',
         }}>
           <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(18,18,16,0.4)', letterSpacing: '0.1em', marginBottom: '12px' }}>
-            영상 추가
+            {isThumbnail ? '썸네일 추가' : '영상 추가'}
           </p>
-          <input
+          {isThumbnail ? (
+            <div style={{ display: 'grid', gap: 10, marginBottom: 14 }}>
+              <label>원본 이미지 · JPG, PNG, WebP · 최대 4MB
+                <input type="file" accept="image/jpeg,image/png,image/webp" ref={fileInput}
+                  disabled={adding} style={{ display: 'block', marginTop: 6, maxWidth: '100%' }}
+                  onChange={(e) => {
+                    const selected = e.target.files?.[0] ?? null;
+                    if (selected && selected.size > MAX_THUMBNAIL_BYTES) {
+                      e.target.value = '';
+                      setFile(null);
+                      setAddError('4MB 이하의 이미지를 선택해주세요.');
+                      return;
+                    }
+                    setAddError(null);
+                    setFile(selected);
+                    if (selected && !title.trim()) setTitle(selected.name.replace(/\.[^.]+$/, '').slice(0, 200));
+                  }} />
+              </label>
+              <label>작품명
+                <input type="text" value={title} maxLength={200} disabled={adding} onChange={(e) => setTitle(e.target.value)}
+                  style={{ display: 'block', marginTop: 6, width: '100%', padding: 10, border: '1px solid #ccc', borderRadius: 8 }} />
+              </label>
+            </div>
+          ) : <input
             type="text"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -239,13 +277,17 @@ export default function AdminClient() {
               border: '1px solid rgba(18,18,16,0.15)', fontSize: '0.88rem',
               marginBottom: '10px', fontFamily: 'inherit', boxSizing: 'border-box',
             }}
-          />
+          />}
           <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexWrap: 'wrap' }}>
             {WORK_CATEGORIES.map((cat) => (
               <button
                 type="button"
                 key={cat}
-                onClick={() => setCategory(cat)}
+                disabled={adding}
+                onClick={() => {
+                  if (category !== cat) { setFile(null); setTitle(''); setAddError(null); }
+                  setCategory(cat);
+                }}
                 style={{
                   padding: '7px 16px', borderRadius: '999px',
                   border: category === cat ? 'none' : '1px solid rgba(18,18,16,0.15)',
@@ -260,11 +302,11 @@ export default function AdminClient() {
           </div>
           <button
             type="submit"
-            disabled={adding || !url.trim()}
+            disabled={adding || !canAdd}
             style={{
               width: '100%', padding: '11px', borderRadius: '9px', border: 'none',
               background: TEXT, color: BG, fontWeight: 800, fontSize: '0.88rem',
-              cursor: adding ? 'default' : 'pointer', opacity: adding || !url.trim() ? 0.5 : 1,
+              cursor: adding ? 'default' : 'pointer', opacity: adding || !canAdd ? 0.5 : 1,
               fontFamily: 'inherit',
             }}
           >
@@ -311,12 +353,12 @@ export default function AdminClient() {
                         {w.title}
                       </div>
                       <div style={{ fontSize: '0.72rem', opacity: 0.45, marginTop: '2px' }}>
-                        {w.channel} · {fmtDate(w.publishedAt)}
+                        {w.category === '썸네일' ? w.channel || '원본 이미지' : `${w.channel} · ${fmtDate(w.publishedAt)}`}
                       </div>
                     </div>
                     <select
                       value={w.category}
-                      disabled={changingId === w.id}
+                      disabled={changingId === w.id || w.thumbnail?.startsWith('/images/thumbnails/')}
                       onChange={(e) => handleChangeCategory(w, e.target.value as Work['category'])}
                       style={{
                         fontSize: '0.76rem', fontWeight: 600, color: TEXT,

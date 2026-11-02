@@ -151,3 +151,22 @@ a {
     grid-template-columns: 1fr;
   }
 }
+.thumbnail-viewer {
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: white;
+  max-width: min(1280px, calc(100vw - 32px));
+  max-height: calc(100dvh - 16px);
+}
+.thumbnail-viewer::backdrop { background: rgba(10, 11, 13, .92); }
+.thumbnail-viewer header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.thumbnail-viewer strong { overflow-wrap: anywhere; }
+.thumbnail-viewer button { flex: none; width: 44px; height: 44px; color: white; background: transparent; border: 0; font-size: 28px; cursor: pointer; }
+.thumbnail-viewer img { display: block; margin: auto; width: auto; height: auto; max-width: 100%; max-height: min(80dvh, calc(100dvh - 70px)); object-fit: contain; }
+body:has(.thumbnail-viewer[open]) { overflow: hidden; }
+@media (prefers-reduced-motion: no-preference) {
+  .thumbnail-viewer[open] { animation: thumbnail-open .18s ease-out; }
+  @keyframes thumbnail-open { from { opacity: .4; transform: scale(.97); } to { opacity: 1; transform: scale(1); } }
+}

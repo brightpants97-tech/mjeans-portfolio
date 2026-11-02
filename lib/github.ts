@@ -26,9 +26,9 @@ function authHeaders(token: string) {
 /**
  * 저장소 내 임의의 JSON 파일 내용과 sha(버전 식별자)를 가져온다.
  */
-export async function getRepoFile(path: string): Promise<{ content: unknown; sha: string }> {
+export async function getRepoFile(path: string, ref?: string): Promise<{ content: unknown; sha: string }> {
   const { owner, repo, branch, token } = repoInfo();
-  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
+  const url = `${GITHUB_API}/repos/${owner}/${repo}/contents/${path}?ref=${encodeURIComponent(ref ?? branch)}`;
   const res = await fetch(url, { headers: authHeaders(token), cache: 'no-store' });
   if (!res.ok) {
     throw new Error(`GitHub 파일 조회 실패 (${res.status})`);
@@ -112,6 +112,33 @@ export async function deleteRepoFile(path: string, message: string): Promise<voi
 export const getWorksFile = () => getRepoFile('data/works.json');
 export const updateWorksFile = (newContent: unknown, sha: string, message: string) =>
   updateRepoFile('data/works.json', newContent, sha, message);
+
+/** 이미지와 목록을 같은 배포에 반영하고, 동시에 바뀐 작품 목록은 덮어쓰지 않는다. */
+export async function commitThumbnail(works: unknown[], expectedListSha: string, imagePath: string,
+  image: Buffer | null, message: string) {
+  const { owner, repo, branch, token } = repoInfo();
+  const headers = authHeaders(token);
+  const ref = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/ref/heads/${branch}`, { headers, cache: 'no-store' });
+  if (!ref.ok) throw new Error('저장소 버전을 확인할 수 없습니다.');
+  const head = (await ref.json()).object.sha;
+  const snapshot = await getRepoFile('data/works.json', head);
+  if (snapshot.sha !== expectedListSha) throw new Error('작품 목록이 바뀌었습니다. 다시 시도해주세요.');
+  const additions = [{ path: 'data/works.json', contents: Buffer.from(JSON.stringify(works, null, 2) + '\n').toString('base64') }];
+  if (image) additions.push({ path: imagePath, contents: image.toString('base64') });
+  const res = await fetch(`${GITHUB_API}/graphql`, {
+    method: 'POST',
+    headers: { ...headers, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: 'mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }',
+      variables: { input: { branch: { repositoryNameWithOwner: `${owner}/${repo}`, refName: branch },
+        expectedHeadOid: head, message: { headline: message },
+        fileChanges: { additions, deletions: image ? [] : [{ path: imagePath }] } } },
+    }),
+  });
+  if (!res.ok || !(await res.json()).data?.createCommitOnBranch?.commit?.oid) {
+    throw new Error('이미지와 작품 목록을 저장하지 못했습니다. 다시 시도해주세요.');
+  }
+}
 
 /** data/resumes.json 전용 별칭 */
 export const getResumesFile = () => getRepoFile('data/resumes.json');

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_COOKIE, verifySessionToken } from '@/lib/adminAuth';
-import { getWorksFile, updateWorksFile } from '@/lib/github';
-import { isWorkCategory, type WorkCategory } from '@/lib/work-categories';
+import { commitThumbnail, getWorksFile, updateWorksFile } from '@/lib/github';
+import { MAX_THUMBNAIL_BYTES, isWorkCategory, type WorkCategory } from '@/lib/work-categories';
+import { createHash } from 'node:crypto';
 
 interface Work {
   id: string;
@@ -54,12 +55,51 @@ export async function GET(req: NextRequest) {
   }
 }
 
+async function addThumbnail(req: NextRequest) {
+  try {
+    const form = await req.formData();
+    const file = form.get('image');
+    const title = form.get('title');
+    if (!(file instanceof File) || !file.size || typeof title !== 'string' || !title.trim() ||
+        title.length > 200 || /[\r\n]/.test(title)) {
+      return NextResponse.json({ error: '원본 이미지와 작품명(200자 이내)을 입력해주세요.' }, { status: 400 });
+    }
+    if (file.size > MAX_THUMBNAIL_BYTES) {
+      return NextResponse.json({ error: '4MB 이하의 이미지를 선택해주세요.' }, { status: 413 });
+    }
+    const bytes = Buffer.from(await file.arrayBuffer());
+    let ext: string;
+    if (bytes.subarray(0, 8).toString('hex') === '89504e470d0a1a0a') ext = 'png';
+    else if (bytes.subarray(0, 3).toString('hex') === 'ffd8ff') ext = 'jpg';
+    else if (bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP') ext = 'webp';
+    else return NextResponse.json({ error: 'JPG, PNG, WebP 이미지를 선택해주세요.' }, { status: 400 });
+
+    const digest = createHash('sha256').update(bytes).digest('hex');
+    const thumbnail = `/images/thumbnails/${digest}.${ext}`;
+    const work: Work = { id: `썸네일-${digest}`, category: '썸네일', title: title.trim(),
+      thumbnail, href: thumbnail, channel: '', handle: '', publishedAt: new Date().toISOString() };
+    const { content, sha } = await getWorksFile();
+    const works = content as Work[];
+    if (works.some((item) => item.id === work.id)) {
+      return NextResponse.json({ error: '이미 등록된 원본 이미지입니다.' }, { status: 409 });
+    }
+    await commitThumbnail([work, ...works], sha, `public${thumbnail}`, bytes, `admin: 썸네일 추가 (${work.title})`);
+    return NextResponse.json({ ok: true, work });
+  } catch (e) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : '썸네일 추가 실패' }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   if (!requireAuth(req)) {
     return NextResponse.json({ error: '인증이 필요합니다.' }, { status: 401 });
   }
 
+  if (req.headers.get('content-type')?.startsWith('multipart/form-data')) return addThumbnail(req);
   const { url, category } = await req.json();
+  if (category === '썸네일') {
+    return NextResponse.json({ error: '썸네일은 원본 이미지로 등록해주세요.' }, { status: 400 });
+  }
   if (typeof url !== 'string' || !url.trim()) {
     return NextResponse.json({ error: '유튜브 링크를 입력해주세요.' }, { status: 400 });
   }
@@ -145,6 +185,9 @@ export async function PUT(req: NextRequest) {
       return NextResponse.json({ ok: true, work: works[idx] });
     }
 
+    if (works[idx].thumbnail?.startsWith('/images/thumbnails/')) {
+      return NextResponse.json({ error: '원본 이미지는 썸네일 카테고리에서 관리합니다.' }, { status: 400 });
+    }
     const videoId = works[idx].id.slice(works[idx].category.length + 1);
     const newId = `${category}-${videoId}`;
     if (works.some((w) => w.id === newId)) {
@@ -181,7 +224,11 @@ export async function DELETE(req: NextRequest) {
     }
 
     const updated = works.filter((w) => w.id !== id);
-    await updateWorksFile(updated, sha, `admin: 영상 삭제 (${target.category} - ${target.title})`);
+    if (target.thumbnail && /^\/images\/thumbnails\/[a-f0-9]{64}\.(png|jpg|webp)$/.test(target.thumbnail)) {
+      await commitThumbnail(updated, sha, `public${target.thumbnail}`, null, `admin: 썸네일 삭제 (${target.title})`);
+    } else {
+      await updateWorksFile(updated, sha, `admin: 영상 삭제 (${target.category} - ${target.title})`);
+    }
 
     return NextResponse.json({ ok: true });
   } catch (e) {

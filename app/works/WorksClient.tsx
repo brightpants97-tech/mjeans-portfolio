@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import worksData from '@/data/works.json';
 import { WORK_CATEGORIES, type WorkCategory } from '@/lib/work-categories';
 
@@ -47,13 +47,21 @@ function fmtDate(iso: string) {
   return `${yy}.${mm}.${dd}`;
 }
 
-function WorkCard({ work }: { work: Work }) {
+function WorkCard({ work, onExpand }: { work: Work; onExpand: (work: Work) => void }) {
   const [hovered, setHovered] = useState(false);
+  const isThumbnail = work.category === '썸네일';
 
   return (
     <a
-      href={work.href}
-      target={work.href !== '#' ? '_blank' : undefined}
+      href={isThumbnail ? work.thumbnail ?? undefined : work.href}
+      target={!isThumbnail && work.href !== '#' ? '_blank' : undefined}
+      aria-haspopup={isThumbnail ? 'dialog' : undefined}
+      aria-label={isThumbnail ? `${work.title} 이미지 크게 보기` : undefined}
+      onClick={isThumbnail && work.thumbnail ? (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        onExpand(work);
+      } : undefined}
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -83,8 +91,8 @@ function WorkCard({ work }: { work: Work }) {
             src={work.thumbnail}
             alt={work.title}
             style={{
-              width: '100%', height: '100%', objectFit: 'cover', display: 'block',
-              transform: hovered ? 'scale(1.08)' : 'scale(1)',
+              width: '100%', height: '100%', objectFit: isThumbnail ? 'contain' : 'cover', display: 'block',
+              transform: hovered && !isThumbnail ? 'scale(1.08)' : 'scale(1)',
               transition: 'transform 0.35s ease',
             }}
           />
@@ -130,7 +138,7 @@ function WorkCard({ work }: { work: Work }) {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ fontSize: '0.78rem', color: 'rgba(18,18,16,0.45)', fontWeight: 500 }}>
-            {work.category === 'AI' ? '' : `${work.channel} · ${work.handle}`}
+            {work.category === 'AI' ? '' : [work.channel, work.handle].filter(Boolean).join(' · ')}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {work.category !== '썸네일' && (
@@ -138,7 +146,8 @@ function WorkCard({ work }: { work: Work }) {
                 {fmtDate(work.publishedAt)}
               </span>
             )}
-            {work.href !== '#' && (
+            {isThumbnail && <span style={{ fontSize: '0.78rem', color: TEXT }}>크게 보기 ⤢</span>}
+            {!isThumbnail && work.href !== '#' && (
               <span style={{ fontSize: '0.78rem', fontWeight: 700, color: TEXT }}>↗</span>
             )}
           </div>
@@ -148,9 +157,32 @@ function WorkCard({ work }: { work: Work }) {
   );
 }
 
+function ThumbnailViewer({ work, onClose }: { work: Work; onClose: () => void }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const node = dialog.current!;
+    node.showModal();
+    return () => { if (node.open) node.close(); };
+  }, []);
+  return (
+    <dialog className="thumbnail-viewer" ref={dialog} aria-labelledby="thumbnail-viewer-title"
+      onClose={(e) => { if (!e.currentTarget.open) onClose(); }}
+      onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }}>
+      <div>
+        <header>
+          <strong id="thumbnail-viewer-title">{work.title}</strong>
+          <button type="button" aria-label="닫기" onClick={() => dialog.current?.close()}>×</button>
+        </header>
+        {work.thumbnail && <img src={work.thumbnail} alt={work.title} />}
+      </div>
+    </dialog>
+  );
+}
+
 export default function WorksClient() {
   const [active, setActive] = useState<Category>('최근영상');
   const [revealed, setRevealed] = useState(false);
+  const [selected, setSelected] = useState<Work | null>(null);
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setRevealed(true));
@@ -302,11 +334,12 @@ export default function WorksClient() {
           gap: '20px',
         }}>
           {filtered.map((work) => (
-            <WorkCard key={work.id} work={work} />
+            <WorkCard key={work.id} work={work} onExpand={setSelected} />
           ))}
         </div>
 
       </main>
+      {selected && <ThumbnailViewer work={selected} onClose={() => setSelected(null)} />}
     </div>
   );
 }

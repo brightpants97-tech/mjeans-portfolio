@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_COOKIE, verifySessionToken } from '@/lib/adminAuth';
 import { getWorksFile, updateWorksFile } from '@/lib/github';
+import { isWorkCategory, type WorkCategory } from '@/lib/work-categories';
 
 interface Work {
   id: string;
-  category: '일상' | '합방' | '여행' | '게임' | 'AI';
+  category: WorkCategory;
   title: string;
   channel: string;
   handle: string;
@@ -62,7 +63,7 @@ export async function POST(req: NextRequest) {
   if (typeof url !== 'string' || !url.trim()) {
     return NextResponse.json({ error: '유튜브 링크를 입력해주세요.' }, { status: 400 });
   }
-  if (!['일상', '합방', '여행', '게임', 'AI'].includes(category)) {
+  if (!isWorkCategory(category)) {
     return NextResponse.json({ error: '카테고리가 올바르지 않습니다.' }, { status: 400 });
   }
 
@@ -128,7 +129,7 @@ export async function PUT(req: NextRequest) {
   if (typeof id !== 'string' || !id) {
     return NextResponse.json({ error: '변경할 영상을 지정해주세요.' }, { status: 400 });
   }
-  if (!['일상', '합방', '여행', '게임', 'AI'].includes(category)) {
+  if (!isWorkCategory(category)) {
     return NextResponse.json({ error: '카테고리가 올바르지 않습니다.' }, { status: 400 });
   }
 

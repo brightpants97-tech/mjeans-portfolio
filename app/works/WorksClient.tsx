@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import worksData from '@/data/works.json';
+import { WORK_CATEGORIES, type WorkCategory } from '@/lib/work-categories';
 
 const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
@@ -10,6 +11,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   여행: '#7BD599',
   게임: '#D4A2F6',
   AI: '#484C3F',
+  썸네일: '#8FD3F4',
 };
 const CATEGORY_TEXT_COLORS: Record<string, string> = {
   일상: '#121210',
@@ -20,9 +22,8 @@ const CATEGORY_TEXT_COLORS: Record<string, string> = {
 };
 const TEXT   = '#121210';
 
-const CATEGORIES = ['최근영상', '일상', '합방', '여행', '게임', 'AI'] as const;
+const CATEGORIES = ['최근영상', ...WORK_CATEGORIES] as const;
 type Category = typeof CATEGORIES[number];
-type WorkCategory = Exclude<Category, '최근영상'>;
 
 interface Work {
   id: string;
@@ -132,9 +133,11 @@ function WorkCard({ work }: { work: Work }) {
             {work.category === 'AI' ? '' : `${work.channel} · ${work.handle}`}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="mono" style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.38)' }}>
-              {fmtDate(work.publishedAt)}
-            </span>
+            {work.category !== '썸네일' && (
+              <span className="mono" style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.38)' }}>
+                {fmtDate(work.publishedAt)}
+              </span>
+            )}
             {work.href !== '#' && (
               <span style={{ fontSize: '0.78rem', fontWeight: 700, color: TEXT }}>↗</span>
             )}
@@ -155,7 +158,7 @@ export default function WorksClient() {
   }, []);
 
   const filtered = active === '최근영상'
-    ? PLACEHOLDER_WORKS.filter((w) => w.category !== 'AI')
+    ? PLACEHOLDER_WORKS.filter((w) => w.category !== 'AI' && w.category !== '썸네일')
         .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
         .slice(0, 9)
     : PLACEHOLDER_WORKS.filter((w) => w.category === active);
@@ -289,7 +292,7 @@ export default function WorksClient() {
 
         {/* 영상 수 */}
         <p style={{ fontSize: '0.8rem', color: 'rgba(18,18,16,0.35)', fontWeight: 500, marginBottom: '24px' }}>
-          {filtered.length}개의 영상
+          {filtered.length}개의 {active === '썸네일' ? '썸네일' : '영상'}
         </p>
 
         {/* 카드 그리드 */}

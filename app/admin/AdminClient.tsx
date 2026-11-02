@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { WORK_CATEGORIES, type WorkCategory } from '@/lib/work-categories';
 
 const BG     = '#faf9f5';
 const ACCENT = '#a3e635';
@@ -7,7 +8,7 @@ const TEXT   = '#121210';
 
 interface Work {
   id: string;
-  category: '일상' | '합방' | '여행' | '게임' | 'AI';
+  category: WorkCategory;
   title: string;
   channel: string;
   handle: string;
@@ -15,8 +16,6 @@ interface Work {
   thumbnail: string | null;
   publishedAt: string;
 }
-
-const CATEGORIES: Work['category'][] = ['일상', '합방', '여행', '게임', 'AI'];
 
 function fmtDate(iso: string) {
   const d = new Date(iso);
@@ -242,7 +241,7 @@ export default function AdminClient() {
             }}
           />
           <div style={{ display: 'flex', gap: '8px', marginBottom: '14px', flexWrap: 'wrap' }}>
-            {CATEGORIES.map((cat) => (
+            {WORK_CATEGORIES.map((cat) => (
               <button
                 type="button"
                 key={cat}
@@ -287,7 +286,7 @@ export default function AdminClient() {
         {loadError && <p style={{ color: '#d33', fontSize: '0.85rem' }}>{loadError}</p>}
         {!works && !loadError && <p style={{ fontSize: '0.85rem', opacity: 0.5 }}>불러오는 중...</p>}
 
-        {works && CATEGORIES.map((cat) => {
+        {works && WORK_CATEGORIES.map((cat) => {
           const items = works
             .filter((w) => w.category === cat)
             .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
@@ -327,7 +326,7 @@ export default function AdminClient() {
                         opacity: changingId === w.id ? 0.5 : 1,
                       }}
                     >
-                      {CATEGORIES.map((c) => (
+                      {WORK_CATEGORIES.map((c) => (
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>

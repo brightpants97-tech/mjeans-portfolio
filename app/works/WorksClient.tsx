@@ -11,7 +11,6 @@ const CATEGORY_COLORS: Record<string, string> = {
   여행: '#7BD599',
   게임: '#D4A2F6',
   AI: '#484C3F',
-  썸네일: '#8FD3F4',
 };
 const CATEGORY_TEXT_COLORS: Record<string, string> = {
   일상: '#121210',
@@ -47,21 +46,13 @@ function fmtDate(iso: string) {
   return `${yy}.${mm}.${dd}`;
 }
 
-function WorkCard({ work, onExpand }: { work: Work; onExpand: (work: Work) => void }) {
+function WorkCard({ work }: { work: Work }) {
   const [hovered, setHovered] = useState(false);
-  const isThumbnail = work.category === '썸네일';
 
   return (
     <a
-      href={isThumbnail ? work.thumbnail ?? undefined : work.href}
-      target={!isThumbnail && work.href !== '#' ? '_blank' : undefined}
-      aria-haspopup={isThumbnail ? 'dialog' : undefined}
-      aria-label={isThumbnail ? `${work.title} 이미지 크게 보기` : undefined}
-      onClick={isThumbnail && work.thumbnail ? (event) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        event.preventDefault();
-        onExpand(work);
-      } : undefined}
+      href={work.href}
+      target={work.href !== '#' ? '_blank' : undefined}
       rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -91,8 +82,8 @@ function WorkCard({ work, onExpand }: { work: Work; onExpand: (work: Work) => vo
             src={work.thumbnail}
             alt={work.title}
             style={{
-              width: '100%', height: '100%', objectFit: isThumbnail ? 'contain' : 'cover', display: 'block',
-              transform: hovered && !isThumbnail ? 'scale(1.08)' : 'scale(1)',
+              width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+              transform: hovered ? 'scale(1.08)' : 'scale(1)',
               transition: 'transform 0.35s ease',
             }}
           />
@@ -141,13 +132,10 @@ function WorkCard({ work, onExpand }: { work: Work; onExpand: (work: Work) => vo
             {work.category === 'AI' ? '' : [work.channel, work.handle].filter(Boolean).join(' · ')}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {work.category !== '썸네일' && (
-              <span className="mono" style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.38)' }}>
-                {fmtDate(work.publishedAt)}
-              </span>
-            )}
-            {isThumbnail && <span style={{ fontSize: '0.78rem', color: TEXT }}>크게 보기 ⤢</span>}
-            {!isThumbnail && work.href !== '#' && (
+            <span className="mono" style={{ fontSize: '0.72rem', fontWeight: 600, color: 'rgba(18,18,16,0.38)' }}>
+              {fmtDate(work.publishedAt)}
+            </span>
+            {work.href !== '#' && (
               <span style={{ fontSize: '0.78rem', fontWeight: 700, color: TEXT }}>↗</span>
             )}
           </div>
@@ -165,15 +153,14 @@ function ThumbnailViewer({ work, onClose }: { work: Work; onClose: () => void })
     return () => { if (node.open) node.close(); };
   }, []);
   return (
-    <dialog className="thumbnail-viewer" ref={dialog} aria-labelledby="thumbnail-viewer-title"
+    <dialog className="thumbnail-viewer" ref={dialog} aria-label="썸네일 확대 보기"
       onClose={(e) => { if (!e.currentTarget.open) onClose(); }}
       onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }}>
       <div>
         <header>
-          <strong id="thumbnail-viewer-title">{work.title}</strong>
           <button type="button" aria-label="닫기" onClick={() => dialog.current?.close()}>×</button>
         </header>
-        {work.thumbnail && <img src={work.thumbnail} alt={work.title} />}
+        {work.thumbnail && <img src={work.thumbnail} alt={work.title || '확대한 썸네일 이미지'} />}
       </div>
     </dialog>
   );
@@ -323,9 +310,9 @@ export default function WorksClient() {
         </div>
 
         {/* 영상 수 */}
-        <p style={{ fontSize: '0.8rem', color: 'rgba(18,18,16,0.35)', fontWeight: 500, marginBottom: '24px' }}>
+        {(active !== '썸네일' || !filtered.length) && <p style={{ fontSize: '0.8rem', color: 'rgba(18,18,16,0.35)', fontWeight: 500, marginBottom: '24px' }}>
           {filtered.length}개의 {active === '썸네일' ? '썸네일' : '영상'}
-        </p>
+        </p>}
 
         {/* 카드 그리드 */}
         <div style={{
@@ -333,8 +320,14 @@ export default function WorksClient() {
           gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
           gap: '20px',
         }}>
-          {filtered.map((work) => (
-            <WorkCard key={work.id} work={work} onExpand={setSelected} />
+          {filtered.map((work, index) => work.category === '썸네일' ? (
+            work.thumbnail && <button type="button" key={work.id} className="thumbnail-tile"
+              aria-label={`${work.title || `썸네일 ${index + 1}`} 확대 보기`} aria-haspopup="dialog"
+              onClick={() => setSelected(work)}>
+              <img src={work.thumbnail} alt="" />
+            </button>
+          ) : (
+            <WorkCard key={work.id} work={work} />
           ))}
         </div>
 

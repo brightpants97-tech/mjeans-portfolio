@@ -59,10 +59,8 @@ async function addThumbnail(req: NextRequest) {
   try {
     const form = await req.formData();
     const file = form.get('image');
-    const title = form.get('title');
-    if (!(file instanceof File) || !file.size || typeof title !== 'string' || !title.trim() ||
-        title.length > 200 || /[\r\n]/.test(title)) {
-      return NextResponse.json({ error: '원본 이미지와 작품명(200자 이내)을 입력해주세요.' }, { status: 400 });
+    if (!(file instanceof File) || !file.size) {
+      return NextResponse.json({ error: '원본 이미지를 선택해주세요.' }, { status: 400 });
     }
     if (file.size > MAX_THUMBNAIL_BYTES) {
       return NextResponse.json({ error: '4MB 이하의 이미지를 선택해주세요.' }, { status: 413 });
@@ -76,14 +74,14 @@ async function addThumbnail(req: NextRequest) {
 
     const digest = createHash('sha256').update(bytes).digest('hex');
     const thumbnail = `/images/thumbnails/${digest}.${ext}`;
-    const work: Work = { id: `썸네일-${digest}`, category: '썸네일', title: title.trim(),
+    const work: Work = { id: `썸네일-${digest}`, category: '썸네일', title: '',
       thumbnail, href: thumbnail, channel: '', handle: '', publishedAt: new Date().toISOString() };
     const { content, sha } = await getWorksFile();
     const works = content as Work[];
     if (works.some((item) => item.id === work.id)) {
       return NextResponse.json({ error: '이미 등록된 원본 이미지입니다.' }, { status: 409 });
     }
-    await commitThumbnail([work, ...works], sha, `public${thumbnail}`, bytes, `admin: 썸네일 추가 (${work.title})`);
+    await commitThumbnail([work, ...works], sha, `public${thumbnail}`, bytes, 'admin: 썸네일 추가');
     return NextResponse.json({ ok: true, work });
   } catch (e) {
     return NextResponse.json({ error: e instanceof Error ? e.message : '썸네일 추가 실패' }, { status: 500 });
@@ -225,7 +223,7 @@ export async function DELETE(req: NextRequest) {
 
     const updated = works.filter((w) => w.id !== id);
     if (target.thumbnail && /^\/images\/thumbnails\/[a-f0-9]{64}\.(png|jpg|webp)$/.test(target.thumbnail)) {
-      await commitThumbnail(updated, sha, `public${target.thumbnail}`, null, `admin: 썸네일 삭제 (${target.title})`);
+      await commitThumbnail(updated, sha, `public${target.thumbnail}`, null, 'admin: 썸네일 삭제');
     } else {
       await updateWorksFile(updated, sha, `admin: 영상 삭제 (${target.category} - ${target.title})`);
     }

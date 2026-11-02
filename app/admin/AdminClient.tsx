@@ -36,10 +36,9 @@ export default function AdminClient() {
   const [url, setUrl] = useState('');
   const [category, setCategory] = useState<Work['category']>('일상');
   const [file, setFile] = useState<File | null>(null);
-  const [title, setTitle] = useState('');
   const fileInput = useRef<HTMLInputElement>(null);
   const isThumbnail = category === '썸네일';
-  const canAdd = isThumbnail ? !!file && !!title.trim() : !!url.trim();
+  const canAdd = isThumbnail ? !!file : !!url.trim();
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -107,7 +106,6 @@ export default function AdminClient() {
         if (!file) throw new Error('원본 이미지를 선택해주세요.');
         const form = new FormData();
         form.set('image', file);
-        form.set('title', title.trim());
         options = { method: 'POST', body: form };
       } else {
         options = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url, category }) };
@@ -118,9 +116,8 @@ export default function AdminClient() {
       if (!res.ok) throw new Error(data.error || '추가 실패');
       setUrl('');
       setFile(null);
-      setTitle('');
       if (fileInput.current) fileInput.current.value = '';
-      setNotice(`"${data.work.title}" 추가 완료. 배포까지 약 1분 정도 걸려요.`);
+      setNotice(`${isThumbnail ? '썸네일' : `"${data.work.title}"`} 추가 완료. 배포까지 약 1분 정도 걸려요.`);
       loadWorks();
     } catch (e) {
       setAddError(e instanceof Error ? e.message : '추가 실패');
@@ -130,7 +127,7 @@ export default function AdminClient() {
   }
 
   async function handleDelete(work: Work) {
-    if (!confirm(`"${work.title}"을(를) 삭제할까요?`)) return;
+    if (!confirm(work.title ? `"${work.title}"을(를) 삭제할까요?` : '이 썸네일을 삭제할까요?')) return;
     setDeletingId(work.id);
     setNotice(null);
     try {
@@ -259,12 +256,7 @@ export default function AdminClient() {
                     }
                     setAddError(null);
                     setFile(selected);
-                    if (selected && !title.trim()) setTitle(selected.name.replace(/\.[^.]+$/, '').slice(0, 200));
                   }} />
-              </label>
-              <label>작품명
-                <input type="text" value={title} maxLength={200} disabled={adding} onChange={(e) => setTitle(e.target.value)}
-                  style={{ display: 'block', marginTop: 6, width: '100%', padding: 10, border: '1px solid #ccc', borderRadius: 8 }} />
               </label>
             </div>
           ) : <input
@@ -285,7 +277,7 @@ export default function AdminClient() {
                 key={cat}
                 disabled={adding}
                 onClick={() => {
-                  if (category !== cat) { setFile(null); setTitle(''); setAddError(null); }
+                  if (category !== cat) { setFile(null); setAddError(null); }
                   setCategory(cat);
                 }}
                 style={{

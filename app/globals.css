@@ -151,6 +151,8 @@ a {
     grid-template-columns: 1fr;
   }
 }
+.thumbnail-tile { display: block; align-self: start; width: 100%; padding: 0; border: 0; border-radius: 14px; overflow: hidden; background: transparent; cursor: zoom-in; }
+.thumbnail-tile img { display: block; width: 100%; height: auto; }
 .thumbnail-viewer {
   margin: auto;
   padding: 0;
@@ -161,8 +163,7 @@ a {
   max-height: calc(100dvh - 16px);
 }
 .thumbnail-viewer::backdrop { background: rgba(10, 11, 13, .92); }
-.thumbnail-viewer header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.thumbnail-viewer strong { overflow-wrap: anywhere; }
+.thumbnail-viewer header { display: flex; justify-content: flex-end; }
 .thumbnail-viewer button { flex: none; width: 44px; height: 44px; color: white; background: transparent; border: 0; font-size: 28px; cursor: pointer; }
 .thumbnail-viewer img { display: block; margin: auto; width: auto; height: auto; max-width: 100%; max-height: min(80dvh, calc(100dvh - 70px)); object-fit: contain; }
 body:has(.thumbnail-viewer[open]) { overflow: hidden; }

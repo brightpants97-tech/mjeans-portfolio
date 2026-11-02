@@ -117,27 +117,34 @@ export const updateWorksFile = (newContent: unknown, sha: string, message: strin
 export async function commitThumbnail(works: unknown[], expectedListSha: string, imagePath: string,
   image: Buffer | null, message: string) {
   const { owner, repo, branch, token } = repoInfo();
-  const headers = authHeaders(token);
-  const ref = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/git/ref/heads/${branch}`, { headers, cache: 'no-store' });
-  if (!ref.ok) throw new Error('저장소 버전을 확인할 수 없습니다.');
-  const head = (await ref.json()).object.sha;
-  const snapshot = await getRepoFile('data/works.json', head);
-  if (snapshot.sha !== expectedListSha) throw new Error('작품 목록이 바뀌었습니다. 다시 시도해주세요.');
-  const additions = [{ path: 'data/works.json', contents: Buffer.from(JSON.stringify(works, null, 2) + '\n').toString('base64') }];
-  if (image) additions.push({ path: imagePath, contents: image.toString('base64') });
-  const res = await fetch(`${GITHUB_API}/graphql`, {
-    method: 'POST',
-    headers: { ...headers, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query: 'mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }',
-      variables: { input: { branch: { repositoryNameWithOwner: `${owner}/${repo}`, refName: branch },
-        expectedHeadOid: head, message: { headline: message },
-        fileChanges: { additions, deletions: image ? [] : [{ path: imagePath }] } } },
-    }),
-  });
-  if (!res.ok || !(await res.json()).data?.createCommitOnBranch?.commit?.oid) {
-    throw new Error('이미지와 작품 목록을 저장하지 못했습니다. 다시 시도해주세요.');
+  const branchPath = encodeURIComponent(branch);
+  async function request(path: string, step: string, body?: unknown, method = body ? 'POST' : 'GET') {
+    const res = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/${path}`, {
+      method, headers: { ...authHeaders(token), 'Content-Type': 'application/json' },
+      cache: 'no-store', body: body ? JSON.stringify(body) : undefined,
+    });
+    if (!res.ok) {
+      const reason = (await res.json().catch(() => null))?.message;
+      throw new Error(`${step} 실패 (GitHub ${res.status})${reason ? ' · ' + reason : ''}`);
+    }
+    return res.json();
   }
+
+  const { commit: head } = await request(`branches/${branchPath}`, '저장소 버전 확인');
+  const snapshot = await getRepoFile('data/works.json', head.sha);
+  if (snapshot.sha !== expectedListSha) throw new Error('작품 목록이 바뀌었습니다. 다시 시도해주세요.');
+  const imageSha = image ? (await request('git/blobs', '원본 이미지 저장', {
+    content: image.toString('base64'), encoding: 'base64',
+  })).sha : null;
+  const tree = await request('git/trees', '이미지와 작품 목록 연결', {
+    base_tree: head.commit.tree.sha,
+    tree: [
+      { path: 'data/works.json', mode: '100644', type: 'blob', content: JSON.stringify(works, null, 2) + '\n' },
+      { path: imagePath, mode: '100644', type: 'blob', sha: imageSha },
+    ],
+  });
+  const commit = await request('git/commits', '작품 변경 저장', { message, tree: tree.sha, parents: [head.sha] });
+  await request(`git/refs/heads/${branchPath}`, '작품 변경 반영', { sha: commit.sha, force: false }, 'PATCH');
 }
 
 /** data/resumes.json 전용 별칭 */
